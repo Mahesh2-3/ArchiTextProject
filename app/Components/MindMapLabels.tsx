@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 /**
  * Returns a styled label for displaying tech stack groupings.
@@ -35,7 +35,6 @@ export const SchemaModelLabel = ({ model }: { model: any }) => (
  * Returns a styled label illustrating all API paths and descriptions.
  */
 
-//@ts-expect-error: the type can be anything
 export const APIsLabel = ({ apis }: { apis: any[] }) => (
     <div className="text-left w-full">
         <div className="font-bold mb-2 pb-1 border-b border-inherit">APIs</div>
