@@ -1,7 +1,5 @@
 import React from 'react';
 import type { Node, Edge } from '@xyflow/react';
-import { getLayoutedElements } from './mindmapLayout';
-import { data } from '@/constants';
 import {
     TechStackLabel,
     SchemaModelLabel,
@@ -9,12 +7,13 @@ import {
     StructureFolderLabel,
     ScalingLabel
 } from '../Components/MindMapLabels';
+import { ArchitectureData } from './interfaces';
 
 /**
- * Parses application constants into ReactFlow nodes and connects their edges,
+ * Parses application architecture data into ReactFlow nodes and connects their edges,
  * automatically creating nested layouts that separate parents and leaves visually.
  */
-export const generateElements = (sourceData: typeof data): { nodes: Node[], edges: Edge[] } => {
+export const generateElements = (sourceData: ArchitectureData): { nodes: Node[], edges: Edge[] } => {
     const nodes: Node[] = [];
     const edges: Edge[] = [];
 

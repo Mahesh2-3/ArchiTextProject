@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ApiItem, SchemaItem, TechStackItem } from "../Helpers/interfaces";
 
 /**
  * Returns a styled label for displaying tech stack groupings.
  */
-export const TechStackLabel = ({ techStack }: { techStack: any }) => (
+export const TechStackLabel = ({ techStack }: { techStack: TechStackItem[] }) => (
     <div className="text-left w-full">
         <div className="font-bold mb-2 pb-1 border-b border-inherit">Tech Stack</div>
         <ul className="text-sm flex flex-col gap-2">
-            {techStack.map((item: any, i: number) => (
+            {techStack.map((item, i) => (
                 <li key={i}>
                     <div className="font-bold capitalize">{item.area}: <span className="font-extrabold opacity-90">{item.name}</span></div>
                     <div className="text-xs text-inherit opacity-80 mt-0.5">{item.reason}</div>
@@ -20,11 +20,11 @@ export const TechStackLabel = ({ techStack }: { techStack: any }) => (
 /**
  * Returns a styled label displaying DB Schema model blueprints.
  */
-export const SchemaModelLabel = ({ model }: { model: any }) => (
+export const SchemaModelLabel = ({ model }: { model: SchemaItem }) => (
     <div className="text-left w-full">
         <div className="font-bold mb-2 pb-1 border-b border-inherit">Model: {model.collection}</div>
         <ul className="text-sm flex flex-col gap-1">
-            {model.fields.map((field: any, j: number) => (
+            {model.fields.map((field, j) => (
                 <li key={j}><span className="font-medium">{field.name}</span> <span className="text-xs text-inherit opacity-70">({field.type})</span></li>
             ))}
         </ul>
@@ -35,7 +35,7 @@ export const SchemaModelLabel = ({ model }: { model: any }) => (
  * Returns a styled label illustrating all API paths and descriptions.
  */
 
-export const APIsLabel = ({ apis }: { apis: any[] }) => (
+export const APIsLabel = ({ apis }: { apis: ApiItem[] }) => (
     <div className="text-left w-full">
         <div className="font-bold mb-2 pb-1 border-b border-inherit">APIs</div>
         <ul className="text-sm flex flex-col gap-2">

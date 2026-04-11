@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import MessageCard from '../Components/MessageCard'
 import { PaperPlane } from '../Helpers/icons';
-import ConversationSkeleton from '../Skeletons/ConversationSkeleton';
 import { ArchitectureData, MessageType } from '../Helpers/interfaces';
 
 const Conversation = ({
