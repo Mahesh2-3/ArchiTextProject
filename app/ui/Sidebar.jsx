@@ -5,12 +5,19 @@ import ThemeButton from "../Components/ThemeButton";
 import { Menu, Close } from "../Helpers/icons";
 import Image from "next/image";
 import SidebarSkeleton from "../Skeletons/SidebarSkeleton";
+import Link from "next/link";
+import { useAppStore } from "../store/useAppStore";
 
-const Sidebar = ({ state, func }) => {
+const Sidebar = ({ state, func, func2 }) => {
   const [projects, setProjects] = useState([]);
+  const [isFetching, setIsFetching] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const currentProject = useAppStore((state) => state.currentProject);
 
   useEffect(() => {
+    setMounted(true);
     const fetchProjects = async () => {
+      setIsFetching(true);
       const response = await fetch("http://localhost:5000/project", {
         method: "GET",
         credentials: "include",
@@ -18,12 +25,15 @@ const Sidebar = ({ state, func }) => {
       const data = await response.json();
       console.log(data);
       setProjects(data);
+      setIsFetching(false);
     };
     fetchProjects();
   }, []);
 
   return (
-    <div className="h-full border-r border-gray-300 dark:border-gray-700 bg-(--color-secondary) flex flex-col">
+    <div className="h-full border-r border-gray-300 dark:border-gray-700 bg-(--color-secondary) flex flex-col relative">
+      {/* blocking screen when there is no project selected */}
+
       {/* Header / Actions */}
       <div className="flex justify-between items-center p-4 shrink-0">
         <ThemeButton />
@@ -37,7 +47,10 @@ const Sidebar = ({ state, func }) => {
 
       {/* New Project Button */}
       <div className="px-4 pb-4 shrink-0">
-        <button className="w-full py-2 px-4 rounded-md border border-gray-500 dark:border-gray-500 hover:bg-black/5 dark:hover:bg-white/5 transition flex justify-between items-center text-(--text-normal) font-medium cursor-pointer">
+        <button
+          onClick={func2}
+          className="w-full py-2 px-4 rounded-md border border-gray-500 dark:border-gray-500 hover:bg-black/5 dark:hover:bg-white/5 transition flex justify-between items-center text-(--text-normal) font-medium cursor-pointer"
+        >
           <span>New Project</span>
           <span className="text-xl">+</span>
         </button>
@@ -45,29 +58,27 @@ const Sidebar = ({ state, func }) => {
 
       {/* Project List */}
       <div className="grow overflow-y-auto px-4">
-        {projects.length === 0 ? (
-          <SidebarSkeleton />
-        ) : (
-          <ul className="flex flex-col gap-6">
-            {projects.map((project) => (
-              <li key={project.id} className="flex flex-col gap-2">
-                <div className="font-bold text-(--text-normal) flex items-center justify-between">
-                  <span>{project.name}</span>
-                </div>
-                <ul className="flex flex-col gap-1 pl-4 ml-1 border-l-2 border-gray-400 dark:border-gray-600">
-                  {project.chats.map((chat) => (
-                    <li
-                      key={chat.id}
-                      className="text-sm text-(--text-normal)/80 hover:text-(--text-normal) hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition truncate py-1.5 px-2 rounded-r-md"
-                    >
+        <ul className="flex flex-col gap-6">
+          {projects.map((project) => (
+            <li key={project.id} className="flex flex-col gap-2">
+              <div className="font-bold text-(--text-normal) flex items-center justify-between">
+                <span>{project.name}</span>
+              </div>
+              <ul className="flex flex-col gap-1 pl-4 ml-1 border-l-2 border-gray-400 dark:border-gray-600">
+                {project.chats.map((chat) => (
+                  <li
+                    key={chat.id}
+                    className="text-sm text-(--text-normal)/80 hover:text-(--text-normal) hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition truncate py-1.5 px-2 rounded-r-md"
+                  >
+                    <Link href={`/home?pid=${project.id}&cid=${chat.id}`}>
                       {chat.title}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* User Profile Container - Sticky Bottom */}

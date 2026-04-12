@@ -34,7 +34,7 @@ const LoginPage = () => {
 
       if (response.ok) {
         setUser(data.user);
-        router.push("/");
+        router.push("/home");
       } else {
         setError(data.error || "Invalid credentials");
       }

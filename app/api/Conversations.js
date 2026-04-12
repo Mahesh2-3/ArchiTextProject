@@ -1,11 +1,17 @@
-export const sendMessage = async (conversation) => {
-  const response = await fetch("http://localhost:5000/ai-chat", {
+
+export const sendMessage = async (id, userMsg, projectId) => {
+  let conversationId = id;
+  if (!conversationId) {
+    const newConvo = await createConversation(projectId);
+    conversationId = newConvo._id;
+  }
+  const response = await fetch(`http://localhost:5000/ai-chat/${conversationId}`, {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ prompt: conversation }),
+    body: JSON.stringify({ userMsg }),
   });
 
   if (!response.ok) {
@@ -13,4 +19,22 @@ export const sendMessage = async (conversation) => {
   }
 
   return await response.json();
+};
+
+const createConversation = async (projectId) => {
+  const response = await fetch("http://localhost:5000/conversation", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ projectId }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create conversation");
+  }
+
+  const result = await response.json();
+  return result.data;
 };
