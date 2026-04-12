@@ -2,21 +2,48 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import aiResponse from "./routes/aiResponse.js";
+import cookieParser from "cookie-parser";
+import authMiddleware from "./middleware/auth.js";
+import LoginRoute from "./routes/auth/login.js";
+import RegisterRoute from "./routes/auth/Register.js";
+import projectRoutes from "./routes/projects.js";
+import connectDB from "./lib/db.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Connect to MongoDB
+connectDB();
+
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
 app.use(express.json());
+app.use(cookieParser());
 
 app.use((req, res, next) => {
   console.log(req.url);
   next();
 });
 
+// Auth routes
+app.post("/login", LoginRoute);
+app.post("/register", RegisterRoute);
+
 // Ai-routes
-app.use("/ai-chat", aiResponse);
+app.use("/ai-chat", authMiddleware, aiResponse);
+
+//Project routes
+app.use("/project", authMiddleware, projectRoutes);
+
+//dummy protected route
+app.use("/protected", authMiddleware, (req, res) => {
+  res.json({ message: "Protected route" });
+});
 
 // Basic Route
 app.get("/", (req, res) => {
