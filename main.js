@@ -1,13 +1,15 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import aiResponse from "./routes/aiResponse.js";
 import cookieParser from "cookie-parser";
+import connectDB from "./lib/db.js";
 import authMiddleware from "./middleware/auth.js";
+
+import aiResponse from "./routes/aiResponse.js";
 import LoginRoute from "./routes/auth/login.js";
 import RegisterRoute from "./routes/auth/Register.js";
 import projectRoutes from "./routes/projects.js";
-import connectDB from "./lib/db.js";
+import conversationRoutes from "./routes/conversation.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -40,10 +42,8 @@ app.use("/ai-chat", authMiddleware, aiResponse);
 //Project routes
 app.use("/project", authMiddleware, projectRoutes);
 
-//dummy protected route
-app.use("/protected", authMiddleware, (req, res) => {
-  res.json({ message: "Protected route" });
-});
+//conversation routes
+app.use("/conversation", authMiddleware, conversationRoutes);
 
 // Basic Route
 app.get("/", (req, res) => {
