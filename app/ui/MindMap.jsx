@@ -1,18 +1,16 @@
 import { useState, useCallback, useEffect } from 'react';
 import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge, Background, Controls } from '@xyflow/react';
-import type { Connection, NodeChange, EdgeChange, Node, Edge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { data as fallbackData } from '@/constants';
+import { data as fallbackData } from '../../constants';
 import { generateElements } from '../Helpers/mindmapGenerator';
-import { ArchitectureData } from '../Helpers/interfaces';
 
-export default function MindMap({ architectureData }: { architectureData: ArchitectureData | null }) {
+export default function MindMap({ architectureData }) {
     // State for nodes and edges
-    const [nodes, setNodes] = useState<Node[]>([]);
-    const [edges, setEdges] = useState<Edge[]>([]);
+    const [nodes, setNodes] = useState([]);
+    const [edges, setEdges] = useState([]);
     
     // Track previous data to detect changes during render
-    const [prevArchitectureData, setPrevArchitectureData] = useState<ArchitectureData | null>(null);
+    const [prevArchitectureData, setPrevArchitectureData] = useState(null);
 
     // If architectureData changed, reset nodes and edges immediately during render
     if (architectureData !== prevArchitectureData) {
@@ -35,15 +33,15 @@ export default function MindMap({ architectureData }: { architectureData: Archit
     }, [architectureData]);
 
     const onNodesChange = useCallback(
-        (changes: NodeChange[]) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+        (changes) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
         [],
     );
     const onEdgesChange = useCallback(
-        (changes: EdgeChange[]) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+        (changes) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
         [],
     );
     const onConnect = useCallback(
-        (params: Connection) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+        (params) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
         [],
     );
 

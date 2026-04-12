@@ -1,5 +1,4 @@
 import React from 'react';
-import type { Node, Edge } from '@xyflow/react';
 import {
     TechStackLabel,
     SchemaModelLabel,
@@ -7,27 +6,26 @@ import {
     StructureFolderLabel,
     ScalingLabel
 } from '../Components/MindMapLabels';
-import { ArchitectureData } from './interfaces';
 import { getLayoutedElements } from './mindmapLayout';
 
 /**
  * Parses application architecture data into ReactFlow nodes and connects their edges,
  * automatically creating nested layouts that separate parents and leaves visually.
  */
-export const generateElements = (sourceData: ArchitectureData): { nodes: Node[], edges: Edge[] } => {
-    const nodes: Node[] = [];
-    const edges: Edge[] = [];
+export const generateElements = (sourceData) => {
+    const nodes = [];
+    const edges = [];
 
     /**
      * Reusable helper to insert styled layout nodes directly into ReactFlow collections.
      */
     const addNode = (
-        id: string,
-        label: React.ReactNode,
-        depth: number,
-        parentId: string | null = null,
-        lines: number = 1,
-        isParent: boolean = false
+        id,
+        label,
+        depth,
+        parentId = null,
+        lines = 1,
+        isParent = false
     ) => {
         // Approximate heights ensuring adequate bounding containers for content text
         const height = 50 + (lines * 26);

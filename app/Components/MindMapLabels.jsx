@@ -1,9 +1,7 @@
-import { ApiItem, SchemaItem, TechStackItem } from "../Helpers/interfaces";
-
 /**
  * Returns a styled label for displaying tech stack groupings.
  */
-export const TechStackLabel = ({ techStack }: { techStack: TechStackItem[] }) => (
+export const TechStackLabel = ({ techStack }) => (
     <div className="text-left w-full">
         <div className="font-bold mb-2 pb-1 border-b border-inherit">Tech Stack</div>
         <ul className="text-sm flex flex-col gap-2">
@@ -20,7 +18,7 @@ export const TechStackLabel = ({ techStack }: { techStack: TechStackItem[] }) =>
 /**
  * Returns a styled label displaying DB Schema model blueprints.
  */
-export const SchemaModelLabel = ({ model }: { model: SchemaItem }) => (
+export const SchemaModelLabel = ({ model }) => (
     <div className="text-left w-full">
         <div className="font-bold mb-2 pb-1 border-b border-inherit">Model: {model.collection}</div>
         <ul className="text-sm flex flex-col gap-1">
@@ -35,7 +33,7 @@ export const SchemaModelLabel = ({ model }: { model: SchemaItem }) => (
  * Returns a styled label illustrating all API paths and descriptions.
  */
 
-export const APIsLabel = ({ apis }: { apis: ApiItem[] }) => (
+export const APIsLabel = ({ apis }) => (
     <div className="text-left w-full">
         <div className="font-bold mb-2 pb-1 border-b border-inherit">APIs</div>
         <ul className="text-sm flex flex-col gap-2">
@@ -55,7 +53,7 @@ export const APIsLabel = ({ apis }: { apis: ApiItem[] }) => (
 /**
  * Returns a styled label visualizing sub-directories within structure sections.
  */
-export const StructureFolderLabel = ({ section, paths }: { section: string, paths: string[] }) => (
+export const StructureFolderLabel = ({ section, paths }) => (
     <div className="text-left w-full">
         <div className="font-bold mb-2 pb-1 border-b border-inherit capitalize">{section}</div>
         <ul className="text-sm font-mono flex flex-col gap-1">
@@ -69,7 +67,7 @@ export const StructureFolderLabel = ({ section, paths }: { section: string, path
 /**
  * Returns a stylized label capturing core scalability considerations.
  */
-export const ScalingLabel = ({ scaling }: { scaling: string[] }) => (
+export const ScalingLabel = ({ scaling }) => (
     <div className="text-left w-full">
         <div className="font-bold mb-2 pb-1 border-b border-inherit">Scaling Strategies</div>
         <ul className="text-sm flex flex-col gap-1 list-disc pl-4 text-left">

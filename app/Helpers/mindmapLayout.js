@@ -1,18 +1,4 @@
-import { Node, Edge, Position } from '@xyflow/react';
-
-/**
- * Represents a node structure used for computing the custom layout algorithm.
- * Tracks width, height, and organizes nested children into paired rows.
- */
-export interface LayoutNode {
-    flowNode: Node;
-    children: LayoutNode[];
-    treeWidth: number;
-    treeHeight: number;
-    maxLeftWidth: number;
-    maxRightWidth: number;
-    rows: LayoutNode[][];
-}
+import { Position } from '@xyflow/react';
 
 /**
  * Organizes ReactFlow elements into a top-down binary-tree-like structure.
@@ -23,9 +9,9 @@ export interface LayoutNode {
  * @param edges - Array of ReactFlow edges
  * @returns Object with nodes and edges populated with exact coordinates
  */
-export const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
+export const getLayoutedElements = (nodes, edges) => {
     // 1. Build a fast lookup map for all ReactFlow nodes
-    const nodeMap = new Map<string, LayoutNode>();
+    const nodeMap = new Map();
     nodes.forEach(n => {
         nodeMap.set(n.id, {
             flowNode: n,
@@ -38,7 +24,7 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
         });
     });
 
-    let rootNode: LayoutNode | null = null;
+    let rootNode = null;
     
     // 2. Establish parent-child relationships
     edges.forEach(e => {
@@ -64,11 +50,11 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
      * Post-order traversal to calculate dimensions of each subtree exactly,
      * so that deep sibling hierarchies never overlap.
      */
-    function computeSizes(n: LayoutNode) {
+    function computeSizes(n) {
         n.children.forEach(computeSizes);
         
         // Group children into rows of two (Binary representation)
-        const rows: LayoutNode[][] = [];
+        const rows = [];
         for (let i = 0; i < n.children.length; i += 2) {
             rows.push(n.children.slice(i, i + 2));
         }
@@ -101,7 +87,7 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
             : maxLeftWidth;
 
         const nodeWidth = 300;
-        const nodeHeight = n.flowNode.data._height as number;
+        const nodeHeight = n.flowNode.data._height;
 
         // Propagate size upward to the parent
         n.treeWidth = Math.max(nodeWidth, childrenWidth);
@@ -117,7 +103,7 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
     /**
      * Pre-order traversal to distribute calculated coordinates across layout grids.
      */
-    function setPositions(n: LayoutNode, startX: number, startY: number) {
+    function setPositions(n, startX, startY) {
         // Position the node using React Flow's coordinate system
         n.flowNode.position = { x: startX - 150, y: startY };
         n.flowNode.sourcePosition = Position.Bottom;
@@ -126,7 +112,7 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
         // Return early if no children elements exist (leaf)
         if (n.children.length === 0) return;
 
-        const nodeHeight = n.flowNode.data._height as number;
+        const nodeHeight = n.flowNode.data._height;
         let currY = startY + nodeHeight + 80;
 
         let leftColCenterX = startX;

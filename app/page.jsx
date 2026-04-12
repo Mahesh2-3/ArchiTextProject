@@ -5,12 +5,11 @@ import MindMap from "./ui/MindMap";
 import Sidebar from "./ui/Sidebar";
 import { useState } from "react";
 import { Menu } from "./Helpers/icons";
-import { ArchitectureData, MessageType } from "./Helpers/interfaces";
 
 export default function Home() {
-  const [isSideBarOpen, setisSideBarOpen] = useState<boolean>(true);
-  const [conversation, setConversation] = useState<MessageType[]>([]);
-  const [architectureData, setArchitectureData] = useState<ArchitectureData | null>(null);
+  const [isSideBarOpen, setisSideBarOpen] = useState(true);
+  const [conversation, setConversation] = useState([]);
+  const [architectureData, setArchitectureData] = useState(null);
 
   const toggleSideBar = () => {
     setisSideBarOpen((prev) => !prev)

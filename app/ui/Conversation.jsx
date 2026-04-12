@@ -3,25 +3,21 @@
 import React, { useState } from 'react'
 import MessageCard from '../Components/MessageCard'
 import { PaperPlane } from '../Helpers/icons';
-import { ArchitectureData, MessageType } from '../Helpers/interfaces';
+import { sendMessage } from '../api/Conversations';
 
 const Conversation = ({
     conversation,
     setConversation,
     setArchitectureData
-}: {
-    conversation: MessageType[],
-    setConversation: (c: MessageType[]) => void,
-    setArchitectureData: (data: ArchitectureData) => void
 }) => {
     const [input, setInput] = useState("");
     const [chatLoading, setChatLoading] = useState(false);
 
-    const handleSend = async (e: React.FormEvent) => {
+    const handleSend = async (e) => {
         e.preventDefault();
         if (!input.trim() || chatLoading) return;
 
-        const userMsg: MessageType = { role: "user", content: input };
+        const userMsg = { role: "user", content: input };
 
         // Update local and parent conversation state
         const updatedConversation = [...conversation, userMsg];
@@ -30,25 +26,13 @@ const Conversation = ({
         setChatLoading(true);
 
         try {
-            const response = await fetch("http://localhost:5000/ai-chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ prompt: input }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch from AI");
-            }
-
-            const result = await response.json();
+            const result = await sendMessage(updatedConversation);
 
             // Assuming the backend returns { data: ArchitectureData }
             if (result.data) {
                 setArchitectureData(result.data);
 
-                const assistantMsg: MessageType = {
+                const assistantMsg = {
                     role: "assistant",
                     content: `Success! I have generated the architecture for "${result.data.projectTitle}". Look at the MindMap for details.`
                 };
@@ -56,7 +40,7 @@ const Conversation = ({
             }
         } catch (error) {
             console.error("Chat Error:", error);
-            const errorMsg: MessageType = {
+            const errorMsg = {
                 role: "assistant",
                 content: "Sorry, I encountered an error while generating your architecture. Please try again."
             };

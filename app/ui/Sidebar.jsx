@@ -6,24 +6,8 @@ import { Menu, Close } from '../Helpers/icons'
 import Image from 'next/image';
 import SidebarSkeleton from '../Skeletons/SidebarSkeleton';
 
-type sideBarProps = {
-    state: boolean,
-    func: () => void
-}
-
-type ChatType = {
-    id: number,
-    title: string
-}
-
-type ProjectType = {
-    id: number,
-    name: string,
-    chats: ChatType[]
-}
-
-const Sidebar = ({ state, func }: sideBarProps) => {
-    const [projects, setProjects] = useState<ProjectType[]>([]);
+const Sidebar = ({ state, func }) => {
+    const [projects, setProjects] = useState([]);
     
     useEffect(() => {
         const fetchProjects = async () => {
