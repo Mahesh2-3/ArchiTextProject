@@ -23,7 +23,7 @@ export default function Home({ searchParams }) {
   useEffect(() => {
     const fetchArchitecture = async () => {
       const res = await getArchitecture(pid);
-      if (res.success) {
+      if (res?.success) {
         setArchitectureData(res.data);
       }
     };

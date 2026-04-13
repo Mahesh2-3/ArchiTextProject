@@ -2,22 +2,28 @@
 
 import React, { useEffect, useState } from "react";
 import ThemeButton from "../Components/ThemeButton";
-import { Menu, Close } from "../Helpers/icons";
+import { Menu, Close, AngleDown } from "../Helpers/icons";
 import Image from "next/image";
 import SidebarSkeleton from "../Skeletons/SidebarSkeleton";
 import Link from "next/link";
 import { useAppStore } from "../store/useAppStore";
+import { getConversations } from "../api/Conversations";
 
 const Sidebar = ({ state, func, func2 }) => {
   const [projects, setProjects] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
+  const [conversations, setConversations] = useState([]);
+  const [isFetching, setIsFetching] = useState({
+    projects: false,
+    convo: false,
+  });
   const [mounted, setMounted] = useState(false);
   const currentProject = useAppStore((state) => state.currentProject);
+  const setCurrentProject = useAppStore((state) => state.setCurrentProject);
 
   useEffect(() => {
     setMounted(true);
     const fetchProjects = async () => {
-      setIsFetching(true);
+      setIsFetching({ projects: true, convo: false });
       const response = await fetch("http://localhost:5000/project", {
         method: "GET",
         credentials: "include",
@@ -25,10 +31,19 @@ const Sidebar = ({ state, func, func2 }) => {
       const data = await response.json();
       console.log(data);
       setProjects(data);
-      setIsFetching(false);
+      setIsFetching({ projects: false, convo: false });
     };
     fetchProjects();
   }, []);
+
+  const handleFetchConvo = async (projectId) => {
+    setIsFetching({ projects: false, convo: true });
+    const response = await getConversations(projectId);
+    console.log(response);
+    setConversations(response);
+    setCurrentProject(projectId);
+    setIsFetching({ projects: false, convo: false });
+  };
 
   return (
     <div className="h-full border-r border-gray-300 dark:border-gray-700 bg-(--color-secondary) flex flex-col relative">
@@ -59,25 +74,39 @@ const Sidebar = ({ state, func, func2 }) => {
       {/* Project List */}
       <div className="grow overflow-y-auto px-4">
         <ul className="flex flex-col gap-6">
-          {projects.map((project) => (
-            <li key={project.id} className="flex flex-col gap-2">
-              <div className="font-bold text-(--text-normal) flex items-center justify-between">
-                <span>{project.name}</span>
-              </div>
-              <ul className="flex flex-col gap-1 pl-4 ml-1 border-l-2 border-gray-400 dark:border-gray-600">
-                {project.chats.map((chat) => (
-                  <li
-                    key={chat.id}
-                    className="text-sm text-(--text-normal)/80 hover:text-(--text-normal) hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition truncate py-1.5 px-2 rounded-r-md"
-                  >
-                    <Link href={`/home?pid=${project.id}&cid=${chat.id}`}>
-                      {chat.title}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
+          {projects &&
+            projects.map((project) => (
+              <li key={project._id} className="flex flex-col gap-2">
+                <button
+                  onClick={() => handleFetchConvo(project._id)}
+                  className="flex items-center justify-center gap-2"
+                >
+                  <div className="font-bold text-(--text-normal) flex items-center justify-between">
+                    <span>{project.title}</span>
+                  </div>
+                  <AngleDown
+                    className={
+                      currentProject === project._id ? "rotate-180" : ""
+                    }
+                  />
+                </button>
+                <ul className="flex flex-col gap-1 pl-4 ml-1 border-l-2 border-gray-400 dark:border-gray-600">
+                  {conversations &&
+                    conversations.map((conversation) => (
+                      <li
+                        key={conversation._id}
+                        className="text-sm text-(--text-normal)/80 hover:text-(--text-normal) hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition truncate py-1.5 px-2 rounded-r-md"
+                      >
+                        <Link
+                          href={`/home?pid=${project._id}&cid=${conversation._id}`}
+                        >
+                          {conversation.title}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </li>
+            ))}
         </ul>
       </div>
 

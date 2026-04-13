@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { createProject } from "../api/Project";
 const CreateProject = ({ onClose }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -11,10 +11,12 @@ const CreateProject = ({ onClose }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Creating Project:", formData);
-    if (onClose) onClose();
+    const res = await createProject(formData.title, formData.description);
+    if (res.success) {
+      onClose();
+    }
   };
 
   return (
