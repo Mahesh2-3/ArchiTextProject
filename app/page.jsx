@@ -2,200 +2,309 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ThemeButton from "./Components/ThemeButton";
-import { ArrowRight, Brain, MapMarkedAlt, Magic } from "./Helpers/icons";
+import { ArrowRight, Comments, ProjectDiagram, SyncAlt } from "./Helpers/icons";
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen w-full bg-white dark:bg-[#0a0a0a] text-neutral-900 dark:text-neutral-100 transition-colors duration-300">
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 dark:bg-[#0a0a0a]/70 border-b border-neutral-200 dark:border-neutral-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-linear-to-br from-[#FF85BB] to-[#061d53] flex items-center justify-center text-white font-bold">
-                A
+    <div className="min-h-screen w-full bg-[#fafafa] dark:bg-[#080808] text-neutral-900 dark:text-neutral-100 selection:bg-[#FF85BB]/30 selection:text-inherit">
+      {/* Noise texture overlay */}
+      <div
+        className="fixed inset-0 pointer-events-none z-100 opacity-[0.03] dark:opacity-[0.04]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Nav */}
+      <nav className="fixed top-0 w-full z-50 bg-[#fafafa]/80 dark:bg-[#080808]/80 backdrop-blur-sm">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
+          <div className="flex justify-between h-14 items-center">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-[#061d53] dark:bg-[#FF85BB] flex items-center justify-center text-white dark:text-[#061d53] text-[10px] font-bold tracking-tight">
+                AT
               </div>
-              <span className="text-xl font-bold tracking-tight">
+              <span className="text-sm font-semibold tracking-tight">
                 archiText
               </span>
-            </div>
+            </Link>
 
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-6">
               <Link
                 href="#features"
-                className="hover:text-[#FF85BB] transition-colors"
+                className="text-[13px] text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
               >
                 Features
               </Link>
               <Link
                 href="#about"
-                className="hover:text-[#FF85BB] transition-colors"
+                className="text-[13px] text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
               >
                 About
               </Link>
+              <div className="w-px h-4 bg-neutral-200 dark:bg-neutral-800" />
               <ThemeButton />
               <Link
                 href="/login"
-                className="px-5 py-2 rounded-full bg-[#061d53] dark:bg-[#FF85BB] text-white dark:text-[#061d53] font-medium hover:opacity-90 transition-opacity"
+                className="text-[13px] font-medium px-4 py-1.5 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 hover:opacity-80 transition-opacity"
               >
-                Sign In
+                Sign in
               </Link>
             </div>
 
-            <div className="md:hidden flex items-center gap-4">
+            <div className="md:hidden flex items-center gap-3">
               <ThemeButton />
-              <Link href="/login" className="text-sm font-medium">
-                Log In
+              <Link
+                href="/login"
+                className="text-[13px] font-medium px-3 py-1 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900"
+              >
+                Sign in
               </Link>
             </div>
           </div>
         </div>
+        <div className="h-px bg-neutral-200/60 dark:bg-neutral-800/60" />
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        {/* Abstract background blobs */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-[#FF85BB]/10 blur-[120px] rounded-full animate-pulse"></div>
-          <div className="absolute bottom-[10%] right-[-10%] w-[30%] h-[30%] bg-[#061d53]/20 dark:bg-[#061d53]/40 blur-[100px] rounded-full transition-all"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-xs font-semibold mb-8">
-            <span className="w-2 h-2 rounded-full bg-[#FF85BB] animate-ping"></span>
-            AI-POWERED ARCHITECTURE GENERATOR
+      {/* Hero */}
+      <section className="pt-28 pb-0 md:pt-36 md:pb-0">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
+          {/* Eyebrow */}
+          <div className="flex items-center gap-2 mb-6">
+            <div className="w-8 h-px bg-[#FF85BB]" />
+            <span className="text-[11px] font-semibold tracking-[0.15em] uppercase text-neutral-400 dark:text-neutral-500">
+              Architecture generation tool
+            </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-linear-to-r from-neutral-900 via-[#061d53] to-neutral-500 dark:from-white dark:via-[#FF85BB] dark:to-neutral-400 bg-clip-text text-transparent leading-tight">
-            Turn Thoughts into <br /> Architecture
-          </h1>
-          <p className="text-lg md:text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Generate, visualize, and structure your complex projects with
-            AI-powered mind maps. archiText bridges the gap between raw ideas
-            and structured reality.
-          </p>
+          {/* Hero grid — text left, nothing right (asymmetry) */}
+          <div className="max-w-[720px]">
+            <h1
+              className="text-[clamp(2.5rem,5.5vw,4.5rem)] font-bold leading-[1.05] tracking-[-0.03em] text-neutral-900 dark:text-neutral-100 mb-6"
+              style={{ fontFamily: "var(--font-geist-sans)" }}
+            >
+              Structure your ideas
+              <br />
+              <span className="text-neutral-400 dark:text-neutral-500">
+                before you write a line.
+              </span>
+            </h1>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/login"
-              className="px-8 py-4 rounded-full bg-[#FF85BB] text-white font-semibold text-lg hover:shadow-lg hover:shadow-[#FF85BB]/30 transition-all flex items-center justify-center gap-2 group"
-            >
-              Get Started for Free{" "}
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="#features"
-              className="px-8 py-4 rounded-full border border-neutral-300 dark:border-neutral-700 font-semibold text-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors"
-            >
-              Learn More
-            </Link>
+            <p className="text-[17px] leading-[1.7] text-neutral-500 dark:text-neutral-400 max-w-[520px] mb-10">
+              archiText turns conversations into structured project
+              architectures. Describe what you&apos;re building and get schemas,
+              APIs, file trees, and tech stacks back instantly.
+            </p>
+
+            <div className="flex items-center gap-4">
+              <Link
+                href="/login"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#061d53] dark:bg-[#FF85BB] text-white dark:text-[#061d53] text-[14px] font-semibold hover:opacity-90 transition-opacity group"
+              >
+                Start building
+                <ArrowRight className="text-xs group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              <Link
+                href="#features"
+                className="text-[14px] font-medium text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors underline underline-offset-4 decoration-neutral-300 dark:decoration-neutral-700 hover:decoration-neutral-500"
+              >
+                See how it works
+              </Link>
+            </div>
           </div>
 
-          <div className="mt-16 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-2 bg-neutral-100/50 dark:bg-neutral-900/50 backdrop-blur-sm max-w-5xl mx-auto shadow-2xl overflow-hidden">
-            <div className="rounded-xl overflow-hidden aspect-video relative">
-              <Image
-                src="/hero.png"
-                alt="archiText Visualization"
-                width={1200}
-                height={600}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
+          {/* Product Screenshot */}
+          <div className="mt-16 md:mt-24 -mb-px max-w-4xl mx-auto">
+            <div className="border border-neutral-200 dark:border-neutral-800 border-b-0 bg-neutral-100/50 dark:bg-neutral-900/30 p-1.5 pb-0">
+              {/* Browser chrome dots */}
+              <div className="flex items-center gap-1.5 px-3 py-2">
+                <div className="w-2 h-2 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                <div className="w-2 h-2 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                <div className="w-2 h-2 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                <div className="ml-3 flex-1 h-4 rounded-sm bg-neutral-200/80 dark:bg-neutral-800/80 max-w-[220px]" />
+              </div>
+              <div className="overflow-hidden relative">
+                <Image
+                  src="/hero.png"
+                  alt="archiText — AI architecture generation interface"
+                  width={900}
+                  height={450}
+                  loading="eager"
+                  priority
+                  className="w-full h-auto block"
+                />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-24 bg-neutral-50 dark:bg-[#0d0d0d]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">
-              Powerful Features for Builders
+      {/* Divider strip */}
+      <div className="h-px bg-neutral-200 dark:bg-neutral-800" />
+
+      {/* Features */}
+      <section id="features" className="py-24 md:py-32">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
+          {/* Section header — left aligned */}
+          <div className="mb-20 max-w-[480px]">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-px bg-[#FF85BB]" />
+              <span className="text-[11px] font-semibold tracking-[0.15em] uppercase text-neutral-400 dark:text-neutral-500">
+                Capabilities
+              </span>
+            </div>
+            <h2 className="text-[28px] md:text-[36px] font-bold leading-[1.15] tracking-[-0.02em] mb-3">
+              Everything you need to
+              <br />
+              go from idea to structure.
             </h2>
-            <div className="w-20 h-1.5 bg-[#FF85BB] mx-auto rounded-full"></div>
+            <p className="text-[15px] text-neutral-500 dark:text-neutral-400 leading-relaxed">
+              Three core capabilities that replace hours of planning with
+              seconds of conversation.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <FeatureCard
-              icon={<Magic className="text-2xl text-[#FF85BB]" />}
-              title="AI Generation"
-              description="Transform simple text prompts into hierarchical architectural diagrams instantly."
-            />
-            <FeatureCard
-              icon={
-                <MapMarkedAlt className="text-2xl text-[#061d53] dark:text-[#FFCEE3]" />
-              }
-              title="Interactive Layouts"
-              description="Rearrange, expand, and nest nodes with a fluid drag-and-drop interface."
-            />
-            <FeatureCard
-              icon={<Brain className="text-2xl text-[#FF85BB]" />}
-              title="Semantic Logic"
-              description="Our AI understands project relationships and groups components logically for you."
-            />
+          {/* Feature blocks — asymmetric grid */}
+          <div className="grid md:grid-cols-12 gap-6">
+            {/* Large feature — Mindmap */}
+            <div className="md:col-span-7 border border-neutral-200 dark:border-neutral-800 p-8 md:p-10 group">
+              <div className="flex items-center gap-3 mb-6">
+                <ProjectDiagram className="text-[#FF85BB] text-lg" />
+                <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-neutral-400 dark:text-neutral-500">
+                  01 — Visual mindmap
+                </span>
+              </div>
+              <h3 className="text-[22px] font-bold tracking-[-0.01em] mb-3">
+                Your architecture, visualized
+              </h3>
+              <p className="text-[15px] text-neutral-500 dark:text-neutral-400 leading-[1.7] max-w-[420px] mb-8">
+                Every conversation generates an interactive mindmap and a
+                bird&apos;s-eye view of your entire project. See how schemas,
+                APIs, tech stack choices, and file structures connect and depend
+                on each other in real time.
+              </p>
+              <div className="h-px bg-neutral-100 dark:bg-neutral-800 group-hover:bg-[#FF85BB]/20 transition-colors" />
+            </div>
+
+            {/* Stacked small features */}
+            <div className="md:col-span-5 flex flex-col gap-6">
+              <div className="border border-neutral-200 dark:border-neutral-800 p-8 flex-1 group">
+                <div className="flex items-center gap-3 mb-6">
+                  <Comments className="text-[#061d53] dark:text-neutral-400 text-base" />
+                  <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-neutral-400 dark:text-neutral-500">
+                    02 — Chat-driven
+                  </span>
+                </div>
+                <h3 className="text-[18px] font-bold tracking-[-0.01em] mb-2">
+                  Describe, don&apos;t configure
+                </h3>
+                <p className="text-[14px] text-neutral-500 dark:text-neutral-400 leading-[1.7]">
+                  Talk to archiText like a colleague. Explain what you&apos;re
+                  building and the AI returns schemas, endpoints, and a full
+                  tech stack and reflected instantly on your mindmap.
+                </p>
+              </div>
+
+              <div className="border border-neutral-200 dark:border-neutral-800 p-8 flex-1 group">
+                <div className="flex items-center gap-3 mb-6">
+                  <SyncAlt className="text-[#061d53] dark:text-neutral-400 text-base" />
+                  <span className="text-[11px] font-bold tracking-[0.12em] uppercase text-neutral-400 dark:text-neutral-500">
+                    03 — Iterative
+                  </span>
+                </div>
+                <h3 className="text-[18px] font-bold tracking-[-0.01em] mb-2">
+                  Refine as you think
+                </h3>
+                <p className="text-[14px] text-neutral-500 dark:text-neutral-400 leading-[1.7]">
+                  Add constraints, swap technologies, restructure modules. Each
+                  follow-up updates the mindmap while preserving your full
+                  conversation history.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-white dark:bg-[#0a0a0a]">
-        <div className="max-w-5xl mx-auto px-4 text-center">
-          <div className="p-12 rounded-[2.5rem] bg-linear-to-br from-[#061d53] to-[#0a0a0a] text-white shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#FF85BB]/10 blur-[80px] rounded-full"></div>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              Ready to architecturalize your ideas?
-            </h2>
-            <p className="text-lg text-neutral-300 mb-10 max-w-xl mx-auto">
-              Join thousands of designers and developers using archiText to
-              structure their vision.
-            </p>
-            <Link
-              href="/login"
-              className="px-10 py-5 rounded-full bg-white text-[#061d53] font-bold text-xl hover:scale-105 transition-transform inline-block shadow-lg"
-            >
-              Start for Free
-            </Link>
+      {/* CTA */}
+      <section id="about" className="pb-24 md:pb-32">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
+          <div className="border border-neutral-200 dark:border-neutral-800 bg-[#061d53] dark:bg-[#0f0f0f] text-white p-10 md:p-16 relative overflow-hidden">
+            {/* Subtle accent line */}
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-linear-to-r from-[#FF85BB] via-[#FF85BB]/40 to-transparent" />
+
+            <div className="relative z-10 flex flex-col md:flex-row md:items-end md:justify-between gap-10">
+              <div className="max-w-[480px]">
+                <h2 className="text-[28px] md:text-[36px] font-bold leading-[1.15] tracking-[-0.02em] mb-4">
+                  Skip the planning phase.
+                  <br />
+                  <span className="text-neutral-400">
+                    Start structuring now.
+                  </span>
+                </h2>
+                <p className="text-[15px] text-neutral-400 leading-[1.7]">
+                  Free to use. No credit card required.
+                  <br />
+                  Go from a blank slate to a full project architecture in under
+                  a minute.
+                </p>
+              </div>
+
+              <Link
+                href="/login"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-[#061d53] text-[14px] font-bold hover:bg-neutral-100 transition-colors group shrink-0 self-start md:self-auto"
+              >
+                Get started
+                <ArrowRight className="text-xs group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t border-neutral-200 dark:border-neutral-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded bg-linear-to-br from-[#FF85BB] to-[#061d53] flex items-center justify-center text-white text-xs font-bold">
-              A
+      <footer className="pb-8">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
+          <div className="h-px bg-neutral-200 dark:bg-neutral-800 mb-8" />
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 bg-[#061d53] dark:bg-neutral-700 flex items-center justify-center text-white text-[8px] font-bold">
+                  AT
+                </div>
+                <span className="text-[13px] font-semibold tracking-tight text-neutral-400">
+                  archiText
+                </span>
+              </div>
+              <span className="text-[12px] text-neutral-300 dark:text-neutral-600">
+                © {new Date().getFullYear()}
+              </span>
             </div>
-            <span className="font-bold">archiText</span>
-          </div>
-          <p className="text-neutral-500 text-sm">
-            © {new Date().getFullYear()} archiText. All rights reserved.
-          </p>
-          <div className="flex gap-6 text-sm text-neutral-600 dark:text-neutral-400">
-            <Link href="#" className="hover:text-[#FF85BB]">
-              Privacy
-            </Link>
-            <Link href="#" className="hover:text-[#FF85BB]">
-              Terms
-            </Link>
+
+            <div className="flex gap-6 text-[12px] text-neutral-400 dark:text-neutral-500">
+              <Link
+                href="#"
+                className="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+              >
+                Privacy
+              </Link>
+              <Link
+                href="#"
+                className="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+              >
+                Terms
+              </Link>
+              <Link
+                href="#"
+                className="hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+              >
+                GitHub
+              </Link>
+            </div>
           </div>
         </div>
       </footer>
     </div>
   );
 };
-
-const FeatureCard = ({ icon, title, description }) => (
-  <div className="p-10 rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 hover:border-[#FF85BB] dark:hover:border-[#FF85BB]/50 transition-all group shadow-sm hover:shadow-xl">
-    <div className="w-16 h-16 rounded-2xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-      {icon}
-    </div>
-    <h3 className="text-2xl font-bold mb-4">{title}</h3>
-    <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed text-lg">
-      {description}
-    </p>
-  </div>
-);
 
 export default LandingPage;

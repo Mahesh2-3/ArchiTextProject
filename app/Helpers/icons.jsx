@@ -15,6 +15,9 @@ import {
   FaBrain as Brain,
   FaMapMarkedAlt as MapMarkedAlt,
   FaMagic as Magic,
+  FaProjectDiagram as ProjectDiagram,
+  FaComments as Comments,
+  FaSyncAlt as SyncAlt,
 } from "react-icons/fa";
 
 export {
@@ -32,4 +35,7 @@ export {
   Brain,
   MapMarkedAlt,
   Magic,
+  ProjectDiagram,
+  Comments,
+  SyncAlt,
 };
