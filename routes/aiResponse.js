@@ -5,6 +5,7 @@ import {
   getConversationStructure,
   saveMessage,
   updateConversationStructure,
+  updateConversationTitle,
 } from "../Controllers/Conversation.js";
 
 const router = express.Router();
@@ -23,6 +24,13 @@ router.post("/:id", async (req, res) => {
 
     const { success: convoStatus, data: conversation } =
       await getConversationMessages(conversationId);
+
+    // If it's the first message, update the conversation title
+    if (conversation.length === 1) {
+      const truncatedTitle =
+        userMsg.length > 30 ? userMsg.substring(0, 30) + "..." : userMsg;
+      await updateConversationTitle(conversationId, truncatedTitle);
+    }
     const { success: structureStatus, data: structure } =
       await getConversationStructure(conversationId);
 

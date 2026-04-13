@@ -82,3 +82,16 @@ export const getConversations = async (projectId) => {
     return { success: false, message: error.message };
   }
 };
+export const updateConversationTitle = async (id, title) => {
+  try {
+    const updatedConvo = await Conversation.findByIdAndUpdate(
+      id,
+      { title },
+      { new: true },
+    );
+    return { success: true, data: updatedConvo };
+  } catch (error) {
+    console.log(error);
+    return { success: false, message: "Internal Server error" };
+  }
+};
