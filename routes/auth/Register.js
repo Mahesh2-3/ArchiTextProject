@@ -1,27 +1,30 @@
-import User from "../../models/User.js";
-import bcrypt from "bcrypt";
+import { registerUser } from "../../Controllers/Auth.js";
 
-const Register = async (req, res) => {
+// Register route
+const registerRoute = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ error: "User already exists" });
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({
+    const { success, data, message } = await registerUser(
       name,
       email,
-      password: hashedPassword,
+      password,
+    );
+
+    if (!success) {
+      return res.status(400).json({ success: false, data: null, message });
+    }
+
+    res.status(201).json({
+      success: true,
+      data,
+      message: "User registered successfully",
     });
-    await newUser.save();
-    res
-      .status(201)
-      .json({ message: "User registered successfully", user: newUser });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal Server error" });
+    res
+      .status(500)
+      .json({ success: false, data: null, message: "Internal server error" });
   }
 };
 
-export default Register;
+export default registerRoute;

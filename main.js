@@ -6,9 +6,9 @@ import connectDB from "./lib/db.js";
 import authMiddleware from "./middleware/auth.js";
 
 import aiResponse from "./routes/aiResponse.js";
-import LoginRoute from "./routes/auth/login.js";
-import Logout from "./routes/auth/logout.js";
-import RegisterRoute from "./routes/auth/Register.js";
+import loginRoute from "./routes/auth/login.js";
+import logoutRoute from "./routes/auth/logout.js";
+import registerRoute from "./routes/auth/Register.js";
 import projectRoutes from "./routes/projects.js";
 import conversationRoutes from "./routes/conversation.js";
 
@@ -34,9 +34,9 @@ app.use((req, res, next) => {
 });
 
 // Auth routes
-app.post("/login", LoginRoute);
-app.post("/register", RegisterRoute);
-app.post("/logout", Logout);
+app.post("/login", loginRoute);
+app.post("/register", registerRoute);
+app.post("/logout", logoutRoute);
 
 // Ai-routes
 app.use("/ai-chat", authMiddleware, aiResponse);

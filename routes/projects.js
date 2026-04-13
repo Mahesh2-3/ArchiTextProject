@@ -1,50 +1,71 @@
 import express from "express";
-import Project from "../models/Project.js";
+import {
+  createProject,
+  getProjects,
+  getProjectStructure,
+} from "../Controllers/Project.js";
 
 const router = express.Router();
 
+// Create a new project
 router.post("/", async (req, res) => {
   try {
     const { title, description } = req.body;
-    const newProject = new Project({
-      userId: req.user._id,
-      title: title,
-      description: description,
-      metaData: {},
-      metaDataVersion: "1.0.0",
-    });
-    await newProject.save();
+    const { success, data, message } = await createProject(
+      req.user._id,
+      title,
+      description,
+    );
+
+    if (!success) {
+      return res.status(500).json({ success: false, data: null, message });
+    }
+
     res
       .status(201)
-      .json({ message: "Project created successfully", project: newProject });
+      .json({ success: true, data, message: "Project created successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: error.message });
+    res
+      .status(500)
+      .json({ success: false, data: null, message: "Internal server error" });
   }
 });
 
+// Get all projects for the logged-in user
 router.get("/", async (req, res) => {
   try {
-    const projects = await Project.find({ userId: req.user._id });
-    res.status(200).json(projects);
+    const { success, data, message } = await getProjects(req.user._id);
+
+    if (!success) {
+      return res.status(500).json({ success: false, data: [], message });
+    }
+
+    res.status(200).json({ success: true, data });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal Server error" });
+    res
+      .status(500)
+      .json({ success: false, data: [], message: "Internal server error" });
   }
 });
 
+// Get architecture (metaData) for a project
 router.get("/structure/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const project = await Project.findById(id);
-    if (!project) {
-      return res.status(404).json({ error: "Project not found" });
+    const { success, data, message } = await getProjectStructure(id);
+
+    if (!success) {
+      return res.status(404).json({ success: false, data: null, message });
     }
-    console.log(project.metaData);
-    res.status(200).json({ success: true, data: project.metaData });
+
+    res.status(200).json({ success: true, data });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal Server error" });
+    res
+      .status(500)
+      .json({ success: false, data: null, message: "Internal server error" });
   }
 });
 

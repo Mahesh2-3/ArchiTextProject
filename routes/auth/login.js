@@ -1,32 +1,31 @@
-import User from "../../models/User.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { loginUser } from "../../Controllers/Auth.js";
 
-const LoginRoute = async (req, res) => {
+// Login route
+const loginRoute = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    const { success, data, message } = await loginUser(email, password);
+
+    if (!success) {
+      return res.status(401).json({ success: false, data: null, message });
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid password" });
-    }
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
-    res.cookie("token", token, {
+
+    res.cookie("token", data.token, {
       httpOnly: true,
       sameSite: "lax",
       maxAge: 60 * 60 * 1000,
       secure: false,
     });
-    res.status(200).json({ message: "Login successful", user });
+
+    res
+      .status(200)
+      .json({ success: true, data: data.user, message: "Login successful" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Internal Server error" });
+    res
+      .status(500)
+      .json({ success: false, data: null, message: "Internal server error" });
   }
 };
 
-export default LoginRoute;
+export default loginRoute;

@@ -2,6 +2,7 @@ import Message from "../models/Message.js";
 import Project from "../models/Project.js";
 import Conversation from "../models/Conversation.js";
 
+// Create a new conversation
 export const createConversation = async (projectId) => {
   try {
     const conversation = new Conversation({
@@ -12,24 +13,24 @@ export const createConversation = async (projectId) => {
     return { success: true, data: conversation };
   } catch (error) {
     console.log(error);
-    return { success: false, message: "Internal Server error" };
+    return { success: false, data: null, message: "Failed to create conversation" };
   }
 };
 
+// Get all messages for a conversation
 export const getConversationMessages = async (id) => {
   try {
     const messages = await Message.find({ conversationId: id })
-      .sort({
-        createdAt: 1,
-      })
+      .sort({ createdAt: 1 })
       .lean();
     return { success: true, data: messages };
   } catch (error) {
     console.log(error);
-    return { success: false, message: "Internal Server error" };
+    return { success: false, data: [], message: "Failed to fetch messages" };
   }
 };
 
+// Save a message to a conversation
 export const saveMessage = async (conversationId, role, content) => {
   try {
     const message = new Message({
@@ -41,36 +42,43 @@ export const saveMessage = async (conversationId, role, content) => {
     return { success: true, data: message };
   } catch (error) {
     console.log(error);
-    return { success: false, message: "Internal Server error" };
+    return { success: false, data: null, message: "Failed to save message" };
   }
 };
 
+// Get architecture structure linked to a conversation's project
 export const getConversationStructure = async (id) => {
   try {
     const convo = await Conversation.findById(id);
-    if (!convo) return { success: false, message: "Conversation not found" };
+    if (!convo) {
+      return { success: false, data: null, message: "Conversation not found" };
+    }
 
     const project = await Project.findById(convo.projectId).select("metaData");
     return { success: true, data: project?.metaData || null };
   } catch (error) {
     console.log(error);
-    return { success: false, message: "Internal Server error" };
+    return { success: false, data: null, message: "Failed to fetch structure" };
   }
 };
 
+// Update architecture structure for a conversation's project
 export const updateConversationStructure = async (id, structure) => {
   try {
     const convo = await Conversation.findById(id);
-    if (!convo) return { success: false, message: "Conversation not found" };
+    if (!convo) {
+      return { success: false, data: null, message: "Conversation not found" };
+    }
 
     await Project.findByIdAndUpdate(convo.projectId, { metaData: structure });
-    return { success: true };
+    return { success: true, data: null };
   } catch (error) {
     console.log(error);
-    return { success: false, message: "Internal Server error" };
+    return { success: false, data: null, message: "Failed to update structure" };
   }
 };
 
+// Get all conversations for a project
 export const getConversations = async (projectId) => {
   try {
     const conversations = await Conversation.find({ projectId }).sort({
@@ -79,9 +87,11 @@ export const getConversations = async (projectId) => {
     return { success: true, data: conversations };
   } catch (error) {
     console.log(error);
-    return { success: false, message: error.message };
+    return { success: false, data: [], message: "Failed to fetch conversations" };
   }
 };
+
+// Update conversation title
 export const updateConversationTitle = async (id, title) => {
   try {
     const updatedConvo = await Conversation.findByIdAndUpdate(
@@ -92,6 +102,6 @@ export const updateConversationTitle = async (id, title) => {
     return { success: true, data: updatedConvo };
   } catch (error) {
     console.log(error);
-    return { success: false, message: "Internal Server error" };
+    return { success: false, data: null, message: "Failed to update title" };
   }
 };

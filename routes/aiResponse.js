@@ -10,6 +10,7 @@ import {
 
 const router = express.Router();
 
+// AI chat endpoint
 router.post("/:id", async (req, res) => {
   try {
     const { userMsg } = req.body;
@@ -22,8 +23,21 @@ router.post("/:id", async (req, res) => {
       userMsg,
     );
 
+    if (!msgStatus) {
+      return res
+        .status(500)
+        .json({ success: false, data: null, message: "Failed to save message" });
+    }
+
+    // get conversation messages
     const { success: convoStatus, data: conversation } =
       await getConversationMessages(conversationId);
+
+    if (!convoStatus) {
+      return res
+        .status(500)
+        .json({ success: false, data: null, message: "Failed to fetch messages" });
+    }
 
     // If it's the first message, update the conversation title
     if (conversation.length === 1) {
@@ -31,8 +45,16 @@ router.post("/:id", async (req, res) => {
         userMsg.length > 30 ? userMsg.substring(0, 30) + "..." : userMsg;
       await updateConversationTitle(conversationId, truncatedTitle);
     }
+
+    // get current project structure
     const { success: structureStatus, data: structure } =
       await getConversationStructure(conversationId);
+
+    if (!structureStatus) {
+      return res
+        .status(500)
+        .json({ success: false, data: null, message: "Failed to fetch structure" });
+    }
 
     // calling ai service
     const response = await askGroq(conversation, structure);
@@ -46,38 +68,34 @@ router.post("/:id", async (req, res) => {
       message,
     );
 
+    if (!aiMsgStatus) {
+      return res
+        .status(500)
+        .json({ success: false, data: null, message: "Failed to save AI message" });
+    }
+
     // save the updated architecture to the Project
     const { success: updateStatus } = await updateConversationStructure(
       conversationId,
       architecture,
     );
 
-    if (
-      !convoStatus ||
-      !msgStatus ||
-      !aiMsgStatus ||
-      !structureStatus ||
-      !updateStatus
-    ) {
-      console.log(
-        convoStatus,
-        msgStatus,
-        aiMsgStatus,
-        structureStatus,
-        updateStatus,
-      );
-      return res.status(500).json({ message: "Internal Server error" });
+    if (!updateStatus) {
+      return res
+        .status(500)
+        .json({ success: false, data: null, message: "Failed to update structure" });
     }
 
     res.status(200).json({
-      message: "Prompt generated successfully!",
+      success: true,
       data: { message, architecture },
+      message: "Prompt generated successfully",
     });
   } catch (error) {
     console.log(error);
     res
       .status(500)
-      .json({ message: "Internal Server error", data: error.message });
+      .json({ success: false, data: null, message: "Internal server error" });
   }
 });
 
