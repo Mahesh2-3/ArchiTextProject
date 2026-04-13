@@ -20,6 +20,12 @@ const Conversation = () => {
 
   useEffect(() => {
     setMounted(true);
+
+    if (!conversationId) {
+      setConversation([]);
+      return;
+    }
+
     const fetchConversation = async () => {
       const response = await fetch(
         `http://localhost:5000/conversation/${conversationId}/messages`,
@@ -33,7 +39,6 @@ const Conversation = () => {
       setConversation(result.data || []);
     };
 
-    if (!conversationId) return;
     fetchConversation();
   }, [conversationId]);
 

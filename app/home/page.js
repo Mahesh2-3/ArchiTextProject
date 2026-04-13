@@ -1,18 +1,20 @@
 "use client";
+
+import { useSearchParams } from "next/navigation";
 import { Group, Panel, Separator } from "react-resizable-panels";
 import Conversation from "../ui/Conversation";
 import MindMap from "../ui/MindMap";
 import Sidebar from "../ui/Sidebar";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu } from "../Helpers/icons";
 import CreateProject from "../Components/CreateProject";
 import { useAppStore } from "../store/useAppStore";
 import { getArchitecture } from "../api/Architecture";
 
-export default function Home({ searchParams }) {
-  const params = use(searchParams);
-  const pid = params?.pid;
-  const cid = params?.cid;
+export default function Home() {
+  const searchParams = useSearchParams();
+  const pid = searchParams.get("pid");
+  const cid = searchParams.get("cid");
 
   const [isSideBarOpen, setisSideBarOpen] = useState(true);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
@@ -22,19 +24,16 @@ export default function Home({ searchParams }) {
 
   useEffect(() => {
     const fetchArchitecture = async () => {
+      if (!pid) return;
       const res = await getArchitecture(pid);
       if (res?.success) {
         setArchitectureData(res.data);
       }
     };
 
-    if (cid) {
-      fetchArchitecture();
-      setCId(cid);
-    }
-    if (pid) {
-      setPId(pid);
-    }
+    fetchArchitecture();
+    setCId(cid || null);
+    setPId(pid || null);
   }, [pid, cid, setCId, setPId, setArchitectureData]);
 
   const toggleSideBar = () => {

@@ -8,7 +8,6 @@ import {
   Controls,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { data as fallbackData } from "../../constants";
 import { generateElements } from "../Helpers/mindmapGenerator";
 import { useAppStore } from "../store/useAppStore";
 
@@ -25,7 +24,7 @@ export default function MindMap() {
   if (architectureData !== prevArchitectureData) {
     setPrevArchitectureData(architectureData);
 
-    const sourceData = architectureData || fallbackData;
+    const sourceData = architectureData;
     const { nodes: newNodes, edges: newEdges } = generateElements(sourceData);
 
     // This setState call during render is safe and recommended by React

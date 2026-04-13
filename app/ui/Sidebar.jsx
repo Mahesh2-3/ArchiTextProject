@@ -8,6 +8,8 @@ import SidebarSkeleton from "../Skeletons/SidebarSkeleton";
 import Link from "next/link";
 import { useAppStore } from "../store/useAppStore";
 import { getConversations } from "../api/Conversations";
+import { getProjects } from "../api/Project";
+import { useRouter } from "next/navigation";
 
 const Sidebar = ({ state, func, func2 }) => {
   const [projects, setProjects] = useState([]);
@@ -18,31 +20,40 @@ const Sidebar = ({ state, func, func2 }) => {
   });
   const [mounted, setMounted] = useState(false);
   const currentProject = useAppStore((state) => state.currentProject);
+  const currentConversation = useAppStore((state) => state.currentConversation);
   const setCurrentProject = useAppStore((state) => state.setCurrentProject);
+  const router = useRouter();
 
   useEffect(() => {
-    setMounted(true);
-    const fetchProjects = async () => {
-      setIsFetching({ projects: true, convo: false });
-      const response = await fetch("http://localhost:5000/project", {
-        method: "GET",
-        credentials: "include",
-      });
-      const data = await response.json();
-      console.log(data);
-      setProjects(data);
+    const fetchData = async () => {
+      setMounted(true);
+      setIsFetching({ projects: true, convo: true });
+      const { success, data } = await getProjects();
+      const { success: MsgSuccess, data: MsgData } =
+        await getConversations(currentProject);
+      if (success) {
+        setProjects(data);
+      }
+      if (MsgSuccess) {
+        setConversations(MsgData);
+      }
       setIsFetching({ projects: false, convo: false });
     };
-    fetchProjects();
-  }, []);
+    fetchData();
+  }, [currentProject, currentConversation]);
 
   const handleFetchConvo = async (projectId) => {
-    setIsFetching({ projects: false, convo: true });
-    const response = await getConversations(projectId);
-    console.log(response);
-    setConversations(response);
-    setCurrentProject(projectId);
-    setIsFetching({ projects: false, convo: false });
+    router.replace(`/home?pid=${projectId}`);
+    // if (projectId === currentProject) {
+    //   return;
+    // }
+    // setIsFetching({ projects: false, convo: true });
+    // const { success, data } = await getConversations(projectId);
+    // if (success) {
+    //   setConversations(data);
+    // }
+    // setCurrentProject(projectId);
+    // setIsFetching({ projects: false, convo: false });
   };
 
   return (
@@ -79,19 +90,34 @@ const Sidebar = ({ state, func, func2 }) => {
               <li key={project._id} className="flex flex-col gap-2">
                 <button
                   onClick={() => handleFetchConvo(project._id)}
-                  className="flex items-center justify-center gap-2"
+                  className="w-full flex items-center justify-between group py-1 cursor-pointer hover:bg-black/5 px-2 rounded-md"
                 >
-                  <div className="font-bold text-(--text-normal) flex items-center justify-between">
-                    <span>{project.title}</span>
-                  </div>
+                  <span className="font-bold text-(--text-normal) group-hover:text-(--text-normal)/80 transition text-left">
+                    {project.title}
+                  </span>
                   <AngleDown
-                    className={
+                    className={`transition-transform duration-300 text-(--text-normal)/60 ${
                       currentProject === project._id ? "rotate-180" : ""
-                    }
+                    }`}
                   />
                 </button>
                 <ul className="flex flex-col gap-1 pl-4 ml-1 border-l-2 border-gray-400 dark:border-gray-600">
-                  {conversations &&
+                  {currentProject === project._id && isFetching.convo && (
+                    <li className="text-sm text-(--text-normal)/50 animate-pulse py-1.5 px-2">
+                      Loading...
+                    </li>
+                  )}
+                  {currentProject === project._id &&
+                    !isFetching.convo &&
+                    conversations &&
+                    conversations.length === 0 && (
+                      <li className="text-sm text-(--text-normal)/50 py-1.5 px-2">
+                        No conversations yet
+                      </li>
+                    )}
+                  {currentProject === project._id &&
+                    !isFetching.convo &&
+                    conversations &&
                     conversations.map((conversation) => (
                       <li
                         key={conversation._id}

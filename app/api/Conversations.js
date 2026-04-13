@@ -44,6 +44,9 @@ const createConversation = async (projectId) => {
 };
 
 export const getConversations = async (projectId) => {
+  if (!projectId) {
+    return { success: false, data: [] };
+  }
   const response = await fetch(
     `http://localhost:5000/conversation/${projectId}`,
     {
@@ -57,5 +60,5 @@ export const getConversations = async (projectId) => {
   }
 
   const result = await response.json();
-  return result.data;
+  return { success: true, data: result.data };
 };
