@@ -16,7 +16,7 @@ export const login = async (email, password) => {
       return { success: false, data: null, error: result.message || "Login failed" };
     }
 
-    return { success: true, data: result.user };
+    return { success: true, data: result.data };
   } catch (error) {
     return { success: false, data: null, error: error.message };
   }
@@ -39,7 +39,7 @@ export const register = async (name, email, password) => {
       return { success: false, data: null, error: result.message || "Registration failed" };
     }
 
-    return { success: true, data: result.user };
+    return { success: true, data: result.data };
   } catch (error) {
     return { success: false, data: null, error: error.message };
   }

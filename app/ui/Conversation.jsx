@@ -26,14 +26,13 @@ const Conversation = () => {
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    setMounted(true);
-
     // fetch conversation messages
     const fetchConversation = async () => {
       const res = await getConversationMessages(conversationId);
       if (res.success) {
         setConversation(res.data || []);
       }
+      setMounted(true);
     };
 
     fetchConversation();
