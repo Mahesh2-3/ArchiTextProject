@@ -51,6 +51,13 @@ router.post("/:id", async (req, res) => {
       !structureStatus ||
       !updateStatus
     ) {
+      console.log(
+        convoStatus,
+        msgStatus,
+        aiMsgStatus,
+        structureStatus,
+        updateStatus,
+      );
       return res.status(500).json({ message: "Internal Server error" });
     }
 
@@ -59,6 +66,7 @@ router.post("/:id", async (req, res) => {
       data: { message, architecture },
     });
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ message: "Internal Server error", data: error.message });

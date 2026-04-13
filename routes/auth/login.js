@@ -13,7 +13,7 @@ const LoginRoute = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ error: "Invalid password" });
     }
-    const token = jwt.sign({ user_id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
     res.cookie("token", token, {
@@ -24,6 +24,7 @@ const LoginRoute = async (req, res) => {
     });
     res.status(200).json({ message: "Login successful", user });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal Server error" });
   }
 };
