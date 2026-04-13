@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { useAppStore } from "../store/useAppStore";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAppStore } from "../store/useAppStore";
+import { login } from "../api/Auth";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -21,23 +22,13 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await login(email, password);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log(data);
-        setUser(data.user);
+      if (res.success) {
+        setUser(res.data);
         router.push("/home");
       } else {
-        setError(data.error || "Invalid credentials");
+        setError(res.error || "Invalid credentials");
       }
     } catch (err) {
       setError("Connection error. Please try again later.");

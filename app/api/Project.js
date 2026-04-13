@@ -1,3 +1,4 @@
+// Creates a new project
 export const createProject = async (title, description) => {
   try {
     const response = await fetch("http://localhost:5000/project", {
@@ -8,24 +9,34 @@ export const createProject = async (title, description) => {
       },
       body: JSON.stringify({ title, description }),
     });
-    const data = await response.json();
-    return { success: true, data };
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      return { success: false, data: null, error: errorData.message || "Failed to create project" };
+    }
+
+    const result = await response.json();
+    return { success: true, data: result.data };
   } catch (error) {
-    console.error("Error creating project:", error);
-    return { success: false, error: error.message };
+    return { success: false, data: null, error: error.message };
   }
 };
 
+// Gets all projects for the logged-in user
 export const getProjects = async () => {
   try {
     const response = await fetch("http://localhost:5000/project", {
       method: "GET",
       credentials: "include",
     });
-    const data = await response.json();
-    return { success: true, data };
+
+    if (!response.ok) {
+      return { success: false, data: [], error: "Failed to fetch projects" };
+    }
+
+    const result = await response.json();
+    return { success: true, data: result.data };
   } catch (error) {
-    console.error("Error getting projects:", error);
-    return { success: false, error: error.message };
+    return { success: false, data: [], error: error.message };
   }
 };

@@ -2,41 +2,38 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 import MessageCard from "../Components/MessageCard";
 import { PaperPlane } from "../Helpers/icons";
-import { sendMessage } from "../api/Conversations";
+import { sendMessage, getConversationMessages } from "../api/Conversations";
 import { useAppStore } from "../store/useAppStore";
 
 const Conversation = () => {
-  const [input, setInput] = useState("");
-  const [chatLoading, setChatLoading] = useState(false);
-  const [conversation, setConversation] = useState([]);
-  const [mounted, setMounted] = useState(false);
+  //router for navigation
   const router = useRouter();
-  const conversationId = useAppStore((state) => state.currentConversation);
-  const projectId = useAppStore((state) => state.currentProject);
 
+  // loading states
+  const [chatLoading, setChatLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Data
+  const [conversation, setConversation] = useState([]);
+  const projectId = useAppStore((state) => state.currentProject);
+  const conversationId = useAppStore((state) => state.currentConversation);
   const setArchitectureData = useAppStore((state) => state.setArchitectureData);
+
+  // user input
+  const [input, setInput] = useState("");
 
   useEffect(() => {
     setMounted(true);
 
-    if (!conversationId) {
-      setConversation([]);
-      return;
-    }
-
+    // fetch conversation messages
     const fetchConversation = async () => {
-      const response = await fetch(
-        `http://localhost:5000/conversation/${conversationId}/messages`,
-        {
-          method: "GET",
-          credentials: "include",
-        },
-      );
-      const result = await response.json();
-      console.log(result);
-      setConversation(result.data || []);
+      const res = await getConversationMessages(conversationId);
+      if (res.success) {
+        setConversation(res.data || []);
+      }
     };
 
     fetchConversation();
@@ -54,40 +51,37 @@ const Conversation = () => {
     setInput("");
     setChatLoading(true);
 
-    try {
-      const result = await sendMessage(conversationId, input, projectId);
+    const result = await sendMessage(conversationId, input, projectId);
 
-      if (result.data) {
-        const { message, architecture } = result.data;
-        const newConversationId = result.conversationId;
+    if (result.success && result.data) {
+      const { message, architecture } = result.data;
+      const newConversationId = result.conversationId;
 
-        // Redirect if it was the first message
-        if (!conversationId && newConversationId) {
-          router.push(`/home?pid=${projectId}&cid=${newConversationId}`);
-        }
-
-        // Update global store so MindMap re-renders
-        if (architecture) {
-          setArchitectureData(architecture);
-        }
-
-        const assistantMsg = {
-          role: "assistant",
-          content: message,
-        };
-        setConversation([...updatedConversation, assistantMsg]);
+      // Redirect if it was the first message
+      if (!conversationId && newConversationId) {
+        router.push(`/home?pid=${projectId}&cid=${newConversationId}`);
       }
-    } catch (error) {
-      console.error("Chat Error:", error);
+
+      // Update global store so MindMap re-renders
+      if (architecture) {
+        setArchitectureData(architecture);
+      }
+
+      const assistantMsg = {
+        role: "assistant",
+        content: message,
+      };
+      setConversation([...updatedConversation, assistantMsg]);
+    } else {
       const errorMsg = {
         role: "assistant",
         content:
           "Sorry, I encountered an error while generating your architecture. Please try again.",
       };
       setConversation([...updatedConversation, errorMsg]);
-    } finally {
-      setChatLoading(false);
     }
+
+    setChatLoading(false);
   };
 
   return (

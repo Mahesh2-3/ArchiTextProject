@@ -1,12 +1,12 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { Group, Panel, Separator } from "react-resizable-panels";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Menu } from "../Helpers/icons";
 import Conversation from "../ui/Conversation";
 import MindMap from "../ui/MindMap";
 import Sidebar from "../ui/Sidebar";
-import { useEffect, useState } from "react";
-import { Menu } from "../Helpers/icons";
 import CreateProject from "../Components/CreateProject";
 import { useAppStore } from "../store/useAppStore";
 import { getArchitecture } from "../api/Architecture";
@@ -21,7 +21,9 @@ export default function Home() {
   const setCId = useAppStore((state) => state.setCurrentConversation);
   const setPId = useAppStore((state) => state.setCurrentProject);
   const setArchitectureData = useAppStore((state) => state.setArchitectureData);
+  const architectureData = useAppStore((state) => state.architectureData);
 
+  // Fetching architecture data from the params in the url (pid, cid)
   useEffect(() => {
     const fetchArchitecture = async () => {
       if (!pid) return;
@@ -36,10 +38,12 @@ export default function Home() {
     setPId(pid || null);
   }, [pid, cid, setCId, setPId, setArchitectureData]);
 
+  // Toggle the sidebar
   const toggleSideBar = () => {
     setisSideBarOpen((prev) => !prev);
   };
 
+  // Toggle the create project modal
   const toggleCreateProject = () => {
     setIsCreateProjectOpen((prev) => !prev);
   };

@@ -1,42 +1,54 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import ThemeButton from "../Components/ThemeButton";
 import { Menu, Close, AngleDown, PlusCircle, Logout } from "../Helpers/icons";
-import Image from "next/image";
 import ProjectSkeleton from "../Skeletons/ProjectSkeleton";
 import ConversationSkeleton from "../Skeletons/ConversationSkeleton";
-import Link from "next/link";
 import { useAppStore } from "../store/useAppStore";
 import { getConversations } from "../api/Conversations";
 import { getProjects } from "../api/Project";
-import { useRouter } from "next/navigation";
+import { logout } from "../api/Auth";
 
 const Sidebar = ({ state, func, func2 }) => {
+  // router for navigation
+  const router = useRouter();
+
+  // data
   const [projects, setProjects] = useState([]);
   const [conversations, setConversations] = useState([]);
+
+  // loading states
   const [isFetching, setIsFetching] = useState({
     projects: false,
     convo: false,
   });
   const [mounted, setMounted] = useState(false);
+
+  // data from store
   const currentProject = useAppStore((state) => state.currentProject);
   const currentConversation = useAppStore((state) => state.currentConversation);
   const setCurrentProject = useAppStore((state) => state.setCurrentProject);
   const user = useAppStore((state) => state.user);
   const setUser = useAppStore((state) => state.setUser);
-  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       setMounted(true);
       setIsFetching({ projects: true, convo: false });
+
+      // Getting the projects
       const { success, data } = await getProjects();
       if (success) {
         setProjects(data);
       }
       setIsFetching((prev) => ({ ...prev, projects: false }));
 
+      // Getting the conversations
       if (currentProject) {
         setIsFetching((prev) => ({ ...prev, convo: true }));
         const { success: MsgSuccess, data: MsgData } =
@@ -54,19 +66,17 @@ const Sidebar = ({ state, func, func2 }) => {
     router.replace(`/home?pid=${projectId}`);
   };
 
+  // Logout Function
   const handleLogout = async () => {
-    const response = await fetch("http://localhost:5000/logout", {
-      credentials: "include",
-      method: "POST",
-    });
-    setUser(null);
-    router.push("/login");
+    const { success } = await logout();
+    if (success) {
+      setUser(null);
+      router.push("/login");
+    }
   };
 
   return (
     <div className="h-full border-r border-gray-300 dark:border-gray-700 bg-(--color-secondary) flex flex-col relative">
-      {/* blocking screen when there is no project selected */}
-
       {/* Header / Actions */}
       <div className="flex justify-between items-center p-4 shrink-0">
         <ThemeButton />

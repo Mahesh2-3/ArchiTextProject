@@ -1,3 +1,4 @@
+// Gets architecture for a project using projectId
 export const getArchitecture = async (projectId) => {
   try {
     const response = await fetch(
@@ -7,13 +8,14 @@ export const getArchitecture = async (projectId) => {
         credentials: "include",
       },
     );
+
     if (!response.ok) {
-      return { success: false, error: "Failed to fetch architecture" };
+      return { success: false, data: null, error: "Failed to fetch architecture" };
     }
+
     const result = await response.json();
-    return result;
+    return { success: true, data: result.data };
   } catch (error) {
-    console.error("Failed to fetch architecture:", error);
-    return { success: false, error: error.message };
+    return { success: false, data: null, error: error.message };
   }
 };

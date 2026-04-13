@@ -1,8 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import ThemeButton from "./Components/ThemeButton";
-import { FaArrowRight, FaBrain, FaMapMarkedAlt, FaMagic } from "react-icons/fa";
 import Image from "next/image";
+import ThemeButton from "./Components/ThemeButton";
+import { ArrowRight, Brain, MapMarkedAlt, Magic } from "./Helpers/icons";
 
 const LandingPage = () => {
   return (
@@ -81,7 +81,7 @@ const LandingPage = () => {
               className="px-8 py-4 rounded-full bg-[#FF85BB] text-white font-semibold text-lg hover:shadow-lg hover:shadow-[#FF85BB]/30 transition-all flex items-center justify-center gap-2 group"
             >
               Get Started for Free{" "}
-              <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               href="#features"
@@ -118,19 +118,19 @@ const LandingPage = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard
-              icon={<FaMagic className="text-2xl text-[#FF85BB]" />}
+              icon={<Magic className="text-2xl text-[#FF85BB]" />}
               title="AI Generation"
               description="Transform simple text prompts into hierarchical architectural diagrams instantly."
             />
             <FeatureCard
               icon={
-                <FaMapMarkedAlt className="text-2xl text-[#061d53] dark:text-[#FFCEE3]" />
+                <MapMarkedAlt className="text-2xl text-[#061d53] dark:text-[#FFCEE3]" />
               }
               title="Interactive Layouts"
               description="Rearrange, expand, and nest nodes with a fluid drag-and-drop interface."
             />
             <FeatureCard
-              icon={<FaBrain className="text-2xl text-[#FF85BB]" />}
+              icon={<Brain className="text-2xl text-[#FF85BB]" />}
               title="Semantic Logic"
               description="Our AI understands project relationships and groups components logically for you."
             />
