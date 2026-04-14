@@ -4,6 +4,7 @@ import {
   getProjects,
   getProjectStructure,
 } from "../Controllers/Project.js";
+import { checkProjectOwnership } from "../middleware/checkOwnership.js";
 
 const router = express.Router();
 
@@ -51,7 +52,7 @@ router.get("/", async (req, res) => {
 });
 
 // Get architecture (metaData) for a project
-router.get("/structure/:id", async (req, res) => {
+router.get("/structure/:id", checkProjectOwnership, async (req, res) => {
   try {
     const { id } = req.params;
     const { success, data, message } = await getProjectStructure(id);

@@ -7,11 +7,12 @@ import {
   updateConversationStructure,
   updateConversationTitle,
 } from "../Controllers/Conversation.js";
+import { checkConversationOwnership } from "../middleware/checkOwnership.js";
 
 const router = express.Router();
 
 // AI chat endpoint
-router.post("/:id", async (req, res) => {
+router.post("/:id", checkConversationOwnership, async (req, res) => {
   try {
     const { userMsg } = req.body;
     const { id: conversationId } = req.params;

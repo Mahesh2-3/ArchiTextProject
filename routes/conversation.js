@@ -5,11 +5,15 @@ import {
   getConversationMessages,
   getConversations,
 } from "../Controllers/Conversation.js";
+import {
+  checkProjectOwnership,
+  checkConversationOwnership,
+} from "../middleware/checkOwnership.js";
 
 const router = express.Router();
 
 // Create a new conversation
-router.post("/", async (req, res) => {
+router.post("/", checkProjectOwnership, async (req, res) => {
   try {
     const { projectId } = req.body;
     const { success, data, message } = await createConversation(projectId);
@@ -32,7 +36,7 @@ router.post("/", async (req, res) => {
 });
 
 // Get all conversations for a project
-router.get("/:projectId", async (req, res) => {
+router.get("/:projectId", checkProjectOwnership, async (req, res) => {
   try {
     const { projectId } = req.params;
     const { success, data, message } = await getConversations(projectId);
@@ -51,7 +55,10 @@ router.get("/:projectId", async (req, res) => {
 });
 
 // Get all messages for a conversation
-router.get("/:conversationId/messages", async (req, res) => {
+router.get(
+  "/:conversationId/messages",
+  checkConversationOwnership,
+  async (req, res) => {
   try {
     const { conversationId } = req.params;
     const { success, data, message } =
@@ -71,7 +78,10 @@ router.get("/:conversationId/messages", async (req, res) => {
 });
 
 // get the title of the conversation and the Project name
-router.get("/:conversationId/titles", async (req, res) => {
+router.get(
+  "/:conversationId/titles",
+  checkConversationOwnership,
+  async (req, res) => {
   try {
     const { conversationId } = req.params;
     const { success, data, message } =
