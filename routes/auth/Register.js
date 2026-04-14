@@ -20,7 +20,6 @@ const registerRoute = async (req, res) => {
       message: "User registered successfully",
     });
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .json({ success: false, data: null, message: "Internal server error" });
