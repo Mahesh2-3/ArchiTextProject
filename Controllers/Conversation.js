@@ -13,7 +13,11 @@ export const createConversation = async (projectId) => {
     return { success: true, data: conversation };
   } catch (error) {
     console.log(error);
-    return { success: false, data: null, message: "Failed to create conversation" };
+    return {
+      success: false,
+      data: null,
+      message: "Failed to create conversation",
+    };
   }
 };
 
@@ -74,7 +78,11 @@ export const updateConversationStructure = async (id, structure) => {
     return { success: true, data: null };
   } catch (error) {
     console.log(error);
-    return { success: false, data: null, message: "Failed to update structure" };
+    return {
+      success: false,
+      data: null,
+      message: "Failed to update structure",
+    };
   }
 };
 
@@ -87,7 +95,11 @@ export const getConversations = async (projectId) => {
     return { success: true, data: conversations };
   } catch (error) {
     console.log(error);
-    return { success: false, data: [], message: "Failed to fetch conversations" };
+    return {
+      success: false,
+      data: [],
+      message: "Failed to fetch conversations",
+    };
   }
 };
 
@@ -103,5 +115,28 @@ export const updateConversationTitle = async (id, title) => {
   } catch (error) {
     console.log(error);
     return { success: false, data: null, message: "Failed to update title" };
+  }
+};
+
+// get the title of the conversation and the Project name
+export const getConversationAndProjectTitle = async (id) => {
+  try {
+    const convo = await Conversation.findById(id);
+    if (!convo) {
+      return { success: false, data: null, message: "Conversation not found" };
+    }
+
+    const project = await Project.findById(convo.projectId).select("title");
+    return {
+      success: true,
+      data: { conversationTitle: convo.title, projectTitle: project.title },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      data: null,
+      message: "Failed to fetch titles",
+    };
   }
 };
