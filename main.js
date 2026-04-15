@@ -11,6 +11,7 @@ import logoutRoute from "./routes/auth/logout.js";
 import registerRoute from "./routes/auth/Register.js";
 import projectRoutes from "./routes/projects.js";
 import conversationRoutes from "./routes/conversation.js";
+import userRoutes from "./routes/user.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -46,6 +47,9 @@ app.use("/project", authMiddleware, projectRoutes);
 
 //conversation routes
 app.use("/conversation", authMiddleware, conversationRoutes);
+
+// User routes
+app.use("/user", authMiddleware, userRoutes);
 
 // Basic Route
 app.get("/", (req, res) => {

@@ -4,6 +4,7 @@ import {
   getConversationAndProjectTitle,
   getConversationMessages,
   getConversations,
+  deleteConversation,
 } from "../Controllers/Conversation.js";
 import {
   checkProjectOwnership,
@@ -99,5 +100,26 @@ router.get(
       .json({ success: false, data: null, message: "Internal server error" });
   }
 });
+
+// Delete a conversation
+router.delete(
+  "/:conversationId",
+  checkConversationOwnership,
+  async (req, res) => {
+    try {
+      const { conversationId } = req.params;
+      const { success, message } = await deleteConversation(conversationId);
+
+      if (!success) {
+        return res.status(500).json({ success: false, message });
+      }
+
+      res.status(200).json({ success: true, message });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  }
+);
 
 export default router;

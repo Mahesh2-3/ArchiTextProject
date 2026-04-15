@@ -140,3 +140,20 @@ export const getConversationAndProjectTitle = async (id) => {
     };
   }
 };
+
+// Delete a conversation and its messages
+export const deleteConversation = async (id) => {
+  try {
+    await Message.deleteMany({ conversationId: id });
+    await Conversation.findByIdAndDelete(id);
+    return { success: true, data: null, message: "Conversation deleted" };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      data: null,
+      message: "Failed to delete conversation",
+    };
+  }
+};
+

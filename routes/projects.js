@@ -3,6 +3,8 @@ import {
   createProject,
   getProjects,
   getProjectStructure,
+  getHistory,
+  deleteProject
 } from "../Controllers/Project.js";
 import { checkProjectOwnership } from "../middleware/checkOwnership.js";
 
@@ -67,6 +69,41 @@ router.get("/structure/:id", checkProjectOwnership, async (req, res) => {
     res
       .status(500)
       .json({ success: false, data: null, message: "Internal server error" });
+  }
+});
+
+// Get all history (Projects and their Conversations)
+router.get("/history", async (req, res) => {
+  try {
+    const { success, data, message } = await getHistory(req.user._id);
+
+    if (!success) {
+      return res.status(500).json({ success: false, data: [], message });
+    }
+
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: false, data: [], message: "Internal server error" });
+  }
+});
+
+// Delete a project
+router.delete("/:id", checkProjectOwnership, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { success, message } = await deleteProject(id);
+
+    if (!success) {
+      return res.status(500).json({ success: false, message });
+    }
+
+    res.status(200).json({ success: true, message });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 
