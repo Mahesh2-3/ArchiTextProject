@@ -40,3 +40,35 @@ export const getProjects = async () => {
     return { success: false, data: [], error: error.message };
   }
 };
+
+export const getHistory = async () => {
+  try {
+    const response = await fetch("http://localhost:5000/project/history", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      return { success: false, data: [], error: "Failed to fetch history" };
+    }
+
+    const result = await response.json();
+    return { success: true, data: result.data };
+  } catch (error) {
+    return { success: false, data: [], error: error.message };
+  }
+};
+
+export const deleteProject = async (projectId) => {
+  try {
+    const response = await fetch(`http://localhost:5000/project/${projectId}`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};

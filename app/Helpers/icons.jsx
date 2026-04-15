@@ -27,6 +27,7 @@ import {
   FaFileContract as FileContract,
   FaChevronRight as ChevronRight,
   FaArrowLeft as ArrowLeft,
+  FaTrash as Trash,
 } from "react-icons/fa";
 import { IoColorPaletteOutline as Palette } from "react-icons/io5";
 
@@ -48,6 +49,7 @@ export {
   ProjectDiagram,
   Comments,
   SyncAlt,
+  Trash,
   User,
   History,
   Robot,
