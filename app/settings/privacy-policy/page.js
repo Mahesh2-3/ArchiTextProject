@@ -23,81 +23,57 @@ const PrivacyPolicyPage = () => {
       </div>
 
       {/* Content */}
-      <div className="w-full max-w-2xl mx-auto px-6 py-8 flex flex-col gap-6">
-        <p className="text-(--text-normal)/80 text-sm leading-relaxed">
-          <span className="font-semibold">Last updated:</span> April 14, 2026
-        </p>
+      <div className="w-full max-w-3xl mx-auto px-6 py-8 flex flex-col gap-6 text-(--text-normal)">
+        <section className="flex flex-col gap-3">
+          <h2 className="text-xl font-semibold">1. Information We Collect</h2>
+          <p className="text-sm text-(--text-normal)/80 leading-relaxed">
+            We collect information you provide directly to us when you create an
+            account, use our services, or communicate with us. This includes your
+            name, email address, password, and the content of your conversations
+            and projects created within the application.
+          </p>
+        </section>
 
-        <div className="flex flex-col gap-6 text-(--text-normal)/70 text-sm leading-relaxed">
-          <section className="flex flex-col gap-2">
-            <h2 className="text-lg font-bold text-(--text-normal)">
-              1. Information We Collect
-            </h2>
-            <p>
-              We collect information you provide directly, such as your name,
-              email address, and project data when you create an account and use
-              ArchiText. We also collect usage data to improve our services.
-            </p>
-          </section>
+        <section className="flex flex-col gap-3">
+          <h2 className="text-xl font-semibold">2. How We Use Your Information</h2>
+          <p className="text-sm text-(--text-normal)/80 leading-relaxed">
+            We use the information we collect to provide, maintain, and improve
+            our services, to develop new features, and to protect our users. Your
+            conversation data may be processed by AI models to generate responses
+            and mind maps, but we do not sell your personal data to third parties.
+          </p>
+        </section>
 
-          <section className="flex flex-col gap-2">
-            <h2 className="text-lg font-bold text-(--text-normal)">
-              2. How We Use Your Information
-            </h2>
-            <p>
-              Your information is used to provide, maintain, and improve our
-              services, including personalizing your experience, processing your
-              architecture requests through AI, and communicating with you about
-              updates.
-            </p>
-          </section>
+        <section className="flex flex-col gap-3">
+          <h2 className="text-xl font-semibold">3. Data Security</h2>
+          <p className="text-sm text-(--text-normal)/80 leading-relaxed">
+            We implement appropriate technical and organizational measures to
+            protect the security of your personal information. However, please be
+            aware that no method of transmission over the internet or method of
+            electronic storage is 100% secure.
+          </p>
+        </section>
 
-          <section className="flex flex-col gap-2">
-            <h2 className="text-lg font-bold text-(--text-normal)">
-              3. Data Storage & Security
-            </h2>
-            <p>
-              We implement industry-standard security measures to protect your
-              data. Your project data and conversation history are stored
-              securely on our servers and encrypted in transit.
-            </p>
-          </section>
+        <section className="flex flex-col gap-3">
+          <h2 className="text-xl font-semibold">4. Your Data Rights</h2>
+          <p className="text-sm text-(--text-normal)/80 leading-relaxed">
+            You have the right to access, update, or delete your personal
+            information at any time. You can manage your data through the account
+            settings or by contacting our support team.
+          </p>
+        </section>
 
-          <section className="flex flex-col gap-2">
-            <h2 className="text-lg font-bold text-(--text-normal)">
-              4. Third-Party Services
-            </h2>
-            <p>
-              We may share limited data with third-party AI providers to process
-              your architecture generation requests. We do not sell your
-              personal information to third parties.
-            </p>
-          </section>
+        <section className="flex flex-col gap-3">
+          <h2 className="text-xl font-semibold">5. Changes to This Policy</h2>
+          <p className="text-sm text-(--text-normal)/80 leading-relaxed">
+            We may update this privacy policy from time to time. We will notify
+            you of any changes by posting the new privacy policy on this page and
+            updating the effective date.
+          </p>
+        </section>
 
-          <section className="flex flex-col gap-2">
-            <h2 className="text-lg font-bold text-(--text-normal)">
-              5. Your Rights
-            </h2>
-            <p>
-              You have the right to access, update, or delete your personal data
-              at any time through the Data Controls section in your settings.
-              You may also request a copy of all data we hold about you.
-            </p>
-          </section>
-
-          <section className="flex flex-col gap-2">
-            <h2 className="text-lg font-bold text-(--text-normal)">
-              6. Contact Us
-            </h2>
-            <p>
-              If you have questions about this Privacy Policy, please contact us
-              at{" "}
-              <span className="text-(--color-last) font-medium">
-                support@architext.app
-              </span>
-              .
-            </p>
-          </section>
+        <div className="mt-8 pt-6 border-t border-gray-300 dark:border-gray-700 text-xs text-(--text-normal)/50">
+          Last updated: April 2026
         </div>
       </div>
     </div>
