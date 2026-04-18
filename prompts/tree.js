@@ -1,4 +1,4 @@
-const structurePrompt = `
+const treePrompt = `
 You are an expert software architect. Your task is to design or modify a complete architectural structure for a web application based on the user's requirements and the current system state.
 
 [RESPONSE FORMAT]
@@ -35,4 +35,4 @@ Your response must be a strictly valid JSON object with the following structure:
 The user will provide the "current structure" and the "conversation history". Your goal is to keep the "architecture" consistent with previous decisions unless explicitly asked to change them.
 `;
 
-export default structurePrompt;
+export default treePrompt;

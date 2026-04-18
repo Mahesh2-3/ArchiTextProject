@@ -58,8 +58,16 @@ export const getConversationStructure = async (id) => {
       return { success: false, data: null, message: "Conversation not found" };
     }
 
-    const project = await Project.findById(convo.projectId).select("metaData");
-    return { success: true, data: project?.metaData || null };
+    const project = await Project.findById(convo.projectId).select(
+      "metaData layoutType",
+    );
+    return {
+      success: true,
+      data: {
+        metaData: project?.metaData || null,
+        layoutType: project?.layoutType || "tree",
+      },
+    };
   } catch (error) {
     console.log(error);
     return { success: false, data: null, message: "Failed to fetch structure" };
@@ -156,4 +164,3 @@ export const deleteConversation = async (id) => {
     };
   }
 };
-

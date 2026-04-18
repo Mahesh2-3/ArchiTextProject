@@ -1,15 +1,28 @@
 import Project from "../models/Project.js";
 import Conversation from "../models/Conversation.js";
 import Message from "../models/Message.js";
+import { decideLayout, generateInitialStructure } from "../services/groq.js";
 
 // Create a new project
 export const createProject = async (userId, title, description) => {
   try {
+    const layoutType = await decideLayout(title, description);
+    const initialStructureStr = await generateInitialStructure(title, description, layoutType);
+    let metaData = {};
+    
+    try {
+      const parsed = JSON.parse(initialStructureStr);
+      metaData = parsed.architecture || {};
+    } catch (e) {
+      console.log("Failed to parse initial architecture:", e);
+    }
+
     const newProject = new Project({
       userId,
       title,
       description,
-      metaData: {},
+      metaData,
+      layoutType,
       metaDataVersion: "1.0.0",
     });
     await newProject.save();

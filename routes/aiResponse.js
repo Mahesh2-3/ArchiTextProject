@@ -16,7 +16,7 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
   try {
     const { userMsg } = req.body;
     const { id: conversationId } = req.params;
-
+    console.log("user msg details", userMsg, conversationId);
     // save user message to the DB
     const { success: msgStatus } = await saveMessage(
       conversationId,
@@ -25,9 +25,11 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
     );
 
     if (!msgStatus) {
-      return res
-        .status(500)
-        .json({ success: false, data: null, message: "Failed to save message" });
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: "Failed to save message",
+      });
     }
 
     // get conversation messages
@@ -35,9 +37,11 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
       await getConversationMessages(conversationId);
 
     if (!convoStatus) {
-      return res
-        .status(500)
-        .json({ success: false, data: null, message: "Failed to fetch messages" });
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: "Failed to fetch messages",
+      });
     }
 
     // If it's the first message, update the conversation title
@@ -48,19 +52,28 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
     }
 
     // get current project structure
-    const { success: structureStatus, data: structure } =
+    const { success: structureStatus, data: structureData } =
       await getConversationStructure(conversationId);
 
     if (!structureStatus) {
-      return res
-        .status(500)
-        .json({ success: false, data: null, message: "Failed to fetch structure" });
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: "Failed to fetch structure",
+      });
     }
 
     // calling ai service
-    const response = await askGroq(conversation, structure);
+    const response = await askGroq(
+      conversation,
+      structureData.metaData,
+      structureData.layoutType,
+    );
     const parsedData = JSON.parse(response);
-    const { message, architecture } = parsedData;
+    const { message: rawMessage, architecture } = parsedData;
+    const message = rawMessage || "Done.";
+
+    console.log("ai response", message, architecture);
 
     // save assistant's conversational message to the DB
     const { success: aiMsgStatus } = await saveMessage(
@@ -70,9 +83,11 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
     );
 
     if (!aiMsgStatus) {
-      return res
-        .status(500)
-        .json({ success: false, data: null, message: "Failed to save AI message" });
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: "Failed to save AI message",
+      });
     }
 
     // save the updated architecture to the Project
@@ -82,9 +97,11 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
     );
 
     if (!updateStatus) {
-      return res
-        .status(500)
-        .json({ success: false, data: null, message: "Failed to update structure" });
+      return res.status(500).json({
+        success: false,
+        data: null,
+        message: "Failed to update structure",
+      });
     }
 
     res.status(200).json({

@@ -21,6 +21,11 @@ const ProjectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  layoutType: {
+    type: String,
+    enum: ["tree", "timeline", "radial", "flowchart"],
+    default: "tree",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
