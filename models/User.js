@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
+    lowercase: true,
   },
   password: {
     type: String,
@@ -26,6 +28,10 @@ const userSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+// Indexes for performance
+// Note: email index is automatically created by the 'unique: true' constraint
+userSchema.index({ createdAt: -1 }); // For user listings
 
 const User = mongoose.model("User", userSchema);
 

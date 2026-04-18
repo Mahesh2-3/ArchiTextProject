@@ -7,9 +7,13 @@ import { decideLayout, generateInitialStructure } from "../services/groq.js";
 export const createProject = async (userId, title, description) => {
   try {
     const layoutType = await decideLayout(title, description);
-    const initialStructureStr = await generateInitialStructure(title, description, layoutType);
+    const initialStructureStr = await generateInitialStructure(
+      title,
+      description,
+      layoutType,
+    );
     let metaData = {};
-    
+
     try {
       const parsed = JSON.parse(initialStructureStr);
       metaData = parsed.architecture || {};
@@ -33,11 +37,24 @@ export const createProject = async (userId, title, description) => {
   }
 };
 
-// Get all projects for a user
-export const getProjects = async (userId) => {
+// Get all projects for a user with pagination
+export const getProjects = async (userId, skip = 0, limit = 10) => {
   try {
-    const projects = await Project.find({ userId });
-    return { success: true, data: projects };
+    const projects = await Project.find({ userId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .select("-metaData"); // Exclude large metaData from list view
+
+    const total = await Project.countDocuments({ userId });
+
+    return {
+      success: true,
+      data: {
+        projects,
+        total,
+      },
+    };
   } catch (error) {
     console.log(error);
     return { success: false, message: "Internal server error" };

@@ -4,14 +4,18 @@ import {
   getProjects,
   getProjectStructure,
   getHistory,
-  deleteProject
+  deleteProject,
 } from "../Controllers/Project.js";
 import { checkProjectOwnership } from "../middleware/checkOwnership.js";
+import {
+  validateProject,
+  handleValidationErrors,
+} from "../middleware/validation.js";
 
 const router = express.Router();
 
 // Create a new project
-router.post("/", async (req, res) => {
+router.post("/", validateProject, handleValidationErrors, async (req, res) => {
   try {
     const { title, description } = req.body;
     const { success, data, message } = await createProject(
@@ -35,16 +39,34 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Get all projects for the logged-in user
+// Get all projects for the logged-in user with pagination
 router.get("/", async (req, res) => {
   try {
-    const { success, data, message } = await getProjects(req.user._id);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const { success, data, message } = await getProjects(
+      req.user._id,
+      skip,
+      limit,
+    );
 
     if (!success) {
       return res.status(500).json({ success: false, data: [], message });
     }
 
-    res.status(200).json({ success: true, data });
+    res.status(200).json({
+      success: true,
+      data: data.projects,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(data.total / limit),
+        totalProjects: data.total,
+        hasNext: page * limit < data.total,
+        hasPrev: page > 1,
+      },
+    });
   } catch (error) {
     console.log(error);
     res
