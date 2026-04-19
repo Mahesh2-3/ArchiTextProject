@@ -29,6 +29,7 @@ import {
   FaChevronRight as ChevronRight,
   FaArrowLeft as ArrowLeft,
   FaTrash as Trash,
+  FaDownload as Download,
 } from "react-icons/fa";
 import { IoColorPaletteOutline as Palette } from "react-icons/io5";
 export {
@@ -61,4 +62,5 @@ export {
   Settings,
   Loading,
   Palette,
+  Download,
 };
