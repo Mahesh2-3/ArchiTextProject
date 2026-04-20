@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --font-geist-sans: 'Geist Sans', sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
+
+  /* Fallback to Light/Navy theme */
+  --bg-main: #061d53;
+  --bg-side: #04102d;
+  --bg-card: #0c2b7a;
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --accent: #FF85BB;
+  --accent-text: #ffffff;
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] {
+  --bg-main: #061d53;
+  --bg-side: #04102d;
+  --bg-card: #0c2b7a;
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --accent: #FF85BB;
+  --accent-text: #ffffff;
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="forest-vibes"] {
+  --bg-main: #091413;
+  --bg-side: #050b0a;
+  --bg-card: #142d2a;
+  --text-main: #e6fff6;
+  --text-muted: rgba(230, 255, 246, 0.6);
+  --accent: #408A71;
+  --accent-text: #e6fff6;
+  --border: rgba(64, 138, 113, 0.2);
+}
+
+[data-theme="sunset"] {
+  --bg-main: #2d1300;
+  --bg-side: #1a0b00;
+  --bg-card: #4a1f00;
+  --text-main: #fff7e6;
+  --text-muted: rgba(255, 247, 230, 0.6);
+  --accent: #FF5F00;
+  --accent-text: #ffffff;
+  --border: rgba(255, 95, 0, 0.2);
+}
+
+[data-theme="earth"] {
+  --bg-main: #2a1c15;
+  --bg-side: #1a110d;
+  --bg-card: #3e2a1f;
+  --text-main: #fffaf0;
+  --text-muted: rgba(255, 250, 240, 0.6);
+  --accent: #A47251;
+  --accent-text: #ffffff;
+  --border: rgba(164, 114, 81, 0.2);
+}
+
+[data-theme="ocean"] {
+  --bg-main: #0a1445;
+  --bg-side: #050a22;
+  --bg-card: #152b94;
+  --text-main: #eef4ff;
+  --text-muted: rgba(238, 244, 255, 0.6);
+  --accent: #5478FF;
+  --accent-text: #ffffff;
+  --border: rgba(84, 120, 255, 0.2);
+}
+
+[data-theme="night"] {
+  --bg-main: #070F2B;
+  --bg-side: #040816;
+  --bg-card: #1B1A55;
+  --text-main: #e8eaff;
+  --text-muted: rgba(232, 234, 255, 0.6);
+  --accent: #535C91;
+  --accent-text: #ffffff;
+  --border: rgba(83, 92, 145, 0.2);
+}
+
+[data-theme="vintage"] {
+  --bg-main: #27261e;
+  --bg-side: #1a1914;
+  --bg-card: #3b3a2e;
+  --text-main: #fffdf5;
+  --text-muted: rgba(255, 253, 245, 0.6);
+  --accent: #9AB17A;
+  --accent-text: #ffffff;
+  --border: rgba(154, 177, 122, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@layer base {
+  :root {
+    /* Main mapping for MindMap legacy variables */
+    --color-main: var(--bg-main);
+    --color-secondary: var(--bg-side);
+    --color-normal: var(--accent);
+    --color-last: var(--bg-card);
+    --text-normal: var(--text-main);
+  }
+
+  /* React Flow Styles */
+  .react-flow__pane,
+  .react-flow__background {
+    background-color: var(--bg-main);
+  }
+
+  .react-flow__node {
+    color: var(--text-main);
+  }
+
+  .react-flow__edge-path {
+    stroke: var(--accent) !important;
+    stroke-width: 2.5;
+    filter: drop-shadow(0 0 2px var(--accent));
+  }
+
+  .react-flow__controls {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .react-flow__controls-button {
+    background: var(--bg-side) !important;
+    border-bottom: 1px solid var(--border) !important;
+    color: var(--text-main) !important;
+    fill: currentColor !important;
+  }
+
+  .react-flow__controls-button:hover {
+    background: var(--accent) !important;
+    color: var(--accent-text) !important;
+  }
+}
+
+.hide-scrollbar {
+  scrollbar-width: 2px;
+  -ms-overflow-style: none;
+}
+
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
