@@ -26,6 +26,7 @@ const LoginPage = () => {
     try {
       // API call to login the user
       const res = await login(email, password);
+      console.log(res);
 
       // Successful Login: store user data and then redirect
       if (res.success) {

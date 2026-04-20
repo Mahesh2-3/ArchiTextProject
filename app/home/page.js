@@ -18,7 +18,6 @@ function HomeContent() {
   const router = useRouter();
   const pid = searchParams.get("pid");
   const cid = searchParams.get("cid");
-  const router = useRouter();
 
   const [isSideBarOpen, setisSideBarOpen] = useState(true);
   const [isConvoOpen, setIsConvoOpen] = useState(true);
@@ -100,7 +99,7 @@ function HomeContent() {
       {!isSideBarOpen && (
         <button
           onClick={toggleSideBar}
-          className="absolute top-4 left-4 z-[60] p-2 rounded-md bg-(--bg-card) hover:opacity-90 border border-(--border) shadow-lg transition cursor-pointer text-2xl"
+          className="absolute top-4 left-4 z-60 p-2 rounded-md bg-(--bg-card) hover:opacity-90 border border-(--border) shadow-lg transition cursor-pointer text-2xl"
         >
           <Menu className="text-(--text-main)" />
         </button>
@@ -109,7 +108,7 @@ function HomeContent() {
       {!isConvoOpen && (
         <button
           onClick={toggleConvo}
-          className="absolute top-4 right-4 z-[60] p-2 rounded-md bg-(--bg-card) hover:opacity-90 border border-(--border) shadow-lg transition cursor-pointer text-2xl"
+          className="absolute top-4 right-4 z-60 p-2 rounded-md bg-(--bg-card) hover:opacity-90 border border-(--border) shadow-lg transition cursor-pointer text-2xl"
         >
           <Menu className="text-(--text-main)" />
         </button>
