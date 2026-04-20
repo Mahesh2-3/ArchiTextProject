@@ -44,6 +44,7 @@ export const registerUser = async (name, email, password) => {
 
     return { success: true, data: newUser };
   } catch (error) {
+    console.log(error);
     return { success: false, message: "Internal server error" };
   }
 };
