@@ -68,11 +68,12 @@ const CreateProject = ({ onClose, onSuccess }) => {
 
       if (res.success) {
         toast.success("Project created successfully!", toastOptions());
+
         if (onSuccess) onSuccess(res.data);
         else if (onClose) onClose();
       }
     } catch (error) {
-      toast.error("Network error. Please try again.", toastOptions());
+      toast.error("Internal Server Error", toastOptions());
     } finally {
       setIsLoading(false);
     }

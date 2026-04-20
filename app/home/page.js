@@ -15,6 +15,7 @@ import { toastOptions } from "../Helpers/toast";
 
 export default function Home() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const pid = searchParams.get("pid");
   const cid = searchParams.get("cid");
 
@@ -85,7 +86,12 @@ export default function Home() {
           <Menu className="text-(--text-main)" />
         </button>
       )}
-      {isCreateProjectOpen && <CreateProject onClose={toggleCreateProject} onSuccess={handleProjectCreated} />}
+      {isCreateProjectOpen && (
+        <CreateProject
+          onClose={toggleCreateProject}
+          onSuccess={handleProjectCreated}
+        />
+      )}
       <Group
         className="h-screen w-full flex gap-0 bg-(--bg-main)"
         orientation="horizontal"

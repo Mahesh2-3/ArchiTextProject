@@ -9,6 +9,7 @@ export const useAppStore = create(
       currentProject: null,
       currentConversation: null,
       architectureData: null,
+      refreshSidebarTrigger: 0,
       //actions
       setUser: (user) => set({ user }),
       setTheme: (theme) => set({ theme }),
@@ -17,6 +18,10 @@ export const useAppStore = create(
         set({ currentConversation: conversation }),
       setArchitectureData: (architecture) =>
         set({ architectureData: architecture }),
+      triggerSidebarRefresh: () =>
+        set((state) => ({
+          refreshSidebarTrigger: state.refreshSidebarTrigger + 1,
+        })),
 
       //getters
       getUser: () => get().user,

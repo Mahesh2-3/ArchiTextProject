@@ -31,6 +31,9 @@ const Conversation = ({ onClose }) => {
   const projectId = useAppStore((state) => state.currentProject);
   const conversationId = useAppStore((state) => state.currentConversation);
   const setArchitectureData = useAppStore((state) => state.setArchitectureData);
+  const triggerSidebarRefresh = useAppStore(
+    (state) => state.triggerSidebarRefresh,
+  );
 
   // user input
   const [input, setInput] = useState("");
@@ -86,6 +89,7 @@ const Conversation = ({ onClose }) => {
 
       // Redirect if it was the first message
       if (!conversationId && newConversationId) {
+        triggerSidebarRefresh();
         router.push(`/home?pid=${projectId}&cid=${newConversationId}`);
       }
 
@@ -164,7 +168,10 @@ const Conversation = ({ onClose }) => {
       </div>
 
       {/* Input Form */}
-      <form onSubmit={handleSend} className="p-4 flex gap-2 shrink-0 border-t border-(--border) bg-(--bg-side)/30">
+      <form
+        onSubmit={handleSend}
+        className="p-4 flex gap-2 shrink-0 border-t border-(--border) bg-(--bg-side)/30"
+      >
         <input
           type="text"
           value={input}

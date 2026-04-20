@@ -30,7 +30,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-(--bg-main)">
+        <div className="min-h-screen w-full flex items-center justify-center bg-(--bg-main)">
           <div className="text-center p-8 bg-(--bg-card) rounded-lg border border-(--border)">
             <h2 className="text-xl font-semibold text-(--text-main) mb-4">
               Oops! Something went wrong
@@ -53,7 +53,7 @@ class ErrorBoundary extends React.Component {
                 <pre className="mt-2 text-xs bg-(--bg-side) p-2 rounded overflow-auto max-w-md">
                   {this.state.error && this.state.error.toString()}
                   <br />
-                  {this.state.errorInfo.componentStack}
+                  {this.state.errorInfo?.componentStack}
                 </pre>
               </details>
             )}

@@ -29,6 +29,7 @@ export const login = async (email, password) => {
 // Register function
 export const register = async (name, email, password) => {
   try {
+    console.log("Attempting to register user:", name, email);
     const response = await fetch("http://localhost:5000/register", {
       method: "POST",
       headers: {

@@ -26,7 +26,7 @@ const RegisterPage = () => {
     e.preventDefault();
 
     // handling empty fields
-    if(!name || !email || !password) {
+    if (!name || !email || !password) {
       toast.error("Please fill in all fields", toastOptions());
       return;
     }
@@ -75,7 +75,7 @@ const RegisterPage = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-bold text-(--text-main) mb-1">
+              <label className="block text-sm font-bold text-(--text-main)/70 mb-1">
                 Full Name
               </label>
               <input
@@ -88,7 +88,7 @@ const RegisterPage = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-(--text-main) mb-1">
+              <label className="block text-sm font-bold text-(--text-main)/70 mb-1">
                 Email Address
               </label>
               <input
@@ -101,7 +101,7 @@ const RegisterPage = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-(--text-dark) mb-1">
+              <label className="block text-sm font-bold text-(--text-main)/70 mb-1">
                 Password
               </label>
               <div className="relative">
@@ -124,7 +124,7 @@ const RegisterPage = () => {
               </div>
             </div>
             {password !== "" && (
-              <div>
+              <div className="text-(--text-main)/70">
                 Password Strength:{" "}
                 <span
                   style={{ color: getPasswordStrength(password).color }}
