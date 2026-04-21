@@ -1,6 +1,6 @@
 export const updateProfile = async (name) => {
   try {
-    const response = await fetch("http://localhost:5000/user/profile", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/profile`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -18,7 +18,7 @@ export const updateProfile = async (name) => {
 
 export const changePassword = async (oldPassword, newPassword) => {
   try {
-    const response = await fetch("http://localhost:5000/user/password", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/password`, {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -36,7 +36,7 @@ export const changePassword = async (oldPassword, newPassword) => {
 
 export const sendOtp = async () => {
   try {
-    const response = await fetch("http://localhost:5000/user/send-otp", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/send-otp`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -53,7 +53,7 @@ export const sendOtp = async () => {
 
 export const resetPasswordWithOtp = async (otp, newPassword) => {
   try {
-    const response = await fetch("http://localhost:5000/user/reset-password", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/reset-password`, {
       method: "POST",
       credentials: "include",
       headers: {

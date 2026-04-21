@@ -1,3 +1,4 @@
+import logger from "../lib/logger.js";
 import express from "express";
 import {
   createProject,
@@ -32,7 +33,7 @@ router.post("/", validateProject, handleValidationErrors, async (req, res) => {
       .status(201)
       .json({ success: true, data, message: "Project created successfully" });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res
       .status(500)
       .json({ success: false, data: null, message: "Internal server error" });
@@ -68,7 +69,7 @@ router.get("/", async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res
       .status(500)
       .json({ success: false, data: [], message: "Internal server error" });
@@ -87,7 +88,7 @@ router.get("/structure/:id", checkProjectOwnership, async (req, res) => {
 
     res.status(200).json({ success: true, data });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res
       .status(500)
       .json({ success: false, data: null, message: "Internal server error" });
@@ -105,7 +106,7 @@ router.get("/history", async (req, res) => {
 
     res.status(200).json({ success: true, data });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res
       .status(500)
       .json({ success: false, data: [], message: "Internal server error" });
@@ -124,7 +125,7 @@ router.delete("/:id", checkProjectOwnership, async (req, res) => {
 
     res.status(200).json({ success: true, message });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });

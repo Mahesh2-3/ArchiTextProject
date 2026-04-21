@@ -1,3 +1,4 @@
+import logger from "../lib/logger.js";
 import express from "express";
 import { askGroq } from "../services/groq.js";
 import {
@@ -110,7 +111,7 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
       message: "Prompt generated successfully",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res
       .status(500)
       .json({ success: false, data: null, message: "Internal server error" });

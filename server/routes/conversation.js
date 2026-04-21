@@ -1,3 +1,4 @@
+import logger from "../lib/logger.js";
 import express from "express";
 import {
   createConversation,
@@ -29,7 +30,7 @@ router.post("/", checkProjectOwnership, async (req, res) => {
       message: "Conversation created successfully",
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res
       .status(500)
       .json({ success: false, data: null, message: "Internal server error" });
@@ -48,7 +49,7 @@ router.get("/:projectId", checkProjectOwnership, async (req, res) => {
 
     res.status(200).json({ success: true, data });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res
       .status(500)
       .json({ success: false, data: [], message: "Internal server error" });
@@ -71,7 +72,7 @@ router.get(
 
     res.status(200).json({ success: true, data });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res
       .status(500)
       .json({ success: false, data: [], message: "Internal server error" });
@@ -94,7 +95,7 @@ router.get(
 
     res.status(200).json({ success: true, data });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res
       .status(500)
       .json({ success: false, data: null, message: "Internal server error" });
@@ -116,7 +117,7 @@ router.delete(
 
       res.status(200).json({ success: true, message });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       res.status(500).json({ success: false, message: "Internal server error" });
     }
   }

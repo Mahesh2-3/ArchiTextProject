@@ -16,7 +16,7 @@ export const sendMessage = async (id, userMsg, projectId) => {
     }
 
     const response = await fetch(
-      `http://localhost:5000/ai-chat/${conversationId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/ai-chat/${conversationId}`,
       {
         method: "POST",
         credentials: "include",
@@ -52,7 +52,7 @@ export const sendMessage = async (id, userMsg, projectId) => {
 // creates a new Conversation for a project
 const createConversation = async (projectId) => {
   try {
-    const response = await fetch("http://localhost:5000/conversation", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/conversation`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -85,7 +85,7 @@ export const getConversations = async (projectId) => {
     }
 
     const response = await fetch(
-      `http://localhost:5000/conversation/${projectId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/conversation/${projectId}`,
       {
         method: "GET",
         credentials: "include",
@@ -115,7 +115,7 @@ export const getConversationMessages = async (conversationId) => {
       return { success: false, data: [] };
     }
     const response = await fetch(
-      `http://localhost:5000/conversation/${conversationId}/messages`,
+      `${process.env.NEXT_PUBLIC_API_URL}/conversation/${conversationId}/messages`,
       {
         method: "GET",
         credentials: "include",
@@ -144,7 +144,7 @@ export const getTitles = async (conversationId) => {
   }
   try {
     const response = await fetch(
-      `http://localhost:5000/conversation/${conversationId}/titles`,
+      `${process.env.NEXT_PUBLIC_API_URL}/conversation/${conversationId}/titles`,
       {
         method: "GET",
         credentials: "include",
@@ -169,7 +169,7 @@ export const getTitles = async (conversationId) => {
 
 export const deleteConversation = async (conversationId) => {
   try {
-    const response = await fetch(`http://localhost:5000/conversation/${conversationId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/conversation/${conversationId}`, {
       method: "DELETE",
       credentials: "include",
     });

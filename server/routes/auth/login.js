@@ -1,3 +1,4 @@
+import logger from "../../lib/logger.js";
 import { loginUser } from "../../Controllers/Auth.js";
 import {
   validateLogin,
@@ -28,7 +29,7 @@ const loginRoute = [
         .status(200)
         .json({ success: true, data: data.user, message: "Login successful" });
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       res
         .status(500)
         .json({ success: false, data: null, message: "Internal server error" });

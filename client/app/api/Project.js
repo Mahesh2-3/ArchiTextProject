@@ -1,7 +1,7 @@
 // Creates a new project
 export const createProject = async (title, description) => {
   try {
-    const response = await fetch("http://localhost:5000/project", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -25,7 +25,7 @@ export const createProject = async (title, description) => {
 // Gets all projects for the logged-in user
 export const getProjects = async () => {
   try {
-    const response = await fetch("http://localhost:5000/project", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project`, {
       method: "GET",
       credentials: "include",
     });
@@ -43,7 +43,7 @@ export const getProjects = async () => {
 
 export const getHistory = async () => {
   try {
-    const response = await fetch("http://localhost:5000/project/history", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project/history`, {
       method: "GET",
       credentials: "include",
     });
@@ -61,7 +61,7 @@ export const getHistory = async () => {
 
 export const deleteProject = async (projectId) => {
   try {
-    const response = await fetch(`http://localhost:5000/project/${projectId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project/${projectId}`, {
       method: "DELETE",
       credentials: "include",
     });
