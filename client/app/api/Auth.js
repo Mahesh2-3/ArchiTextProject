@@ -1,7 +1,7 @@
 // Login function
 export const login = async (email, password) => {
   try {
-    const response = await fetch("http://localhost:5000/login", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -30,7 +30,7 @@ export const login = async (email, password) => {
 export const register = async (name, email, password) => {
   try {
     console.log("Attempting to register user:", name, email);
-    const response = await fetch("http://localhost:5000/register", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export const register = async (name, email, password) => {
 // Logout function
 export const logout = async () => {
   try {
-    const response = await fetch("http://localhost:5000/logout", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/logout`, {
       credentials: "include",
       method: "POST",
     });

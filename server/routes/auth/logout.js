@@ -1,3 +1,4 @@
+import logger from "../../lib/logger.js";
 // Logout route
 const logoutRoute = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ const logoutRoute = async (req, res) => {
       .status(200)
       .json({ success: true, data: null, message: "Logged out successfully" });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res
       .status(500)
       .json({ success: false, data: null, message: "Internal server error" });

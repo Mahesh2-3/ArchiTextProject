@@ -1,3 +1,4 @@
+import logger from "../lib/logger.js";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
@@ -15,7 +16,7 @@ export const updateProfile = async (userId, newName) => {
     }
     return { success: true, data: { name: updatedUser.name, email: updatedUser.email } };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Internal server error" };
   }
 };
@@ -40,7 +41,7 @@ export const changePassword = async (userId, oldPassword, newPassword) => {
 
     return { success: true, message: "Password updated successfully" };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Internal server error" };
   }
 };
@@ -80,7 +81,7 @@ export const sendOtp = async (userId) => {
 
     return { success: true, message: "OTP sent to your email" };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Failed to send OTP to email. Check server configuration." };
   }
 };
@@ -112,7 +113,7 @@ export const resetPasswordWithOtp = async (userId, otp, newPassword) => {
 
     return { success: true, message: "Password updated successfully" };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Internal server error" };
   }
 };

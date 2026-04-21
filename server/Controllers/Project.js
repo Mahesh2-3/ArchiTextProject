@@ -1,3 +1,4 @@
+import logger from "../lib/logger.js";
 import Project from "../models/Project.js";
 import Conversation from "../models/Conversation.js";
 import Message from "../models/Message.js";
@@ -32,7 +33,7 @@ export const createProject = async (userId, title, description) => {
     await newProject.save();
     return { success: true, data: newProject };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Internal server error" };
   }
 };
@@ -56,7 +57,7 @@ export const getProjects = async (userId, skip = 0, limit = 10) => {
       },
     };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Internal server error" };
   }
 };
@@ -70,7 +71,7 @@ export const getProjectStructure = async (projectId) => {
     }
     return { success: true, data: project.metaData };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Internal server error" };
   }
 };
@@ -88,7 +89,7 @@ export const getHistory = async (userId) => {
     }
     return { success: true, data: projects };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Internal server error" };
   }
 };
@@ -104,7 +105,7 @@ export const deleteProject = async (projectId) => {
     await Project.findByIdAndDelete(projectId);
     return { success: true, message: "Project deleted successfully" };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Internal server error" };
   }
 };

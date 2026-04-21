@@ -2,7 +2,7 @@
 export const getArchitecture = async (projectId) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/project/structure/${projectId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/project/structure/${projectId}`,
       {
         method: "GET",
         credentials: "include",

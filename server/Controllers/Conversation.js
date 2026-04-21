@@ -1,3 +1,4 @@
+import logger from "../lib/logger.js";
 import Message from "../models/Message.js";
 import Project from "../models/Project.js";
 import Conversation from "../models/Conversation.js";
@@ -12,7 +13,7 @@ export const createConversation = async (projectId) => {
     await conversation.save();
     return { success: true, data: conversation };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return {
       success: false,
       data: null,
@@ -29,7 +30,7 @@ export const getConversationMessages = async (id) => {
       .lean();
     return { success: true, data: messages };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, data: [], message: "Failed to fetch messages" };
   }
 };
@@ -45,7 +46,7 @@ export const saveMessage = async (conversationId, role, content) => {
     await message.save();
     return { success: true, data: message };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, data: null, message: "Failed to save message" };
   }
 };
@@ -69,7 +70,7 @@ export const getConversationStructure = async (id) => {
       },
     };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, data: null, message: "Failed to fetch structure" };
   }
 };
@@ -85,7 +86,7 @@ export const updateConversationStructure = async (id, structure) => {
     await Project.findByIdAndUpdate(convo.projectId, { metaData: structure });
     return { success: true, data: null };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return {
       success: false,
       data: null,
@@ -102,7 +103,7 @@ export const getConversations = async (projectId) => {
     });
     return { success: true, data: conversations };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return {
       success: false,
       data: [],
@@ -121,7 +122,7 @@ export const updateConversationTitle = async (id, title) => {
     );
     return { success: true, data: updatedConvo };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, data: null, message: "Failed to update title" };
   }
 };
@@ -140,7 +141,7 @@ export const getConversationAndProjectTitle = async (id) => {
       data: { conversationTitle: convo.title, projectTitle: project.title },
     };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return {
       success: false,
       data: null,
@@ -156,7 +157,7 @@ export const deleteConversation = async (id) => {
     await Conversation.findByIdAndDelete(id);
     return { success: true, data: null, message: "Conversation deleted" };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return {
       success: false,
       data: null,

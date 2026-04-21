@@ -1,3 +1,4 @@
+import logger from "../lib/logger.js";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -21,7 +22,7 @@ export const loginUser = async (email, password) => {
 
     return { success: true, data: { user, token } };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Internal server error" };
   }
 };
@@ -44,7 +45,7 @@ export const registerUser = async (name, email, password) => {
 
     return { success: true, data: newUser };
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     return { success: false, message: "Internal server error" };
   }
 };
