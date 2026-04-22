@@ -117,7 +117,7 @@ const Conversation = ({ onClose }) => {
   };
 
   return (
-    <div className="h-full bg-(--bg-main) flex flex-col relative">
+    <div className="w-full h-full bg-(--bg-main) flex flex-col relative">
       {/* Header: titles + close button */}
       <div className="flex items-center justify-between border-b border-(--border) shrink-0">
         {titles.projectTitle && titles.conversationTitle ? (

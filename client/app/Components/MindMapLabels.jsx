@@ -51,7 +51,7 @@ export const APIsLabel = ({ apis }) => (
   <div className="text-left w-full">
     <div className="font-bold mb-2 pb-1 border-b border-inherit">APIs</div>
     <ul className="text-sm flex flex-col gap-2">
-      {apis.map((api, i) => (
+      {apis?.map((api, i) => (
         <li key={i}>
           <div className="font-bold">
             <span

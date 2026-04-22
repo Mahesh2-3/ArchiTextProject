@@ -28,11 +28,12 @@ export default function MindMap() {
     setPrevArchitectureData(architectureData);
 
     const sourceData = architectureData || {};
-    
+
     let generator = generateTreeElements;
     if (sourceData.type === "timeline") generator = generateTimelineElements;
     else if (sourceData.type === "radial") generator = generateRadialElements;
-    else if (sourceData.type === "flowchart") generator = generateFlowchartElements;
+    else if (sourceData.type === "flowchart")
+      generator = generateFlowchartElements;
 
     const { nodes: newNodes, edges: newEdges } = generator(sourceData);
 
@@ -58,7 +59,7 @@ export default function MindMap() {
   );
 
   return (
-    <div className="w-full h-full border-x border-(--border)">
+    <div className="w-full h-full relative overflow-hidden border-x border-(--border)">
       <ReactFlow
         nodes={nodes}
         edges={edges}

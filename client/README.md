@@ -1,8 +1,8 @@
-# 🚀 StructAI --- Project Metadata
+# 🚀 ArchiText --- Project Metadata
 
 ## 🧾 1. Project Name
 
-**StructAI**
+**ArchiText**
 
 ## 🏷️ 2. Tagline
 

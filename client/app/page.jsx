@@ -11,11 +11,8 @@ const LandingPage = () => {
   const user = useAppStore((state) => state.user);
   const router = useRouter();
 
-  useEffect(() => {
-    if (user) {
-      router.push("/home");
-    }
-  }, [user]);
+  // Allowing the user to view the landing page even if they're logged in.
+  // The 'Sign In' buttons can just redirect them to /home naturally if they click them.
 
   return (
     <div className="min-h-screen w-full bg-(--bg-main) text-(--text-main) selection:bg-(--accent)/30 selection:text-inherit">
@@ -56,20 +53,20 @@ const LandingPage = () => {
               <div className="w-px h-4 bg-(--border)" />
               <ThemeButton />
               <Link
-                href="/login"
+                href={user ? "/home" : "/login"}
                 className="text-[13px] font-medium px-4 py-1.5 bg-(--accent) text-(--accent-text) hover:opacity-80 transition-opacity"
               >
-                Sign in
+                {user ? "Go to App" : "Sign in"}
               </Link>
             </div>
 
             <div className="md:hidden flex items-center gap-3">
               <ThemeButton />
               <Link
-                href="/login"
+                href={user ? "/home" : "/login"}
                 className="text-[13px] font-medium px-3 py-1 bg-(--accent) text-(--accent-text)"
               >
-                Sign in
+                {user ? "Go to App" : "Sign in"}
               </Link>
             </div>
           </div>
@@ -106,10 +103,10 @@ const LandingPage = () => {
 
             <div className="flex items-center gap-4">
               <Link
-                href="/login"
+                href={user ? "/home" : "/login"}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-(--accent) text-(--accent-text) text-[14px] font-semibold hover:opacity-90 transition-opacity group"
               >
-                Start building
+                {user ? "Go to App" : "Start building"}
                 <ArrowRight className="text-xs group-hover:translate-x-0.5 transition-transform" />
               </Link>
               <Link
@@ -261,10 +258,10 @@ const LandingPage = () => {
               </div>
 
               <Link
-                href="/login"
+                href={user ? "/home" : "/login"}
                 className="inline-flex items-center gap-2 px-8 py-3.5 bg-(--accent) text-(--accent-text) text-[14px] font-bold hover:opacity-90 transition-colors group shrink-0 self-start md:self-auto rounded-md"
               >
-                Get started
+                {user ? "Go to App" : "Get started"}
                 <ArrowRight className="text-xs group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>

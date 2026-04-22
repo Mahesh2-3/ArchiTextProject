@@ -146,7 +146,7 @@ function HomeContent() {
           </div>
         </div>
       ) : (
-        <Group className="h-screen w-full flex gap-0" orientation="horizontal">
+        <Group className="h-screen w-full min-w-0" orientation="horizontal">
           <Panel
             defaultSize={15}
             minSize={15}
@@ -160,7 +160,7 @@ function HomeContent() {
             />
           </Panel>
           <Separator />
-          <Panel defaultSize={60} minSize={40}>
+          <Panel defaultSize={60} maxSize={100} minSize={0}>
             <MindMap />
           </Panel>
           <Separator />

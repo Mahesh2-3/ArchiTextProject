@@ -17,6 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "ArchiText",
   description: "AI Powered Architectural Design Assistant",
+  icons: {
+    icon: [
+      { url: "/logo.png", type: "image/png" },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {

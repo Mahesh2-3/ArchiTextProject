@@ -88,18 +88,23 @@ const Sidebar = ({ state, func, func2 }) => {
   };
 
   return (
-    <div className="h-full bg-(--bg-side) flex flex-col relative border-r border-(--border)">
+    <div className="w-full h-full bg-(--bg-side) flex flex-col relative border-r border-(--border)">
       {/* Website Name */}
-      <div className="px-4 pt-4 pb-2 shrink-0">
+      <div className="px-4 pt-4 pb-2 shrink-0 flex items-center gap-2 ">
+        <Image
+          src="/logo.png"
+          alt="Logo"
+          width={40}
+          height={40}
+          className="inline-block rounded-full border border-white/50"
+        />
         <h1 className="text-xl font-bold text-(--text-main) tracking-tight">
           ArchiText
         </h1>
       </div>
 
       {/* Header / Actions */}
-      <div className="flex justify-between items-center px-4 pb-4 shrink-0">
-        {/* <ThemeButton /> */}
-        <ThemeButton />
+      <div className="flex justify-end items-center px-4 pb-4 shrink-0">
         <button
           onClick={func}
           className="p-1 rounded-md transition cursor-pointer text-2xl text-(--text-main) hover:bg-(--accent)/10"
@@ -190,15 +195,7 @@ const Sidebar = ({ state, func, func2 }) => {
       {/* User Profile and Logout Container - Sticky Bottom */}
       <div className="border-t border-(--border) shrink-0 flex flex-col bg-(--bg-main)/30">
         <div className="flex items-center gap-3 p-4">
-          <div className="w-10 h-10 rounded-full bg-(--bg-card) border border-(--border) shrink-0 overflow-hidden flex items-center justify-center p-1">
-            <Image
-              src="/vercel.svg"
-              alt="Profile"
-              className="w-full h-full object-contain"
-              width={40}
-              height={40}
-            />
-          </div>
+          <ThemeButton />
           <div className="flex flex-col overflow-hidden">
             <span className="font-bold text-(--text-main) truncate">
               {user?.name}
