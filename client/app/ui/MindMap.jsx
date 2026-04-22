@@ -6,6 +6,8 @@ import {
   addEdge,
   Background,
   Controls,
+  ReactFlowProvider,
+  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { generateElements as generateTreeElements } from "../Helpers/mindmapGenerator";
@@ -14,8 +16,9 @@ import { generateElements as generateRadialElements } from "../Helpers/radialGen
 import { generateElements as generateFlowchartElements } from "../Helpers/flowchartGenerator";
 import { useAppStore } from "../store/useAppStore";
 
-export default function MindMap() {
+function MindMapInner() {
   const architectureData = useAppStore((state) => state.architectureData);
+  const { fitView } = useReactFlow();
   // State for nodes and edges
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
@@ -42,6 +45,16 @@ export default function MindMap() {
     setNodes(newNodes);
     setEdges(newEdges);
   }
+
+  // Trigger fitView when nodes change
+  useEffect(() => {
+    if (nodes.length) {
+      // Small timeout ensures DOM elements are rendered
+      setTimeout(() => {
+        fitView({ duration: 800, padding: 0.2 });
+      }, 50);
+    }
+  }, [nodes, fitView]);
 
   const onNodesChange = useCallback(
     (changes) =>
@@ -72,5 +85,13 @@ export default function MindMap() {
         <Controls />
       </ReactFlow>
     </div>
+  );
+}
+
+export default function MindMap() {
+  return (
+    <ReactFlowProvider>
+      <MindMapInner />
+    </ReactFlowProvider>
   );
 }

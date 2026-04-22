@@ -28,7 +28,7 @@ const LandingPage = () => {
       <nav className="fixed top-0 w-full z-50 bg-(--bg-main)/80 backdrop-blur-md border-b border-(--border)">
         <div className="max-w-[1200px] mx-auto px-6 lg:px-8">
           <div className="flex justify-between h-14 items-center">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="#" className="flex items-center gap-2">
               <div className="w-6 h-6 bg-(--accent) flex items-center justify-center text-(--accent-text) text-[10px] font-bold tracking-tight">
                 AT
               </div>
@@ -290,19 +290,21 @@ const LandingPage = () => {
 
             <div className="flex gap-6 text-[12px] text-(--text-muted)">
               <Link
-                href="#"
+                href="/settings/privacy-policy"
                 className="hover:text-(--text-main) transition-colors"
               >
                 Privacy
               </Link>
               <Link
-                href="#"
+                href="/settings/terms-and-conditions"
                 className="hover:text-(--text-main) transition-colors"
               >
                 Terms
               </Link>
               <Link
-                href="#"
+                href="https://github.com/your-repo"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hover:text-(--text-main) transition-colors"
               >
                 GitHub

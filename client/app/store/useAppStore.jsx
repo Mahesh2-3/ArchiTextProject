@@ -7,15 +7,14 @@ export const useAppStore = create(
       user: null,
       theme: "light",
       currentProject: null,
-      currentConversation: null,
+
       architectureData: null,
       refreshSidebarTrigger: 0,
       //actions
       setUser: (user) => set({ user }),
       setTheme: (theme) => set({ theme }),
       setCurrentProject: (project) => set({ currentProject: project }),
-      setCurrentConversation: (conversation) =>
-        set({ currentConversation: conversation }),
+
       setArchitectureData: (architecture) =>
         set({ architectureData: architecture }),
       triggerSidebarRefresh: () =>
@@ -27,7 +26,7 @@ export const useAppStore = create(
       getUser: () => get().user,
       getTheme: () => get().theme,
       getCurrentProject: () => get().currentProject,
-      getCurrentConversation: () => get().currentConversation,
+
       getArchitectureData: () => get().architectureData,
     }),
     {

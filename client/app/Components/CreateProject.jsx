@@ -3,6 +3,7 @@ import { createProject } from "../api/Project";
 import { toast } from "react-toastify";
 import { toastOptions } from "../Helpers/toast";
 import { Loading } from "../Helpers/icons";
+import { useAppStore } from "../store/useAppStore";
 
 const CreateProject = ({ onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const CreateProject = ({ onClose, onSuccess }) => {
 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const triggerSidebarRefresh = useAppStore((state) => state.triggerSidebarRefresh);
 
   const validateForm = () => {
     const newErrors = {};
@@ -69,6 +71,7 @@ const CreateProject = ({ onClose, onSuccess }) => {
       if (res.success) {
         toast.success("Project created successfully!", toastOptions());
 
+        triggerSidebarRefresh();
         if (onSuccess) onSuccess(res.data);
         else if (onClose) onClose();
       }

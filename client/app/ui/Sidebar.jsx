@@ -15,9 +15,9 @@ import {
   Settings,
 } from "../Helpers/icons";
 import ProjectSkeleton from "../Skeletons/ProjectSkeleton";
-import ConversationSkeleton from "../Skeletons/ConversationSkeleton";
+
 import { useAppStore } from "../store/useAppStore";
-import { getConversations } from "../api/Conversations";
+
 import { getProjects } from "../api/Project";
 import { logout } from "../api/Auth";
 import { toast } from "react-toastify";
@@ -29,18 +29,18 @@ const Sidebar = ({ state, func, func2 }) => {
 
   // data
   const [projects, setProjects] = useState([]);
-  const [conversations, setConversations] = useState([]);
+
 
   // loading states
   const [isFetching, setIsFetching] = useState({
     projects: false,
-    convo: false,
+
   });
   const [mounted, setMounted] = useState(false);
 
   // data from store
   const currentProject = useAppStore((state) => state.currentProject);
-  const currentConversation = useAppStore((state) => state.currentConversation);
+
   const setCurrentProject = useAppStore((state) => state.setCurrentProject);
   const user = useAppStore((state) => state.user);
   const setUser = useAppStore((state) => state.setUser);
@@ -59,20 +59,10 @@ const Sidebar = ({ state, func, func2 }) => {
     fetchProjects();
   }, [user, refreshSidebarTrigger]); // only when user changes
 
-  useEffect(() => {
-    if (!currentProject) return;
 
-    const fetchConvos = async () => {
-      setIsFetching((prev) => ({ ...prev, convo: true }));
-      const { success, data } = await getConversations(currentProject);
-      if (success) setConversations(data);
-      setIsFetching((prev) => ({ ...prev, convo: false }));
-    };
 
-    fetchConvos();
-  }, [currentProject, refreshSidebarTrigger]); // only when project changes
-
-  const handleFetchConvo = async (projectId) => {
+  const handleSelectProject = (projectId) => {
+    setCurrentProject(projectId);
     router.replace(`/home?pid=${projectId}`);
   };
 
@@ -137,55 +127,17 @@ const Sidebar = ({ state, func, func2 }) => {
                   className="flex flex-col gap-2 bg-(--bg-card) border border-(--border) rounded-md p-2"
                 >
                   <button
-                    onClick={() => handleFetchConvo(project._id)}
-                    className="w-full flex items-center justify-between group py-1 cursor-pointer hover:bg-(--accent)/10 px-2 rounded-md transition"
+                    onClick={() => handleSelectProject(project._id)}
+                    className={`w-full flex items-center group py-2 px-3 rounded-md transition cursor-pointer ${
+                      currentProject === project._id
+                        ? "bg-(--accent)/20 text-(--accent)"
+                        : "hover:bg-(--accent)/10 text-(--text-main)"
+                    }`}
                   >
-                    <AngleDown
-                      className={`transition-transform duration-300 text-(--text-muted) ${
-                        currentProject === project._id ? "rotate-180" : ""
-                      }`}
-                    />
-                    <span className="font-bold text-(--text-main) mx-2 text-ellipsis overflow-hidden whitespace-nowrap group-hover:text-(--accent) transition text-left">
+                    <span className="font-bold text-ellipsis overflow-hidden whitespace-nowrap text-left w-full">
                       {project.title}
                     </span>
-                    <PlusCircle
-                      title="Add new Conversation"
-                      onClick={() => handleFetchConvo(project._id)}
-                      className="text-(--text-muted) group-hover:text-(--accent) transition cursor-pointer"
-                    />
                   </button>
-
-                  {/* Conversation list or skeleton */}
-                  {currentProject === project._id && isFetching.convo ? (
-                    <ConversationSkeleton />
-                  ) : (
-                    currentProject === project._id && (
-                      <ul className="flex flex-col gap-1 pl-4 ml-1 border-l-2 border-(--border)">
-                        {conversations && conversations.length === 0 && (
-                          <li className="text-sm text-(--text-muted) py-1.5 px-2">
-                            No conversations yet
-                          </li>
-                        )}
-                        {conversations &&
-                          conversations.map((conversation) => (
-                            <li
-                              key={conversation._id}
-                              className={`text-sm text-(--text-muted) hover:text-(--text-main) hover:bg-(--accent)/10 cursor-pointer transition truncate py-1.5 px-2 rounded-r-md ${
-                                currentConversation === conversation._id
-                                  ? "bg-(--accent)/20 text-(--text-main)"
-                                  : ""
-                              }`}
-                            >
-                              <Link
-                                href={`/home?pid=${project._id}&cid=${conversation._id}`}
-                              >
-                                {conversation.title}
-                              </Link>
-                            </li>
-                          ))}
-                      </ul>
-                    )
-                  )}
                 </li>
               ))}
           </ul>

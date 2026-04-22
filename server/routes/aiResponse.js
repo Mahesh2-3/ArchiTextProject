@@ -2,25 +2,25 @@ import logger from "../lib/logger.js";
 import express from "express";
 import { askGroq } from "../services/groq.js";
 import {
-  getConversationMessages,
-  getConversationStructure,
+  getProjectMessages,
+  getProjectStructure,
   saveMessage,
-  updateConversationStructure,
-  updateConversationTitle,
-} from "../Controllers/Conversation.js";
-import { checkConversationOwnership } from "../middleware/checkOwnership.js";
+  updateProjectStructure
+} from "../Controllers/Message.js";
+import { updateProjectTitle } from "../Controllers/Project.js";
+import { checkProjectOwnership } from "../middleware/checkOwnership.js";
 
 const router = express.Router();
 
 // AI chat endpoint
-router.post("/:id", checkConversationOwnership, async (req, res) => {
+router.post("/:id", checkProjectOwnership, async (req, res) => {
   try {
     const { userMsg } = req.body;
-    const { id: conversationId } = req.params;
-    console.log("user msg details", userMsg, conversationId);
+    const { id: projectId } = req.params;
+    console.log("user msg details", userMsg, projectId);
     // save user message to the DB
     const { success: msgStatus } = await saveMessage(
-      conversationId,
+      projectId,
       "user",
       userMsg,
     );
@@ -35,7 +35,7 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
 
     // get conversation messages
     const { success: convoStatus, data: conversation } =
-      await getConversationMessages(conversationId);
+      await getProjectMessages(projectId);
 
     if (!convoStatus) {
       return res.status(500).json({
@@ -49,12 +49,12 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
     if (conversation.length === 1) {
       const truncatedTitle =
         userMsg.length > 30 ? userMsg.substring(0, 30) + "..." : userMsg;
-      await updateConversationTitle(conversationId, truncatedTitle);
+      await updateProjectTitle(projectId, truncatedTitle);
     }
 
     // get current project structure
     const { success: structureStatus, data: structureData } =
-      await getConversationStructure(conversationId);
+      await getProjectStructure(projectId);
 
     if (!structureStatus) {
       return res.status(500).json({
@@ -78,7 +78,7 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
 
     // save assistant's conversational message to the DB
     const { success: aiMsgStatus } = await saveMessage(
-      conversationId,
+      projectId,
       "assistant",
       message,
     );
@@ -92,8 +92,8 @@ router.post("/:id", checkConversationOwnership, async (req, res) => {
     }
 
     // save the updated architecture to the Project
-    const { success: updateStatus } = await updateConversationStructure(
-      conversationId,
+    const { success: updateStatus } = await updateProjectStructure(
+      projectId,
       architecture,
     );
 

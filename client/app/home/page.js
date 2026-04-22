@@ -17,14 +17,12 @@ function HomeContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pid = searchParams.get("pid");
-  const cid = searchParams.get("cid");
 
   const [isSideBarOpen, setisSideBarOpen] = useState(true);
   const [isConvoOpen, setIsConvoOpen] = useState(true);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const setCId = useAppStore((state) => state.setCurrentConversation);
   const setPId = useAppStore((state) => state.setCurrentProject);
   const setArchitectureData = useAppStore((state) => state.setArchitectureData);
 
@@ -44,7 +42,7 @@ function HomeContent() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Fetching architecture data from the params in the url (pid, cid)
+  // Fetching architecture data from the params in the url (pid)
   useEffect(() => {
     const fetchArchitecture = async () => {
       if (!pid) {
@@ -65,9 +63,8 @@ function HomeContent() {
     };
 
     fetchArchitecture();
-    setCId(cid || null);
-    setPId(pid || null);
-  }, [pid, cid, setCId, setPId, setArchitectureData]);
+        setPId(pid || null);
+  }, [pid, setPId, setArchitectureData]);
 
   // Toggle the sidebar
   const toggleSideBar = () => {

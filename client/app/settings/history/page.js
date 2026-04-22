@@ -6,12 +6,13 @@ import { ArrowLeft, Trash } from "../../Helpers/icons";
 import { toast, ToastContainer } from "react-toastify";
 import { toastOptions } from "../../Helpers/toast";
 import { getHistory, deleteProject } from "../../api/Project";
-import { deleteConversation } from "../../api/Conversations";
+import { useAppStore } from "../../store/useAppStore";
 
 const HistoryPage = () => {
   const router = useRouter();
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const triggerSidebarRefresh = useAppStore((state) => state.triggerSidebarRefresh);
 
   const fetchHistory = async () => {
     setLoading(true);
@@ -41,44 +42,12 @@ const HistoryPage = () => {
         toastOptions(),
       );
       setHistory(history.filter((p) => p._id !== projectId));
+      triggerSidebarRefresh();
     } else {
       toast.error(res.message || "Failed to delete project", toastOptions());
     }
   };
 
-  const handleDeleteConversation = async (projectId, conversationId) => {
-    const confirm = window.confirm(
-      "Are you sure you want to delete this conversation?",
-    );
-    if (!confirm) return;
-
-    const res = await deleteConversation(conversationId);
-    if (res.success) {
-      toast.success(
-        res.message || "Conversation deleted successfully",
-        toastOptions(),
-      );
-      // Update local state to remove the conversation
-      setHistory(
-        history.map((p) => {
-          if (p._id === projectId) {
-            return {
-              ...p,
-              conversations: p.conversations.filter(
-                (c) => c._id !== conversationId,
-              ),
-            };
-          }
-          return p;
-        }),
-      );
-    } else {
-      toast.error(
-        res.message || "Failed to delete conversation",
-        toastOptions(),
-      );
-    }
-  };
 
   return (
     <div className="w-full min-h-screen bg-(--color-main) flex flex-col">
@@ -140,34 +109,6 @@ const HistoryPage = () => {
                   </button>
                 </div>
 
-                {/* Conversations List */}
-                <div className="flex flex-col pl-4 mt-2 border-l-2 border-(--accent)/30 gap-3">
-                  {project.conversations && project.conversations.length > 0 ? (
-                    project.conversations.map((convo) => (
-                      <div
-                        key={convo._id}
-                        className="flex justify-between items-center group"
-                      >
-                        <span className="text-sm font-medium text-(--text-normal)/80">
-                          🗨️ {convo.title}
-                        </span>
-                        <button
-                          onClick={() =>
-                            handleDeleteConversation(project._id, convo._id)
-                          }
-                          className="p-1.5 rounded opacity-0 group-hover:opacity-100 hover:bg-red-500/20 text-red-500 transition cursor-pointer"
-                          title="Delete Conversation"
-                        >
-                          <Trash size={14} />
-                        </button>
-                      </div>
-                    ))
-                  ) : (
-                    <span className="text-sm text-(--text-normal)/40 italic">
-                      No conversations found for this project.
-                    </span>
-                  )}
-                </div>
               </div>
             ))}
           </div>

@@ -1,46 +1,49 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useAppStore } from "../store/useAppStore";
-import { login } from "../api/Auth";
 import { toast, ToastContainer } from "react-toastify";
 import { toastOptions } from "../Helpers/toast";
 import Background from "../Components/Background";
-import ThemeButton from "../Components/ThemeButton";
 
-const LoginPage = () => {
+const ResetPasswordContent = () => {
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const setSession = useAppStore((state) => state.setSession);
-  const setUser = useAppStore((state) => state.setUser);
   const router = useRouter();
+
+  useEffect(() => {
+    const emailParam = searchParams.get("email");
+    if (emailParam) {
+      setEmail(emailParam);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // API call to login the user
-      const res = await login(email, password);
-      console.log(res);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, otp, newPassword }),
+      });
 
-      // Successful Login: store user data and then redirect
+      const res = await response.json();
+
       if (res.success) {
-        setUser(res.data);
-        toast.success(
-          "Login successful! Redirecting to home...",
-          toastOptions(),
-        );
-
+        toast.success("Password reset successfully! Redirecting to login...", toastOptions());
         setTimeout(() => {
-          router.push("/home");
+          router.push("/login");
         }, 2000);
       } else {
-        toast.error("Invalid credentials", toastOptions());
+        toast.error(res.message || "Failed to reset password", toastOptions());
       }
     } catch (err) {
       toast.error("Connection error. Please try again later.", toastOptions());
@@ -50,16 +53,16 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full items-center  justify-center p-4">
+    <div className="relative flex min-h-screen w-full items-center justify-center p-4">
       <Background />
       <ToastContainer />
       <div className="w-full max-w-md space-y-8 z-10 bg-(--bg-side)/80 backdrop-blur-md rounded-2xl border border-(--border) p-8 shadow-2xl">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold tracking-tight text-(--text-main)">
-            Welcome Back
+            Reset Password
           </h1>
           <p className="mt-2 text-sm text-(--text-muted) font-medium">
-            Log in to continue your architecture journey
+            Enter the OTP sent to your email and a new password
           </p>
         </div>
 
@@ -80,25 +83,33 @@ const LoginPage = () => {
             </div>
             <div>
               <label className="block text-sm font-bold text-(--text-main) mb-1">
-                Password
+                OTP
+              </label>
+              <input
+                type="text"
+                required
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                className="w-full rounded-md border border-(--border) bg-(--bg-main) p-3 outline-none transition-all focus:border-(--accent) focus:ring-4 focus:ring-(--accent)/20 text-(--text-main)"
+                placeholder="123456"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-(--text-main) mb-1">
+                New Password
               </label>
               <input
                 type="password"
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full rounded-md border border-(--border) bg-(--bg-main) p-3 outline-none transition-all focus:border-(--accent) focus:ring-4 focus:ring-(--accent)/20 text-(--text-main)"
-                placeholder="password"
+                placeholder="New password"
               />
             </div>
           </div>
 
           <div>
-            <div className="flex justify-end mb-2">
-              <Link href="/forgot-password" className="text-sm font-bold text-(--accent) hover:underline">
-                Forgot Password?
-              </Link>
-            </div>
             <button
               type="submit"
               disabled={loading}
@@ -107,7 +118,7 @@ const LoginPage = () => {
               {loading ? (
                 <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
               ) : (
-                "Sign In"
+                "Reset Password"
               )}
             </button>
           </div>
@@ -115,12 +126,12 @@ const LoginPage = () => {
 
         <div className="text-center">
           <p className="text-sm text-(--text-muted) font-medium">
-            Don&apos;t have an account?{" "}
+            Remembered your password?{" "}
             <Link
-              href="/register"
+              href="/login"
               className="font-bold text-(--accent) hover:underline transition-all"
             >
-              Register here
+              Back to Login
             </Link>
           </p>
         </div>
@@ -129,4 +140,12 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+const ResetPasswordPage = () => {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center min-h-screen text-(--text-main)">Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
+  );
+};
+
+export default ResetPasswordPage;
