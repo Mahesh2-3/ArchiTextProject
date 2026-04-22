@@ -17,8 +17,10 @@ import aiResponse from "./routes/aiResponse.js";
 import loginRoute from "./routes/auth/login.js";
 import logoutRoute from "./routes/auth/logout.js";
 import registerRoute from "./routes/auth/Register.js";
+import forgotPasswordRoute from "./routes/auth/forgotPassword.js";
+import resetPasswordRoute from "./routes/auth/resetPassword.js";
 import projectRoutes from "./routes/projects.js";
-import conversationRoutes from "./routes/conversation.js";
+import messageRoutes from "./routes/messages.js";
 import userRoutes from "./routes/user.js";
 
 const app = express();
@@ -83,13 +85,15 @@ app.get("/health", (req, res) => {
 app.post("/login", authLimiter, loginRoute);
 app.post("/register", authLimiter, registerRoute);
 app.post("/logout", logoutRoute);
+app.use("/forgot-password", authLimiter, forgotPasswordRoute);
+app.use("/reset-password", authLimiter, resetPasswordRoute);
 
 // AI routes with specific rate limiting
 app.use("/ai-chat", authMiddleware, aiChatLimiter, aiResponse);
 
 // Protected routes
 app.use("/project", authMiddleware, projectRoutes);
-app.use("/conversation", authMiddleware, conversationRoutes);
+app.use("/messages", authMiddleware, messageRoutes);
 app.use("/user", authMiddleware, userRoutes);
 
 // Basic Route

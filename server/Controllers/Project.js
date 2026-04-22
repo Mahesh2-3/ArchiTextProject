@@ -1,6 +1,5 @@
 import logger from "../lib/logger.js";
 import Project from "../models/Project.js";
-import Conversation from "../models/Conversation.js";
 import Message from "../models/Message.js";
 import { decideLayout, generateInitialStructure } from "../services/groq.js";
 
@@ -80,13 +79,7 @@ export const getProjectStructure = async (projectId) => {
 export const getHistory = async (userId) => {
   try {
     const projects = await Project.find({ userId }).lean();
-    for (let project of projects) {
-      const conversations = await Conversation.find({ projectId: project._id })
-        .select("title _id")
-        .sort({ createdAt: -1 })
-        .lean();
-      project.conversations = conversations;
-    }
+
     return { success: true, data: projects };
   } catch (error) {
     logger.error(error);
@@ -97,15 +90,26 @@ export const getHistory = async (userId) => {
 // Delete Project and its cascade data
 export const deleteProject = async (projectId) => {
   try {
-    const conversations = await Conversation.find({ projectId });
-    for (let convo of conversations) {
-      await Message.deleteMany({ conversationId: convo._id });
-    }
-    await Conversation.deleteMany({ projectId });
+    await Message.deleteMany({ projectId });
     await Project.findByIdAndDelete(projectId);
     return { success: true, message: "Project deleted successfully" };
   } catch (error) {
     logger.error(error);
     return { success: false, message: "Internal server error" };
+  }
+};
+
+// Update project title
+export const updateProjectTitle = async (projectId, title) => {
+  try {
+    const updatedProject = await Project.findByIdAndUpdate(
+      projectId,
+      { title },
+      { new: true },
+    );
+    return { success: true, data: updatedProject };
+  } catch (error) {
+    logger.error(error);
+    return { success: false, data: null, message: "Failed to update title" };
   }
 };

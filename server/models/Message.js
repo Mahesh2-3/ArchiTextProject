@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema({
-  conversationId: {
+  projectId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Conversation",
+    ref: "Project",
   },
   role: {
     type: String,

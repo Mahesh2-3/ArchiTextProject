@@ -7,9 +7,8 @@ import MessageCard from "../Components/MessageCard";
 import { AngleDown, Close, PaperPlane } from "../Helpers/icons";
 import {
   sendMessage,
-  getConversationMessages,
-  getTitles,
-} from "../api/Conversations";
+  getProjectMessages
+} from "../api/Messages";
 import { useAppStore } from "../store/useAppStore";
 import { toast } from "react-toastify";
 import { toastOptions } from "../Helpers/toast";
@@ -24,12 +23,9 @@ const Conversation = ({ onClose }) => {
 
   // Data
   const [conversation, setConversation] = useState([]);
-  const [titles, setTitles] = useState({
-    conversationTitle: "",
-    projectTitle: "",
-  });
   const projectId = useAppStore((state) => state.currentProject);
-  const conversationId = useAppStore((state) => state.currentConversation);
+
+
   const setArchitectureData = useAppStore((state) => state.setArchitectureData);
   const triggerSidebarRefresh = useAppStore(
     (state) => state.triggerSidebarRefresh,
@@ -39,35 +35,23 @@ const Conversation = ({ onClose }) => {
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    // fetch conversation messages
+    // fetch messages for project
     const fetchConversation = async () => {
-      console.log(conversationId);
-      if (!conversationId) {
-        console.log("Inside the if");
+      if (!projectId) {
         setConversation([]);
-        setTitles({
-          conversationTitle: "",
-          projectTitle: "",
-        });
         return;
       }
-      const res = await getConversationMessages(conversationId);
-      const data = await getTitles(conversationId);
+      const res = await getProjectMessages(projectId);
       if (res.success) {
         setConversation(res.data || []);
       } else {
         toast.error(res.error || "Failed to fetch messages", toastOptions());
       }
-      if (data.success) {
-        setTitles(data.data);
-      } else if (conversationId) {
-        toast.error(data.error || "Failed to fetch titles", toastOptions());
-      }
       setMounted(true);
     };
 
     fetchConversation();
-  }, [conversationId]);
+  }, [projectId]);
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -81,17 +65,10 @@ const Conversation = ({ onClose }) => {
     setInput("");
     setChatLoading(true);
 
-    const result = await sendMessage(conversationId, input, projectId);
+    const result = await sendMessage(projectId, input);
 
     if (result.success && result.data) {
       const { message, architecture } = result.data;
-      const newConversationId = result.conversationId;
-
-      // Redirect if it was the first message
-      if (!conversationId && newConversationId) {
-        triggerSidebarRefresh();
-        router.push(`/home?pid=${projectId}&cid=${newConversationId}`);
-      }
 
       // Update global store so MindMap re-renders
       if (architecture) {
@@ -120,11 +97,9 @@ const Conversation = ({ onClose }) => {
     <div className="w-full h-full bg-(--bg-main) flex flex-col relative">
       {/* Header: titles + close button */}
       <div className="flex items-center justify-between border-b border-(--border) shrink-0">
-        {titles.projectTitle && titles.conversationTitle ? (
+        {projectId ? (
           <div className="p-4 text-sm flex items-center gap-2 text-(--text-main) flex-1 min-w-0">
-            <p className="font-semibold truncate">{titles.projectTitle}</p>
-            <AngleDown className="-rotate-90 shrink-0" />
-            <p className="font-bold truncate">{titles.conversationTitle}</p>
+            <p className="font-bold truncate">Project Chat</p>
           </div>
         ) : (
           <div className="flex-1" />

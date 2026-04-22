@@ -48,7 +48,7 @@ router.put("/password", async (req, res) => {
 
 router.post("/send-otp", async (req, res) => {
   console.log(req.user);
-  const { success, message } = await sendOtp(req.user._id);
+  const { success, message } = await sendOtp(req.body.email || req.user?.email);
   if (!success) {
     return res.status(500).json({ success: false, message });
   }
@@ -65,7 +65,7 @@ router.post("/reset-password", async (req, res) => {
   }
 
   const { success, message } = await resetPasswordWithOtp(
-    req.user._id,
+    req.body.email || req.user?.email,
     otp,
     newPassword,
   );

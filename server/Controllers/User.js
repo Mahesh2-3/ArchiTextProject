@@ -47,9 +47,9 @@ export const changePassword = async (userId, oldPassword, newPassword) => {
 };
 
 // Generate and Send OTP
-export const sendOtp = async (userId) => {
+export const sendOtp = async (email) => {
   try {
-    const user = await User.findById(userId);
+    const user = await User.findOne({ email });
     if (!user) {
       return { success: false, message: "User not found" };
     }
@@ -87,9 +87,9 @@ export const sendOtp = async (userId) => {
 };
 
 // Reset Password with OTP
-export const resetPasswordWithOtp = async (userId, otp, newPassword) => {
+export const resetPasswordWithOtp = async (email, otp, newPassword) => {
   try {
-    const user = await User.findById(userId);
+    const user = await User.findOne({ email });
     if (!user) {
       return { success: false, message: "User not found" };
     }
