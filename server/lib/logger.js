@@ -1,5 +1,6 @@
 import winston from "winston";
 import DailyRotateFile from "winston-daily-rotate-file";
+import fs from "fs";
 
 // Define log levels
 const levels = {
@@ -33,39 +34,51 @@ const format = winston.format.combine(
 
 // Define transports
 const transports = [
-  // Console transport for development
+  // Console transport for all environments
   new winston.transports.Console({
     format: winston.format.combine(
       winston.format.colorize(),
       winston.format.simple(),
     ),
   }),
+];
+
+// Only write to files in development, since Vercel has a read-only filesystem
+if (process.env.NODE_ENV !== "production") {
+  // Create logs directory if it doesn't exist
+  if (!fs.existsSync("logs")) {
+    fs.mkdirSync("logs");
+  }
 
   // Error log file
-  new DailyRotateFile({
-    filename: "logs/error-%DATE%.log",
-    datePattern: "YYYY-MM-DD",
-    level: "error",
-    format: winston.format.combine(
-      winston.format.timestamp(),
-      winston.format.json(),
-    ),
-    maxSize: "20m",
-    maxFiles: "14d",
-  }),
+  transports.push(
+    new DailyRotateFile({
+      filename: "logs/error-%DATE%.log",
+      datePattern: "YYYY-MM-DD",
+      level: "error",
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json(),
+      ),
+      maxSize: "20m",
+      maxFiles: "14d",
+    }),
+  );
 
   // Combined log file
-  new DailyRotateFile({
-    filename: "logs/combined-%DATE%.log",
-    datePattern: "YYYY-MM-DD",
-    format: winston.format.combine(
-      winston.format.timestamp(),
-      winston.format.json(),
-    ),
-    maxSize: "20m",
-    maxFiles: "14d",
-  }),
-];
+  transports.push(
+    new DailyRotateFile({
+      filename: "logs/combined-%DATE%.log",
+      datePattern: "YYYY-MM-DD",
+      format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json(),
+      ),
+      maxSize: "20m",
+      maxFiles: "14d",
+    }),
+  );
+}
 
 // Create the logger
 const logger = winston.createLogger({
@@ -74,11 +87,5 @@ const logger = winston.createLogger({
   format,
   transports,
 });
-
-// Create logs directory if it doesn't exist
-import fs from "fs";
-if (!fs.existsSync("logs")) {
-  fs.mkdirSync("logs");
-}
 
 export default logger;
