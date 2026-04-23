@@ -5,7 +5,7 @@ import {
   sendOtp,
   resetPasswordWithOtp,
   deleteAllUserData,
-} from "../controllers/User.js";
+} from "../Controllers/User.js";
 
 const router = express.Router();
 
