@@ -23,8 +23,10 @@ const ThemeDropDown = ({ item, isLast }) => {
   const { theme, setTheme } = useThemeStore();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setIsOpen(false);
@@ -35,6 +37,39 @@ const ThemeDropDown = ({ item, isLast }) => {
   }, []);
 
   // if (!mounted) return null;
+  // Returning a placeholder to avoid layout shift before hydration
+  if (!mounted) {
+    return (
+      <div className="relative z-50">
+        <div
+          className={`flex items-center gap-4 px-5 py-4 hover:bg-black/5 dark:hover:bg-white/5 transition group cursor-pointer ${
+            !isLast ? "border-b border-gray-300 dark:border-gray-700" : ""
+          }`}
+        >
+          <div className="w-10 h-10 rounded-lg bg-(--color-normal)/20 flex items-center justify-center shrink-0 group-hover:bg-(--color-normal)/30 transition">
+            <Palette
+              size={18}
+              className="text-(--accent) group-hover:scale-110 transition-transform"
+            />
+          </div>
+          <div className="flex flex-col flex-1 min-w-0">
+            <span className="font-semibold text-(--text-normal) text-sm">
+              {item?.label ?? "Theme"}
+            </span>
+            <span className="text-xs text-(--text-normal)/60 truncate">
+              {item?.description ?? "Change the theme of the app"}
+            </span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0 opacity-0">
+            {/* Placeholder for the badge to maintain layout */}
+            <span className="text-xs font-semibold px-2 py-0.5 rounded-md">
+              Theme
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const activeTheme =
     themeOptions.find((t) => t.id === theme) ?? themeOptions[0];

@@ -103,7 +103,7 @@ export const ScalingLabel = ({ scaling }) => (
       Scaling Strategies
     </div>
     <ul className="text-sm flex flex-col gap-1 list-disc pl-4 text-left">
-      {scaling.map((scale, i) => (
+      {scaling?.map((scale, i) => (
         <li key={i} className="text-inherit opacity-90">
           {scale}
         </li>

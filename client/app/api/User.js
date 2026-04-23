@@ -68,3 +68,17 @@ export const resetPasswordWithOtp = async (otp, newPassword) => {
     return { success: false, message: error.message };
   }
 };
+
+export const deleteAllUserData = async () => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/data`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+};

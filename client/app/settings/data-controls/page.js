@@ -3,12 +3,36 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "../../Helpers/icons";
+import { toast, ToastContainer } from "react-toastify";
+import { toastOptions } from "../../Helpers/toast";
+import { deleteAllUserData } from "../../api/User";
+import { useAppStore } from "../../store/useAppStore";
 
 const DataControlsPage = () => {
   const router = useRouter();
+  const triggerSidebarRefresh = useAppStore((state) => state.triggerSidebarRefresh);
+
+  const handleDeleteAllData = async () => {
+    const confirm = window.confirm(
+      "Are you sure you want to permanently delete all your data? This action cannot be undone.",
+    );
+    if (!confirm) return;
+
+    const res = await deleteAllUserData();
+    if (res.success) {
+      toast.success(
+        res.message || "All data deleted successfully",
+        toastOptions(),
+      );
+      triggerSidebarRefresh();
+    } else {
+      toast.error(res.message || "Failed to delete data", toastOptions());
+    }
+  };
 
   return (
     <div className="w-full min-h-screen bg-(--color-main) flex flex-col">
+      <ToastContainer />
       {/* Header */}
       <div className="w-full px-6 py-5 flex items-center gap-4 border-b border-gray-300 dark:border-gray-700 bg-(--color-secondary)/40">
         <button
@@ -72,7 +96,10 @@ const DataControlsPage = () => {
                 Permanently remove all your conversations and project data.
               </span>
             </div>
-            <button className="px-4 py-1.5 rounded-md bg-red-500/15 text-red-500 text-sm font-semibold hover:bg-red-500/25 transition cursor-pointer">
+            <button
+              onClick={handleDeleteAllData}
+              className="px-4 py-1.5 rounded-md bg-red-500/15 text-red-500 text-sm font-semibold hover:bg-red-500/25 transition cursor-pointer"
+            >
               Delete
             </button>
           </div>

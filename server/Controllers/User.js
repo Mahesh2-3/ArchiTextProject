@@ -2,6 +2,8 @@ import logger from "../lib/logger.js";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
+import Project from "../models/Project.js";
+import Message from "../models/Message.js";
 
 // Update Profile Name
 export const updateProfile = async (userId, newName) => {
@@ -112,6 +114,22 @@ export const resetPasswordWithOtp = async (email, otp, newPassword) => {
     await user.save();
 
     return { success: true, message: "Password updated successfully" };
+  } catch (error) {
+    logger.error(error);
+    return { success: false, message: "Internal server error" };
+  }
+};
+
+// Delete all user data (projects and messages)
+export const deleteAllUserData = async (userId) => {
+  try {
+    const projects = await Project.find({ userId });
+    const projectIds = projects.map((p) => p._id);
+
+    await Message.deleteMany({ projectId: { $in: projectIds } });
+    await Project.deleteMany({ userId });
+
+    return { success: true, message: "All user data deleted successfully" };
   } catch (error) {
     logger.error(error);
     return { success: false, message: "Internal server error" };

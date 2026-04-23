@@ -4,6 +4,7 @@ import {
   changePassword,
   sendOtp,
   resetPasswordWithOtp,
+  deleteAllUserData,
 } from "../controllers/User.js";
 
 const router = express.Router();
@@ -71,6 +72,15 @@ router.post("/reset-password", async (req, res) => {
   );
   if (!success) {
     return res.status(400).json({ success: false, message });
+  }
+
+  res.status(200).json({ success: true, message });
+});
+
+router.delete("/data", async (req, res) => {
+  const { success, message } = await deleteAllUserData(req.user._id);
+  if (!success) {
+    return res.status(500).json({ success: false, message });
   }
 
   res.status(200).json({ success: true, message });
