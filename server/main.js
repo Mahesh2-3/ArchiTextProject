@@ -181,6 +181,10 @@ process.on("SIGINT", () => {
   process.exit(0);
 });
 
-app.listen(PORT, () => {
-  logger.info(`🚀 Server running at http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    logger.info(`🚀 Server running at http://localhost:${PORT}`);
+  });
+}
+
+export default app;
