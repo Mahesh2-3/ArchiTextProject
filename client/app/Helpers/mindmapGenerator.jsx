@@ -90,7 +90,7 @@ export const generateElements = (sourceData) => {
     <TechStackLabel techStack={sourceData?.techStack} />,
     2,
     tsParentId,
-    sourceData?.techStack?.length * 2.5 + 2,
+    (sourceData?.techStack?.length || 0) * 2.5 + 2,
   );
 
   // 2. Database Schema (Parent distributing Models)
@@ -101,7 +101,7 @@ export const generateElements = (sourceData) => {
       <SchemaModelLabel model={model} />,
       2,
       schemaId,
-      model.fields.length + 2,
+      (model.fields?.length || 0) + 2,
     );
   });
 
@@ -112,7 +112,7 @@ export const generateElements = (sourceData) => {
     <APIsLabel apis={sourceData?.apis} />,
     2,
     apisParentId,
-    sourceData?.apis?.length * 2.5 + 2,
+    (sourceData?.apis?.length || 0) * 2.5 + 2,
   );
 
   // 4. Structure (Parent distributing Folder domains)
@@ -126,7 +126,7 @@ export const generateElements = (sourceData) => {
       />,
       2,
       structureId,
-      sectionData.paths.length + 2,
+      (sectionData.paths?.length || 0) + 2,
     );
   });
 
@@ -144,7 +144,7 @@ export const generateElements = (sourceData) => {
     <ScalingLabel scaling={sourceData?.scaling} />,
     2,
     scalingParentId,
-    sourceData?.scaling?.length * 1.5 + 2,
+    (sourceData?.scaling?.length || 0) * 1.5 + 2,
   );
 
   // Yield coordinate-processed outcomes cleanly

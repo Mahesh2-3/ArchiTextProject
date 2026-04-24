@@ -8,6 +8,9 @@ import {
   Controls,
   ReactFlowProvider,
   useReactFlow,
+  Panel,
+  getNodesBounds,
+  getViewportForBounds,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { generateElements as generateTreeElements } from "../Helpers/mindmapGenerator";
@@ -15,13 +18,115 @@ import { generateElements as generateTimelineElements } from "../Helpers/timelin
 import { generateElements as generateRadialElements } from "../Helpers/radialGenerator";
 import { generateElements as generateFlowchartElements } from "../Helpers/flowchartGenerator";
 import { useAppStore } from "../store/useAppStore";
+import { toPng, toSvg } from "html-to-image";
+import jsPDF from "jspdf";
+import { FaDownload } from "react-icons/fa6";
 
 function MindMapInner() {
   const architectureData = useAppStore((state) => state.architectureData);
-  const { fitView } = useReactFlow();
+  const { fitView, getNodes, getEdges } = useReactFlow();
   // State for nodes and edges
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+
+  const triggerDownload = (href, filename) => {
+    const link = document.createElement("a");
+    link.href = href;
+    link.download = filename;
+    link.click();
+  };
+
+  const downloadFile = async (format) => {
+    setShowExportMenu(false);
+
+    if (format === "json") {
+      // Export only the raw architecture data to prevent circular reference errors from React elements in nodes
+      const dataStr =
+        "data:text/json;charset=utf-8," +
+        encodeURIComponent(JSON.stringify(architectureData, null, 2));
+      triggerDownload(dataStr, "mindmap.json");
+      return;
+    }
+
+    // Temporarily replace animated edges with normal edges for export
+    // html-to-image struggles to render SVG paths that have active CSS animations.
+    const currentEdges = getEdges();
+    setEdges(currentEdges.map((e) => ({ ...e, animated: false })));
+
+    // Wait a moment for React Flow to re-render the non-animated SVG paths
+    await new Promise((r) => setTimeout(r, 100));
+
+    // Use React Flow's built-in bounds calculators to capture the exact diagram dimensions
+    const nodesBounds = getNodesBounds(getNodes());
+    const imageWidth = nodesBounds.width + 200; // Adding padding
+    const imageHeight = nodesBounds.height + 200;
+
+    const viewport = getViewportForBounds(
+      nodesBounds,
+      imageWidth,
+      imageHeight,
+      0.5,
+      2,
+      0.1
+    );
+
+    const viewportNode = document.querySelector(".react-flow__viewport");
+    if (!viewportNode) {
+      setEdges(currentEdges);
+      return;
+    }
+
+    // Pass the calculated transform so html-to-image correctly positions the elements
+    const style = {
+      width: imageWidth,
+      height: imageHeight,
+      transform: `translate(${viewport.x}px, ${viewport.y}px) scale(${viewport.zoom})`,
+    };
+
+    try {
+      if (format === "png") {
+        const dataUrl = await toPng(viewportNode, {
+          backgroundColor: "#ffffff",
+          width: imageWidth,
+          height: imageHeight,
+          style,
+          quality: 1,
+          pixelRatio: 2,
+        });
+        triggerDownload(dataUrl, "mindmap.png");
+      } else if (format === "svg") {
+        const dataUrl = await toSvg(viewportNode, {
+          backgroundColor: "#ffffff",
+          width: imageWidth,
+          height: imageHeight,
+          style,
+        });
+        triggerDownload(dataUrl, "mindmap.svg");
+      } else if (format === "pdf") {
+        const dataUrl = await toPng(viewportNode, {
+          backgroundColor: "#ffffff",
+          width: imageWidth,
+          height: imageHeight,
+          style,
+          quality: 1,
+          pixelRatio: 2,
+        });
+        const pdf = new jsPDF({
+          orientation: imageWidth > imageHeight ? "landscape" : "portrait",
+          unit: "px",
+          format: [imageWidth, imageHeight],
+        });
+        pdf.addImage(dataUrl, "PNG", 0, 0, imageWidth, imageHeight);
+        pdf.save("mindmap.pdf");
+      }
+    } catch (err) {
+      console.error("Export failed", err);
+    } finally {
+      // Restore the original edges
+      setEdges(currentEdges);
+    }
+  };
 
   // Track previous data to detect changes during render
   const [prevArchitectureData, setPrevArchitectureData] = useState(null);
@@ -85,6 +190,45 @@ function MindMapInner() {
       >
         <Background />
         <Controls />
+        <Panel position="top-right" className="export-panel">
+          <div className="relative">
+            <button
+              onClick={() => setShowExportMenu(!showExportMenu)}
+              className="flex items-center gap-2 bg-white text-gray-800 dark:bg-zinc-800 dark:text-zinc-200 px-4 py-2 rounded-md shadow-sm border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors text-sm font-medium"
+            >
+              <FaDownload />
+              Download ▼
+            </button>
+            {showExportMenu && (
+              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-zinc-800 rounded-md shadow-lg border border-gray-200 dark:border-zinc-700 overflow-hidden z-50">
+                <button
+                  onClick={() => downloadFile("png")}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
+                >
+                  PNG Image (Standard)
+                </button>
+                <button
+                  onClick={() => downloadFile("svg")}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
+                >
+                  SVG Image (Scalable)
+                </button>
+                <button
+                  onClick={() => downloadFile("pdf")}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
+                >
+                  PDF Document
+                </button>
+                <button
+                  onClick={() => downloadFile("json")}
+                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
+                >
+                  JSON (Project File)
+                </button>
+              </div>
+            )}
+          </div>
+        </Panel>
       </ReactFlow>
     </div>
   );
