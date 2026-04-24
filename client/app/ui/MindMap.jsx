@@ -80,6 +80,8 @@ function MindMapInner() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
+        maxZoom={Infinity}
+        minZoom={0.1}
       >
         <Background />
         <Controls />
