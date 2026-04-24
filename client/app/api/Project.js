@@ -1,12 +1,14 @@
+import { getAuthHeaders } from "./utils";
+
 // Creates a new project
 export const createProject = async (title, description) => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project`, {
       method: "POST",
       credentials: "include",
-      headers: {
+      headers: getAuthHeaders({
         "Content-Type": "application/json",
-      },
+      }),
       body: JSON.stringify({ title, description }),
     });
 
@@ -28,6 +30,7 @@ export const getProjects = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project`, {
       method: "GET",
       credentials: "include",
+      headers: getAuthHeaders(),
     });
 
     if (!response.ok) {
@@ -46,6 +49,7 @@ export const getHistory = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project/history`, {
       method: "GET",
       credentials: "include",
+      headers: getAuthHeaders(),
     });
 
     if (!response.ok) {
@@ -64,6 +68,7 @@ export const deleteProject = async (projectId) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project/${projectId}`, {
       method: "DELETE",
       credentials: "include",
+      headers: getAuthHeaders(),
     });
 
     const result = await response.json();

@@ -2,7 +2,12 @@ import jwt from "jsonwebtoken";
 import logger from "../lib/logger.js";
 
 const authMiddleware = (req, res, next) => {
-  const token = req.cookies.token;
+  let token = req.cookies.token;
+
+  // Fallback to Authorization header for mobile clients where cross-origin cookies may fail
+  if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+    token = req.headers.authorization.split(" ")[1];
+  }
 
   if (!token) {
     logger.warn("Unauthorized access attempt: No token provided");
