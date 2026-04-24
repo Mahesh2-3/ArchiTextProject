@@ -3,7 +3,7 @@
 import { Group, Panel, Separator } from "react-resizable-panels";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
-import { Menu } from "../Helpers/icons";
+import { Menu, Comments } from "../Helpers/icons";
 import Conversation from "../ui/Conversation";
 import MindMap from "../ui/MindMap";
 import Sidebar from "../ui/Sidebar";
@@ -107,7 +107,7 @@ function HomeContent() {
           onClick={toggleConvo}
           className="absolute top-4 right-4 z-60 p-2 rounded-md bg-(--bg-card) hover:opacity-90 border border-(--border) shadow-lg transition cursor-pointer text-2xl"
         >
-          <Menu className="text-(--text-main)" />
+          <Comments className="text-(--text-main)" />
         </button>
       )}
 
@@ -137,7 +137,7 @@ function HomeContent() {
 
           {/* Mobile Conversation Overlay */}
           <div
-            className={`absolute top-0 right-0 h-full w-[85%] max-w-[350px] z-50 transition-transform duration-300 ${isConvoOpen ? "translate-x-0" : "translate-x-full"}`}
+            className={`absolute top-0 right-0 h-full w-full max-w-full z-50 transition-transform duration-300 ${isConvoOpen ? "translate-x-0" : "translate-x-full"}`}
           >
             <Conversation onClose={toggleConvo} />
           </div>

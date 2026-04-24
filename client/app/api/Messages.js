@@ -1,3 +1,5 @@
+import { getAuthHeaders } from "./utils";
+
 // Send message to AI
 export const sendMessage = async (projectId, userMsg) => {
   try {
@@ -6,9 +8,9 @@ export const sendMessage = async (projectId, userMsg) => {
       {
         method: "POST",
         credentials: "include",
-        headers: {
+        headers: getAuthHeaders({
           "Content-Type": "application/json",
-        },
+        }),
         body: JSON.stringify({ userMsg }),
       },
     );
@@ -44,6 +46,7 @@ export const getProjectMessages = async (projectId) => {
       {
         method: "GET",
         credentials: "include",
+        headers: getAuthHeaders(),
       },
     );
 

@@ -1,11 +1,13 @@
+import { getAuthHeaders } from "./utils";
+
 export const updateProfile = async (name) => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/profile`, {
       method: "PUT",
       credentials: "include",
-      headers: {
+      headers: getAuthHeaders({
         "Content-Type": "application/json",
-      },
+      }),
       body: JSON.stringify({ name }),
     });
 
@@ -21,9 +23,9 @@ export const changePassword = async (oldPassword, newPassword) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/password`, {
       method: "PUT",
       credentials: "include",
-      headers: {
+      headers: getAuthHeaders({
         "Content-Type": "application/json",
-      },
+      }),
       body: JSON.stringify({ oldPassword, newPassword }),
     });
 
@@ -39,9 +41,9 @@ export const sendOtp = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/send-otp`, {
       method: "POST",
       credentials: "include",
-      headers: {
+      headers: getAuthHeaders({
         "Content-Type": "application/json",
-      },
+      }),
     });
 
     const result = await response.json();
@@ -56,9 +58,9 @@ export const resetPasswordWithOtp = async (otp, newPassword) => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/reset-password`, {
       method: "POST",
       credentials: "include",
-      headers: {
+      headers: getAuthHeaders({
         "Content-Type": "application/json",
-      },
+      }),
       body: JSON.stringify({ otp, newPassword }),
     });
 
@@ -74,6 +76,7 @@ export const deleteAllUserData = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/data`, {
       method: "DELETE",
       credentials: "include",
+      headers: getAuthHeaders(),
     });
 
     const result = await response.json();

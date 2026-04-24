@@ -56,10 +56,14 @@ import {
  *         description: Internal server error
  */
 
+import logger from "../../lib/logger.js";
+
 // Register route
 const registerRoute = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    logger.info(`Registration attempt for email: ${email}`);
+
     const { success, data, message } = await registerUser(
       name,
       email,
@@ -67,8 +71,11 @@ const registerRoute = async (req, res) => {
     );
 
     if (!success) {
+      logger.warn(`Registration failed for email: ${email} - ${message}`);
       return res.status(400).json({ success: false, data: null, message });
     }
+
+    logger.info(`User registered successfully with ID: ${data._id}`);
 
     res.status(201).json({
       success: true,
@@ -76,6 +83,7 @@ const registerRoute = async (req, res) => {
       message: "User registered successfully",
     });
   } catch (error) {
+    logger.error(`Registration error: ${error.message}`);
     res
       .status(500)
       .json({ success: false, data: null, message: "Internal server error" });
