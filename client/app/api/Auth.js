@@ -20,7 +20,7 @@ export const login = async (email, password) => {
       };
     }
 
-    return { success: true, data: result.data };
+    return { success: true, data: result.data, token: result.token };
   } catch (error) {
     return { success: false, data: null, error: error.message };
   }
@@ -29,7 +29,6 @@ export const login = async (email, password) => {
 // Register function
 export const register = async (name, email, password) => {
   try {
-    console.log("Attempting to register user:", name, email);
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
       method: "POST",
       headers: {
@@ -61,6 +60,9 @@ export const logout = async () => {
       credentials: "include",
       method: "POST",
     });
+
+    // Clear the document cookie
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
 
     if (!response.ok) {
       return { success: false, data: null, error: "Logout failed" };

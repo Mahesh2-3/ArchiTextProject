@@ -26,10 +26,16 @@ const LoginPage = () => {
     try {
       // API call to login the user
       const res = await login(email, password);
-      console.log(res);
 
       // Successful Login: store user data and then redirect
       if (res.success) {
+        // Set token in document.cookie for middleware to read
+        if (res.token) {
+          const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
+          const sameSite = process.env.NODE_ENV === "production" ? "; SameSite=None" : "; SameSite=Lax";
+          document.cookie = `token=${res.token}; path=/; max-age=86400${secure}${sameSite}`;
+        }
+
         setUser(res.data);
         toast.success(
           "Login successful! Redirecting to home...",

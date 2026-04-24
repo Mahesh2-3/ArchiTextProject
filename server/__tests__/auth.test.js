@@ -35,11 +35,11 @@ app.post("/login", validateLogin, handleValidationErrors, async (req, res) => {
   if (result.success) {
     res.cookie("token", result.data.token, {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 60 * 60 * 24 * 1000,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
     });
-    return res.status(200).json({ success: true, data: result.data });
+    return res.status(200).json({ success: true, data: result.data.user, token: result.data.token });
   }
   res.status(401).json(result);
 });
@@ -119,9 +119,9 @@ describe("Authentication", () => {
         .expect(200);
 
       expect(response.body.success).toBe(true);
-      expect(response.body.data).toHaveProperty("token");
-      expect(response.body.data.user).toHaveProperty("_id");
-      expect(response.body.data.user.email).toBe(loginData.email);
+      expect(response.body).toHaveProperty("token");
+      expect(response.body.data).toHaveProperty("_id");
+      expect(response.body.data.email).toBe(loginData.email);
     });
 
     it("should fail login with incorrect password", async () => {

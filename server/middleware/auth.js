@@ -1,9 +1,11 @@
 import jwt from "jsonwebtoken";
+import logger from "../lib/logger.js";
 
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.token;
 
   if (!token) {
+    logger.warn("Unauthorized access attempt: No token provided");
     return res
       .status(401)
       .json({ success: false, data: null, message: "Unauthorized" });
@@ -21,7 +23,7 @@ const authMiddleware = (req, res, next) => {
 
     return next();
   } catch (error) {
-    console.log(error);
+    logger.error(`Authentication error: ${error.message}`);
     return res
       .status(401)
       .json({ success: false, data: null, message: "Invalid token" });
