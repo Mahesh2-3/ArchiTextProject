@@ -153,7 +153,7 @@ const Conversation = ({ onClose }) => {
           disabled={chatLoading}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your message..."
-          className="grow p-3 rounded-lg border border-(--border) bg-(--bg-side) focus:border-(--accent) focus:outline-none outline-none text-(--text-main) transition-all"
+          className="grow min-w-0 p-3 rounded-lg border border-(--border) bg-(--bg-side) focus:border-(--accent) focus:outline-none outline-none text-(--text-main) transition-all"
         />
         <button
           type="submit"
