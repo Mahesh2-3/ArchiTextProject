@@ -5,7 +5,7 @@ import {
   getProjectMessages,
   getProjectStructure,
   saveMessage,
-  updateProjectStructure
+  updateProjectStructure,
 } from "../Controllers/Message.js";
 import { updateProjectTitle } from "../Controllers/Project.js";
 import { checkProjectOwnership } from "../middleware/checkOwnership.js";
@@ -45,12 +45,12 @@ router.post("/:id", checkProjectOwnership, async (req, res) => {
       });
     }
 
-    // If it's the first message, update the conversation title
-    if (conversation.length === 1) {
-      const truncatedTitle =
-        userMsg.length > 30 ? userMsg.substring(0, 30) + "..." : userMsg;
-      await updateProjectTitle(projectId, truncatedTitle);
-    }
+    // // If it's the first message, update the conversation title
+    // if (conversation.length === 1) {
+    //   const truncatedTitle =
+    //     userMsg.length > 30 ? userMsg.substring(0, 30) + "..." : userMsg;
+    //   await updateProjectTitle(projectId, truncatedTitle);
+    // }
 
     // get current project structure
     const { success: structureStatus, data: structureData } =

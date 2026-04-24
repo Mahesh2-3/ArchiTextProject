@@ -29,7 +29,6 @@ export const login = async (email, password) => {
 // Register function
 export const register = async (name, email, password) => {
   try {
-    console.log("Attempting to register user:", name, email);
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
       method: "POST",
       headers: {
