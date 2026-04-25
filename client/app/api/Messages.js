@@ -20,7 +20,7 @@ export const sendMessage = async (projectId, userMsg) => {
       return {
         success: false,
         data: null,
-        error: errorData.message || "Failed to fetch from AI",
+        error: errorData.message || "Failed to get response from AI",
       };
     }
 
@@ -55,7 +55,7 @@ export const getProjectMessages = async (projectId) => {
       return {
         success: false,
         data: [],
-        error: errorData.message || "Failed to fetch messages",
+        error: errorData.message || "Failed to load conversation",
       };
     }
 

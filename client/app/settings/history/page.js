@@ -20,7 +20,7 @@ const HistoryPage = () => {
     if (res.success) {
       setHistory(res.data);
     } else {
-      toast.error(res.error || "Failed to fetch history", toastOptions());
+      toast.error(res.error || "Failed to load history", toastOptions());
     }
     setLoading(false);
   };

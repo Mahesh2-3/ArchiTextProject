@@ -45,7 +45,7 @@ const Conversation = ({ onClose }) => {
       if (res.success) {
         setConversation(res.data || []);
       } else {
-        toast.error(res.error || "Failed to fetch messages", toastOptions());
+        toast.error(res.error || "Failed to load conversation", toastOptions());
       }
       setMounted(true);
     };

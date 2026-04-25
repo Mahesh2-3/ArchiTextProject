@@ -130,12 +130,27 @@ function MindMapInner() {
   if (architectureData !== prevArchitectureData) {
     setPrevArchitectureData(architectureData);
 
-    const sourceData = architectureData || {};
+    const isDataEmpty = !architectureData || Object.keys(architectureData).length === 0;
+    const sourceData = isDataEmpty ? {
+      type: "flowchart",
+      direction: "LR",
+      nodes: [
+        { id: "sd", label: "System Design", nodeType: "input" },
+        { id: "arch", label: "Architecture", nodeType: "input" },
+        { id: "ai", label: "Artificial Intelligence", nodeType: "input" },
+        { id: "at", label: "ArchiText", nodeType: "end" },
+      ],
+      edges: [
+        { from: "sd", to: "at" },
+        { from: "arch", to: "at" },
+        { from: "ai", to: "at" },
+      ],
+    } : architectureData;
 
     let generator = generateTreeElements;
-    if (sourceData.type === "timeline") generator = generateTimelineElements;
-    else if (sourceData.type === "radial") generator = generateRadialElements;
-    else if (sourceData.type === "flowchart")
+    if (sourceData?.type === "timeline") generator = generateTimelineElements;
+    else if (sourceData?.type === "radial") generator = generateRadialElements;
+    else if (sourceData?.type === "flowchart")
       generator = generateFlowchartElements;
 
     const { nodes: newNodes, edges: newEdges } = generator(sourceData);

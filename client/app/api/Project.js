@@ -34,7 +34,7 @@ export const getProjects = async () => {
     });
 
     if (!response.ok) {
-      return { success: false, data: [], error: "Failed to fetch projects" };
+      return { success: false, data: [], error: "Failed to load projects" };
     }
 
     const result = await response.json();
@@ -53,7 +53,7 @@ export const getHistory = async () => {
     });
 
     if (!response.ok) {
-      return { success: false, data: [], error: "Failed to fetch history" };
+      return { success: false, data: [], error: "Failed to load history" };
     }
 
     const result = await response.json();

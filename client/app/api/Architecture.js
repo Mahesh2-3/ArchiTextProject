@@ -17,7 +17,7 @@ export const getArchitecture = async (projectId) => {
       return {
         success: false,
         data: null,
-        error: errorData.message || "Failed to fetch architecture",
+        error: errorData.message || "Failed to load project design",
       };
     }
 

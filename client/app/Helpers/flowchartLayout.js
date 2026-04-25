@@ -28,18 +28,21 @@ export const getLayoutedElements = (nodes, edges, direction = "TB") => {
   });
 
   // ==========================
-  // FIND ROOT NODE
+  // FIND ROOT NODES
   // ==========================
-  let root =
-    nodes.find((n) => n.data._nodeType === "start") ||
-    nodes.find((n) => incomingCount.get(n.id) === 0) ||
-    nodes[0];
+  let roots = nodes.filter((n) => n.data._nodeType === "start");
+  if (roots.length === 0) {
+    roots = nodes.filter((n) => incomingCount.get(n.id) === 0);
+  }
+  if (roots.length === 0 && nodes.length > 0) {
+    roots = [nodes[0]];
+  }
 
   // ==========================
   // BFS LEVEL BUILD
   // ==========================
   const visited = new Set();
-  const queue = [{ id: root.id, level: 0, lane: 0 }];
+  const queue = roots.map((r, idx) => ({ id: r.id, level: 0, lane: idx }));
   const levels = {};
 
   while (queue.length) {
