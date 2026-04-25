@@ -10,10 +10,12 @@ export const useAppStore = create(
 
       architectureData: null,
       refreshSidebarTrigger: 0,
+      downloadFormat: null,
       //actions
       setUser: (user) => set({ user }),
       setTheme: (theme) => set({ theme }),
       setCurrentProject: (project) => set({ currentProject: project }),
+      setDownloadFormat: (format) => set({ downloadFormat: format }),
 
       setArchitectureData: (architecture) =>
         set({ architectureData: architecture }),

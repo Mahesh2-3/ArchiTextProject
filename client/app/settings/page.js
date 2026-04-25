@@ -13,8 +13,13 @@ import {
   ChevronRight,
   ArrowLeft,
   Palette,
+  Logout,
 } from "../Helpers/icons";
 import ThemeDropDown from "../Components/ThemeDropDown";
+import { logout } from "../api/Auth";
+import { useAppStore } from "../store/useAppStore";
+import { toast } from "react-toastify";
+import { toastOptions } from "../Helpers/toast";
 
 const settingsLinks = [
   {
@@ -72,6 +77,17 @@ const settingsLinks = [
 
 const SettingsPage = () => {
   const router = useRouter();
+  const setUser = useAppStore((state) => state.setUser);
+
+  const handleLogout = async () => {
+    const { success } = await logout();
+    if (success) {
+      setUser(null);
+      router.push("/login");
+    } else {
+      toast.error("Logout failed. Please try Again.", toastOptions());
+    }
+  };
 
   return (
     <div className="w-full h-full overflow-y-auto bg-(--color-main) flex flex-col pb-20">
@@ -147,6 +163,17 @@ const SettingsPage = () => {
             </div>
           </div>
         ))}
+
+        {/* Logout Button */}
+        <div className="mt-4 flex">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-3 py-4 rounded-sm border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-bold transition-colors cursor-pointer group"
+          >
+            <Logout size={20} className="group-hover:-translate-x-1 transition-transform" />
+            <span>Logout</span>
+          </button>
+        </div>
       </div>
     </div>
   );

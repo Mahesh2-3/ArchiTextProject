@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FaDownload } from "react-icons/fa6";
 
 import ThemeButton from "../Components/ThemeButton";
 import {
@@ -11,7 +12,6 @@ import {
   Close,
   AngleDown,
   PlusCircle,
-  Logout,
   Settings,
 } from "../Helpers/icons";
 import ProjectSkeleton from "../Skeletons/ProjectSkeleton";
@@ -19,7 +19,6 @@ import ProjectSkeleton from "../Skeletons/ProjectSkeleton";
 import { useAppStore } from "../store/useAppStore";
 
 import { getProjects } from "../api/Project";
-import { logout } from "../api/Auth";
 import { toast } from "react-toastify";
 import { toastOptions } from "../Helpers/toast";
 
@@ -29,6 +28,7 @@ const Sidebar = ({ state, func, func2 }) => {
 
   // data
   const [projects, setProjects] = useState([]);
+  const [showExportMenu, setShowExportMenu] = useState(false);
 
 
   // loading states
@@ -47,6 +47,7 @@ const Sidebar = ({ state, func, func2 }) => {
   const refreshSidebarTrigger = useAppStore(
     (state) => state.refreshSidebarTrigger,
   );
+  const setDownloadFormat = useAppStore((state) => state.setDownloadFormat);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -66,15 +67,9 @@ const Sidebar = ({ state, func, func2 }) => {
     router.replace(`/home?pid=${projectId}`);
   };
 
-  // Logout Function
-  const handleLogout = async () => {
-    const { success } = await logout();
-    if (success) {
-      setUser(null);
-      router.push("/login");
-    } else {
-      toast.error("Logout failed. Please try Again.", toastOptions());
-    }
+  const handleDownload = (format) => {
+    setDownloadFormat(format);
+    setShowExportMenu(false);
   };
 
   return (
@@ -124,27 +119,73 @@ const Sidebar = ({ state, func, func2 }) => {
               projects.map((project) => (
                 <li
                   key={project._id}
-                  className="flex flex-col gap-2 bg-(--bg-card) border border-(--border) rounded-md p-2"
+                  className="flex flex-col gap-2 bg-(--bg-card) border border-(--border) rounded-md p-2 relative"
                 >
-                  <button
-                    onClick={() => handleSelectProject(project._id)}
-                    className={`w-full flex items-center group py-2 px-3 rounded-md transition cursor-pointer ${
+                  <div
+                    className={`w-full flex items-center justify-between group py-2 px-3 rounded-md transition ${
                       currentProject === project._id
                         ? "bg-(--accent)/20 text-(--accent)"
                         : "hover:bg-(--accent)/10 text-(--text-main)"
                     }`}
                   >
-                    <span className="font-bold text-ellipsis overflow-hidden whitespace-nowrap text-left w-full">
+                    <button
+                      onClick={() => handleSelectProject(project._id)}
+                      className="font-bold text-ellipsis overflow-hidden whitespace-nowrap text-left grow cursor-pointer"
+                    >
                       {project.title}
-                    </span>
-                  </button>
+                    </button>
+                    
+                    {currentProject === project._id && (
+                      <div className="relative flex shrink-0 ml-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setShowExportMenu(!showExportMenu);
+                          }}
+                          className="p-1.5 hover:bg-(--accent)/20 rounded-md transition cursor-pointer"
+                          title="Download Project"
+                        >
+                          <FaDownload size={14} />
+                        </button>
+                        
+                        {showExportMenu && (
+                          <div className="absolute right-0 top-8 w-40 bg-white dark:bg-zinc-800 rounded-md shadow-xl border border-gray-200 dark:border-zinc-700 overflow-hidden z-[100]">
+                            <button
+                              onClick={() => handleDownload("png")}
+                              className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer"
+                            >
+                              PNG Image
+                            </button>
+                            <button
+                              onClick={() => handleDownload("svg")}
+                              className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer"
+                            >
+                              SVG Image
+                            </button>
+                            <button
+                              onClick={() => handleDownload("pdf")}
+                              className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer"
+                            >
+                              PDF Document
+                            </button>
+                            <button
+                              onClick={() => handleDownload("json")}
+                              className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer"
+                            >
+                              JSON File
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 </li>
               ))}
           </ul>
         )}
       </div>
 
-      {/* User Profile and Logout Container - Sticky Bottom */}
+      {/* User Profile - Sticky Bottom */}
       <div className="border-t border-(--border) shrink-0 flex flex-col bg-(--bg-main)/30">
         <div className="flex items-center gap-3 p-4">
           <ThemeButton />
@@ -158,20 +199,13 @@ const Sidebar = ({ state, func, func2 }) => {
           </div>
           <Link
             href="/settings"
-            className="flex items-center gap-3 p-4 cursor-pointer hover:bg-(--bg-main)/50"
+            className="flex items-center gap-3 p-4 cursor-pointer hover:bg-(--bg-main)/50 ml-auto"
           >
             <Settings
               size={25}
               className="text-(--text-muted) group-hover:text-(--accent) group-hover:translate-x-0.5 transition-all shrink-0"
             />
           </Link>
-        </div>
-        <div
-          onClick={handleLogout}
-          className="flex items-center justify-center gap-4 py-3 border-y border-(--border) px-4 cursor-pointer hover:bg-red-500/10 transition-colors group"
-        >
-          <Logout color="red" size={24} />
-          <span className="text-red-500 text-lg font-bold">Logout</span>
         </div>
       </div>
     </div>

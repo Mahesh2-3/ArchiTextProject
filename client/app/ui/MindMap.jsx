@@ -24,6 +24,8 @@ import { FaDownload } from "react-icons/fa6";
 
 function MindMapInner() {
   const architectureData = useAppStore((state) => state.architectureData);
+  const downloadFormat = useAppStore((state) => state.downloadFormat);
+  const setDownloadFormat = useAppStore((state) => state.setDownloadFormat);
   const { fitView, getNodes, getEdges } = useReactFlow();
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
@@ -123,6 +125,13 @@ function MindMapInner() {
     }
   };
 
+  useEffect(() => {
+    if (downloadFormat) {
+      downloadFile(downloadFormat);
+      setDownloadFormat(null);
+    }
+  }, [downloadFormat]);
+
   // Track previous data to detect changes during render
   const [prevArchitectureData, setPrevArchitectureData] = useState(null);
 
@@ -200,45 +209,6 @@ function MindMapInner() {
       >
         <Background />
         <Controls />
-        <Panel position={isMobile ? "bottom-right" : "top-right"} className="export-panel">
-          <div className="relative">
-            <button
-              onClick={() => setShowExportMenu(!showExportMenu)}
-              className="flex items-center gap-2 bg-white text-gray-800 dark:bg-zinc-800 dark:text-zinc-200 px-4 py-2 rounded-md shadow-sm border border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors text-sm font-medium"
-            >
-              <FaDownload />
-              Download ▼
-            </button>
-            {showExportMenu && (
-              <div className={`absolute right-0 ${isMobile ? "bottom-full mb-2" : "mt-2"} w-48 bg-white dark:bg-zinc-800 rounded-md shadow-lg border border-gray-200 dark:border-zinc-700 overflow-hidden z-50`}>
-                <button
-                  onClick={() => downloadFile("png")}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
-                >
-                  PNG Image (Standard)
-                </button>
-                <button
-                  onClick={() => downloadFile("svg")}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
-                >
-                  SVG Image (Scalable)
-                </button>
-                <button
-                  onClick={() => downloadFile("pdf")}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
-                >
-                  PDF Document
-                </button>
-                <button
-                  onClick={() => downloadFile("json")}
-                  className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
-                >
-                  JSON (Project File)
-                </button>
-              </div>
-            )}
-          </div>
-        </Panel>
       </ReactFlow>
     </div>
   );
