@@ -74,7 +74,7 @@ const SettingsPage = () => {
   const router = useRouter();
 
   return (
-    <div className="w-full min-h-screen bg-(--color-main) flex flex-col">
+    <div className="w-full h-full overflow-y-auto bg-(--color-main) flex flex-col pb-20">
       {/* Header */}
       <div className="w-full px-6 py-5 flex items-center gap-4 border-b border-gray-300 dark:border-gray-700 bg-(--color-secondary)/40">
         <button

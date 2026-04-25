@@ -20,13 +20,14 @@ const themeOptions = [
 ];
 
 const ThemeDropDown = ({ item, isLast }) => {
-  const { theme, setTheme } = useThemeStore();
+  const { theme, setTheme, loadTheme } = useThemeStore();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    loadTheme();
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setIsOpen(false);
@@ -34,7 +35,7 @@ const ThemeDropDown = ({ item, isLast }) => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [loadTheme]);
 
   // if (!mounted) return null;
   // Returning a placeholder to avoid layout shift before hydration

@@ -25,10 +25,17 @@ import { FaDownload } from "react-icons/fa6";
 function MindMapInner() {
   const architectureData = useAppStore((state) => state.architectureData);
   const { fitView, getNodes, getEdges } = useReactFlow();
-  // State for nodes and edges
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const triggerDownload = (href, filename) => {
     const link = document.createElement("a");
@@ -178,7 +185,7 @@ function MindMapInner() {
       >
         <Background />
         <Controls />
-        <Panel position="top-right" className="export-panel">
+        <Panel position={isMobile ? "bottom-right" : "top-right"} className="export-panel">
           <div className="relative">
             <button
               onClick={() => setShowExportMenu(!showExportMenu)}
@@ -188,7 +195,7 @@ function MindMapInner() {
               Download ▼
             </button>
             {showExportMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-zinc-800 rounded-md shadow-lg border border-gray-200 dark:border-zinc-700 overflow-hidden z-50">
+              <div className={`absolute right-0 ${isMobile ? "bottom-full mb-2" : "mt-2"} w-48 bg-white dark:bg-zinc-800 rounded-md shadow-lg border border-gray-200 dark:border-zinc-700 overflow-hidden z-50`}>
                 <button
                   onClick={() => downloadFile("png")}
                   className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700"
