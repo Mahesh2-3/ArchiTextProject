@@ -26,15 +26,41 @@ export const login = async (email, password) => {
   }
 };
 
+// Send Registration OTP
+export const sendRegisterOtp = async (email) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/send-register-otp`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: result.message || "Failed to send OTP",
+      };
+    }
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
 // Register function
-export const register = async (name, email, password) => {
+export const register = async (name, email, password, otp) => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email, password, otp }),
     });
 
     const result = await response.json();

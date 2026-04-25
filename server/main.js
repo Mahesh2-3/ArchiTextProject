@@ -17,6 +17,7 @@ import aiResponse from "./routes/aiResponse.js";
 import loginRoute from "./routes/auth/login.js";
 import logoutRoute from "./routes/auth/logout.js";
 import registerRoute from "./routes/auth/Register.js";
+import sendRegisterOtpRoute from "./routes/auth/sendRegisterOtp.js";
 import forgotPasswordRoute from "./routes/auth/forgotPassword.js";
 import resetPasswordRoute from "./routes/auth/resetPassword.js";
 import projectRoutes from "./routes/projects.js";
@@ -101,6 +102,7 @@ app.get("/health", (req, res) => {
 // Auth routes with stricter rate limiting
 app.post("/login", authLimiter, loginRoute);
 app.post("/register", authLimiter, registerRoute);
+app.use("/send-register-otp", authLimiter, sendRegisterOtpRoute);
 app.post("/logout", logoutRoute);
 app.use("/forgot-password", authLimiter, forgotPasswordRoute);
 app.use("/reset-password", authLimiter, resetPasswordRoute);
