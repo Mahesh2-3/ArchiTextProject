@@ -95,6 +95,7 @@ function MindMapInner() {
           style,
           quality: 1,
           pixelRatio: 2,
+          backgroundColor: "#18181b",
         });
         triggerDownload(dataUrl, "mindmap.png");
       } else if (format === "svg") {
@@ -102,6 +103,7 @@ function MindMapInner() {
           width: imageWidth,
           height: imageHeight,
           style,
+          backgroundColor: "#18181b",
         });
         triggerDownload(dataUrl, "mindmap.svg");
       } else if (format === "pdf") {
@@ -111,6 +113,7 @@ function MindMapInner() {
           style,
           quality: 1,
           pixelRatio: 2,
+          backgroundColor: "#18181b",
         });
         const pdf = new jsPDF({
           orientation: imageWidth > imageHeight ? "landscape" : "portrait",
@@ -139,22 +142,25 @@ function MindMapInner() {
   if (architectureData !== prevArchitectureData) {
     setPrevArchitectureData(architectureData);
 
-    const isDataEmpty = !architectureData || Object.keys(architectureData).length === 0;
-    const sourceData = isDataEmpty ? {
-      type: "flowchart",
-      direction: "LR",
-      nodes: [
-        { id: "sd", label: "System Design", nodeType: "input" },
-        { id: "arch", label: "Architecture", nodeType: "input" },
-        { id: "ai", label: "Artificial Intelligence", nodeType: "input" },
-        { id: "at", label: "ArchiText", nodeType: "end" },
-      ],
-      edges: [
-        { from: "sd", to: "at" },
-        { from: "arch", to: "at" },
-        { from: "ai", to: "at" },
-      ],
-    } : architectureData;
+    const isDataEmpty =
+      !architectureData || Object.keys(architectureData).length === 0;
+    const sourceData = isDataEmpty
+      ? {
+          type: "flowchart",
+          direction: "LR",
+          nodes: [
+            { id: "sd", label: "System Design", nodeType: "input" },
+            { id: "arch", label: "Architecture", nodeType: "input" },
+            { id: "ai", label: "Artificial Intelligence", nodeType: "input" },
+            { id: "at", label: "ArchiText", nodeType: "end" },
+          ],
+          edges: [
+            { from: "sd", to: "at" },
+            { from: "arch", to: "at" },
+            { from: "ai", to: "at" },
+          ],
+        }
+      : architectureData;
 
     let generator = generateTreeElements;
     if (sourceData?.type === "timeline") generator = generateTimelineElements;

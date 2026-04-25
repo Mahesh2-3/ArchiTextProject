@@ -15,7 +15,7 @@ const LandingPage = () => {
   // The 'Sign In' buttons can just redirect them to /home naturally if they click them.
 
   return (
-    <div className="min-h-screen w-full bg-(--bg-main) text-(--text-main) selection:bg-(--accent)/30 selection:text-inherit">
+    <div className="h-screen w-screen overflow-y-auto bg-(--bg-main) text-(--text-main) hide-scrollbar selection:bg-(--accent)/30 selection:text-inherit">
       {/* Noise texture overlay */}
       <div
         className="fixed inset-0 pointer-events-none z-100 opacity-[0.03]"
@@ -90,15 +90,17 @@ const LandingPage = () => {
               className="text-[clamp(2.5rem,5.5vw,4.5rem)] font-bold leading-[1.05] tracking-[-0.03em] text-(--accent) mb-6"
               style={{ fontFamily: "var(--font-geist-sans)" }}
             >
-              Structure your ideas
+              Stop guessing.
               <br />
-              <span className="opacity-70">before you write a line.</span>
+              <span className="opacity-70">Start building with clarity.</span>
             </h1>
 
             <p className="text-[17px] leading-[1.7] text-(--text-muted) max-w-[520px] mb-10">
-              archiText turns conversations into structured project
-              architectures. Describe what you&apos;re building and get schemas,
-              APIs, file trees, and tech stacks back instantly.
+              ArchiText transforms your raw ideas into production-ready project
+              architectures in seconds. Skip the tedious planning phase, avoid
+              costly structural mistakes, and get a clear roadmap of schemas,
+              APIs, and tech stacks so you can focus entirely on writing great
+              code.
             </p>
 
             <div className="flex items-center gap-4">
@@ -159,13 +161,13 @@ const LandingPage = () => {
               </span>
             </div>
             <h2 className="text-[28px] md:text-[36px] font-bold leading-[1.15] tracking-[-0.02em] mb-3 text-(--text-main)">
-              Everything you need to
+              Save hours of planning.
               <br />
-              go from idea to structure.
+              Eliminate technical debt early.
             </h2>
             <p className="text-[15px] text-(--text-muted) leading-relaxed">
-              Three core capabilities that replace hours of planning with
-              seconds of conversation.
+              Why spend days mapping out systems? Our AI gives you the complete
+              blueprint you need to build scalable applications immediately.
             </p>
           </div>
 
@@ -180,13 +182,14 @@ const LandingPage = () => {
                 </span>
               </div>
               <h3 className="text-[22px] font-bold tracking-[-0.01em] mb-3 text-(--accent)">
-                Your architecture, visualized
+                A Crystal Clear Roadmap
               </h3>
               <p className="text-[15px] text-(--text-muted) leading-[1.7] max-w-[420px] mb-8">
-                Every conversation generates an interactive mindmap and a
-                bird&apos;s-eye view of your entire project. See how schemas,
-                APIs, tech stack choices, and file structures connect and depend
-                on each other in real time.
+                Never feel overwhelmed by a blank codebase again. Every prompt
+                generates an interactive, high-level mindmap giving you a
+                bird&apos;s-eye view of your entire project. Best of all? You can
+                instantly download your architecture for free in 4 different formats 
+                (PNG, SVG, PDF, and JSON) to share with your team or guide your workflow.
               </p>
               <div className="h-px bg-(--border) group-hover:bg-(--accent)/20 transition-colors" />
             </div>
@@ -203,12 +206,13 @@ const LandingPage = () => {
                   </span>
                 </div>
                 <h3 className="text-[18px] font-bold tracking-[-0.01em] mb-2 text-(--accent)">
-                  Describe, don&apos;t configure
+                  Instant Expert Advice
                 </h3>
                 <p className="text-[14px] text-(--text-muted) leading-[1.7]">
-                  Talk to archiText like a colleague. Explain what you&apos;re
-                  building and the AI returns schemas, endpoints, and a full
-                  tech stack and reflected instantly on your mindmap.
+                  Talk to ArchiText like a senior engineer. Just explain what
+                  you want to build, and we&apos;ll hand you industry-standard
+                  schemas, secure endpoints, and the absolute best tech stack
+                  for the job.
                 </p>
               </div>
 
@@ -222,12 +226,13 @@ const LandingPage = () => {
                   </span>
                 </div>
                 <h3 className="text-[18px] font-bold tracking-[-0.01em] mb-2 text-(--accent)">
-                  Refine as you think
+                  Iterate Without Penalty
                 </h3>
                 <p className="text-[14px] text-(--text-muted) leading-[1.7]">
-                  Add constraints, swap technologies, restructure modules. Each
-                  follow-up updates the mindmap while preserving your full
-                  conversation history.
+                  Changing architecture mid-development is painful and costly.
+                  With ArchiText, you can test constraints, swap technologies,
+                  and restructure your app endlessly before writing a single
+                  line of code.
                 </p>
               </div>
             </div>

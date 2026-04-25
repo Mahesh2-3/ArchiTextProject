@@ -18,9 +18,7 @@ export const metadata = {
   title: "ArchiText",
   description: "AI Powered Architectural Design Assistant",
   icons: {
-    icon: [
-      { url: "/logo.png", type: "image/png" },
-    ],
+    icon: [{ url: "/logo.png", type: "image/png" }],
   },
 };
 
