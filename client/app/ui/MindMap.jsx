@@ -49,11 +49,6 @@ function MindMapInner() {
       return;
     }
 
-    // Temporarily replace animated edges with normal edges for export
-    // html-to-image struggles to render SVG paths that have active CSS animations.
-    const currentEdges = getEdges();
-    setEdges(currentEdges.map((e) => ({ ...e, animated: false })));
-
     // Wait a moment for React Flow to re-render the non-animated SVG paths
     await new Promise((r) => setTimeout(r, 100));
 
@@ -68,12 +63,11 @@ function MindMapInner() {
       imageHeight,
       0.5,
       2,
-      0.1
+      0.1,
     );
 
     const viewportNode = document.querySelector(".react-flow__viewport");
     if (!viewportNode) {
-      setEdges(currentEdges);
       return;
     }
 
@@ -87,7 +81,6 @@ function MindMapInner() {
     try {
       if (format === "png") {
         const dataUrl = await toPng(viewportNode, {
-          backgroundColor: "#ffffff",
           width: imageWidth,
           height: imageHeight,
           style,
@@ -97,7 +90,6 @@ function MindMapInner() {
         triggerDownload(dataUrl, "mindmap.png");
       } else if (format === "svg") {
         const dataUrl = await toSvg(viewportNode, {
-          backgroundColor: "#ffffff",
           width: imageWidth,
           height: imageHeight,
           style,
@@ -105,7 +97,6 @@ function MindMapInner() {
         triggerDownload(dataUrl, "mindmap.svg");
       } else if (format === "pdf") {
         const dataUrl = await toPng(viewportNode, {
-          backgroundColor: "#ffffff",
           width: imageWidth,
           height: imageHeight,
           style,
@@ -122,9 +113,6 @@ function MindMapInner() {
       }
     } catch (err) {
       console.error("Export failed", err);
-    } finally {
-      // Restore the original edges
-      setEdges(currentEdges);
     }
   };
 
