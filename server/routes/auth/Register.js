@@ -61,13 +61,19 @@ import logger from "../../lib/logger.js";
 // Register route
 const registerRoute = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, otp } = req.body;
+
+    if (!otp) {
+      return res.status(400).json({ success: false, data: null, message: "OTP is required" });
+    }
+
     logger.info(`Registration attempt for email: ${email}`);
 
     const { success, data, message } = await registerUser(
       name,
       email,
       password,
+      otp
     );
 
     if (!success) {
