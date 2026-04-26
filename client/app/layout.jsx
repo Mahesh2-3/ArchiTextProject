@@ -1,16 +1,16 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import ThemeProviderClient from "./Providers/ThemeProvider";
 import ErrorBoundary from "./Components/ErrorBoundary";
 import Script from "next/script";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
@@ -27,9 +27,9 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-screen w-screen overflow-hidden antialiased`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-[100dvh] w-screen overflow-hidden antialiased`}
     >
-      <body className="h-screen w-screen overflow-hidden flex">
+      <body className="h-[100dvh] w-screen overflow-hidden flex font-sans">
         <Script id="theme-script" strategy="beforeInteractive">
           {`(function () {
     try {

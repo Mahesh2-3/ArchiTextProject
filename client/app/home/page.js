@@ -90,7 +90,7 @@ function HomeContent() {
   };
 
   return (
-    <div className="w-full h-screen flex flex-col md:flex-row relative overflow-hidden bg-(--bg-main)">
+    <div className="w-full h-[100dvh] flex flex-col md:flex-row relative overflow-hidden bg-(--bg-main)">
       <ToastContainer />
 
       {!isSideBarOpen && (
@@ -143,7 +143,7 @@ function HomeContent() {
           </div>
         </div>
       ) : (
-        <Group className="h-screen w-full min-w-0" orientation="horizontal">
+        <Group className="h-[100dvh] w-full min-w-0" orientation="horizontal">
           <Panel
             defaultSize={15}
             minSize={15}
@@ -179,7 +179,7 @@ export default function Home() {
   return (
     <Suspense
       fallback={
-        <div className="w-full h-screen flex items-center justify-center">
+        <div className="w-full h-[100dvh] flex items-center justify-center">
           Loading...
         </div>
       }

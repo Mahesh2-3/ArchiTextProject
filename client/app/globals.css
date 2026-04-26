@@ -3,8 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-geist-sans: 'Geist Sans', sans-serif;
-  --font-geist-mono: 'Geist Mono', monospace;
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
+  --font-jetbrains-mono: 'JetBrains Mono', monospace;
 
   /* Fallback to Light/Navy theme */
   --bg-main: #061d53;
@@ -108,6 +108,12 @@
 }
 
 @layer base {
+  html {
+    font-family: var(--font-space-grotesk), sans-serif;
+  }
+  code, pre {
+    font-family: var(--font-jetbrains-mono), monospace;
+  }
   :root {
     /* Main mapping for MindMap legacy variables */
     --color-main: var(--bg-main);
