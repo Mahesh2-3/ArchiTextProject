@@ -12,14 +12,16 @@ import {
 const app = express();
 app.use(express.json());
 
+import Otp from "../models/Otp.js";
+
 // Mock routes for testing with validation
 app.post(
   "/register",
   validateRegister,
   handleValidationErrors,
   async (req, res) => {
-    const { name, email, password } = req.body;
-    const result = await registerUser(name, email, password);
+    const { name, email, password, otp } = req.body;
+    const result = await registerUser(name, email, password, otp);
     if (result.success) {
       // Remove password from response
       const { password: _, ...userWithoutPassword } = result.data.toObject();
@@ -48,14 +50,20 @@ describe("Authentication", () => {
   beforeEach(async () => {
     // Clear users before each test
     await User.deleteMany({});
+    await Otp.deleteMany({});
   });
 
   describe("POST /register", () => {
     it("should register a new user successfully", async () => {
+      const testOtp = "123456";
+      const testEmail = "test@example.com";
+      await new Otp({ email: testEmail, otp: testOtp }).save();
+
       const userData = {
         name: "Test User",
-        email: "test@example.com",
+        email: testEmail,
         password: "TestPass123!",
+        otp: testOtp,
       };
 
       const response = await request(app)
@@ -104,7 +112,10 @@ describe("Authentication", () => {
   describe("POST /login", () => {
     beforeEach(async () => {
       // Create a test user
-      await registerUser("Test User", "test@example.com", "TestPass123!");
+      const testOtp = "123456";
+      const testEmail = "test@example.com";
+      await new Otp({ email: testEmail, otp: testOtp }).save();
+      await registerUser("Test User", testEmail, "TestPass123!", testOtp);
     });
 
     it("should login successfully with correct credentials", async () => {
