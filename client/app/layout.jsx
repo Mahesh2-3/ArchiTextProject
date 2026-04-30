@@ -1,17 +1,25 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, Fira_Code } from "next/font/google";
 import "./globals.css";
 import ThemeProviderClient from "./Providers/ThemeProvider";
 import ErrorBoundary from "./Components/ErrorBoundary";
 import Script from "next/script";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const firaCode = Fira_Code({
+  variable: "--font-fira-code",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata = {
@@ -27,7 +35,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-screen w-screen overflow-hidden antialiased`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${firaCode.variable} h-screen w-screen overflow-hidden antialiased`}
     >
       <body className="h-screen w-screen overflow-hidden flex">
         <Script id="theme-script" strategy="beforeInteractive">

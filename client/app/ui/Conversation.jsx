@@ -99,7 +99,7 @@ const Conversation = ({ onClose }) => {
       <div className="flex items-center justify-between border-b border-(--border) shrink-0">
         {projectId ? (
           <div className="p-4 text-sm flex items-center gap-2 text-(--text-main) flex-1 min-w-0">
-            <p className="font-bold truncate">Project Chat</p>
+            <p className="font-bold truncate" style={{fontFamily: 'var(--font-display)'}}>Project Chat</p>
           </div>
         ) : (
           <div className="flex-1" />

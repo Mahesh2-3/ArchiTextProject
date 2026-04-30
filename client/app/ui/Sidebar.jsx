@@ -7,13 +7,7 @@ import { useRouter } from "next/navigation";
 import { FaDownload } from "react-icons/fa6";
 
 import ThemeButton from "../Components/ThemeButton";
-import {
-  Menu,
-  Close,
-  AngleDown,
-  PlusCircle,
-  Settings,
-} from "../Helpers/icons";
+import { Menu, Close, AngleDown, PlusCircle, Settings } from "../Helpers/icons";
 import ProjectSkeleton from "../Skeletons/ProjectSkeleton";
 
 import { useAppStore } from "../store/useAppStore";
@@ -30,11 +24,9 @@ const Sidebar = ({ state, func, func2 }) => {
   const [projects, setProjects] = useState([]);
   const [showExportMenu, setShowExportMenu] = useState(false);
 
-
   // loading states
   const [isFetching, setIsFetching] = useState({
     projects: false,
-
   });
   const [mounted, setMounted] = useState(false);
 
@@ -60,8 +52,6 @@ const Sidebar = ({ state, func, func2 }) => {
     fetchProjects();
   }, [user, refreshSidebarTrigger]); // only when user changes
 
-
-
   const handleSelectProject = (projectId) => {
     setCurrentProject(projectId);
     router.replace(`/home?pid=${projectId}`);
@@ -73,7 +63,7 @@ const Sidebar = ({ state, func, func2 }) => {
   };
 
   return (
-    <div className="w-full h-full bg-(--bg-side) flex flex-col relative border-r border-(--border)">
+    <div className="w-full h-screen bg-(--bg-side) flex flex-col relative border-r border-(--border)">
       {/* Website Name */}
       <div className="px-4 pt-4 pb-2 shrink-0 flex items-center gap-2 ">
         <Image
@@ -83,7 +73,10 @@ const Sidebar = ({ state, func, func2 }) => {
           height={40}
           className="inline-block rounded-full border border-white/50"
         />
-        <h1 className="text-xl font-bold text-(--text-main) tracking-tight">
+        <h1
+          className="text-xl font-bold text-(--text-main) tracking-tight"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
           ArchiText
         </h1>
       </div>
@@ -134,7 +127,7 @@ const Sidebar = ({ state, func, func2 }) => {
                     >
                       {project.title}
                     </button>
-                    
+
                     {currentProject === project._id && (
                       <div className="relative flex shrink-0 ml-2">
                         <button
@@ -147,7 +140,7 @@ const Sidebar = ({ state, func, func2 }) => {
                         >
                           <FaDownload size={14} />
                         </button>
-                        
+
                         {showExportMenu && (
                           <div className="absolute right-0 top-8 w-40 bg-white dark:bg-zinc-800 rounded-md shadow-xl border border-gray-200 dark:border-zinc-700 overflow-hidden z-[100]">
                             <button
@@ -187,10 +180,10 @@ const Sidebar = ({ state, func, func2 }) => {
 
       {/* User Profile - Sticky Bottom */}
       <div className="border-t border-(--border) shrink-0 flex flex-col bg-(--bg-main)/30">
-        <div className="flex items-center gap-3 p-4">
+        <div className="flex items-center gap-2 p-3">
           <ThemeButton />
-          <div className="flex flex-col overflow-hidden">
-            <span className="font-bold text-(--text-main) truncate">
+          <div className="flex flex-col overflow-hidden flex-1 min-w-0">
+            <span className="font-semibold text-sm text-(--text-main) truncate">
               {user?.name}
             </span>
             <span className="text-xs text-(--text-muted) truncate">
@@ -199,11 +192,11 @@ const Sidebar = ({ state, func, func2 }) => {
           </div>
           <Link
             href="/settings"
-            className="flex items-center gap-3 p-4 cursor-pointer hover:bg-(--bg-main)/50 ml-auto"
+            className="flex items-center p-2 cursor-pointer hover:bg-(--bg-main)/50 rounded-md shrink-0 ml-auto"
           >
             <Settings
-              size={25}
-              className="text-(--text-muted) group-hover:text-(--accent) group-hover:translate-x-0.5 transition-all shrink-0"
+              size={20}
+              className="text-(--text-muted) group-hover:text-(--accent) transition-all"
             />
           </Link>
         </div>
