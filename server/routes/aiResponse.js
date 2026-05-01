@@ -91,18 +91,20 @@ router.post("/:id", checkProjectOwnership, async (req, res) => {
       });
     }
 
-    // save the updated architecture to the Project
-    const { success: updateStatus } = await updateProjectStructure(
-      projectId,
-      architecture,
-    );
+    // save the updated architecture to the Project if it was provided
+    if (architecture) {
+      const { success: updateStatus } = await updateProjectStructure(
+        projectId,
+        architecture,
+      );
 
-    if (!updateStatus) {
-      return res.status(500).json({
-        success: false,
-        data: null,
-        message: "Failed to update structure",
-      });
+      if (!updateStatus) {
+        return res.status(500).json({
+          success: false,
+          data: null,
+          message: "Failed to update structure",
+        });
+      }
     }
 
     res.status(200).json({

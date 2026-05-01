@@ -203,10 +203,11 @@ Logged In?
        └── No → Error
 
 [STRICT INSTRUCTIONS]
-1. Respond ONLY with valid JSON. No markdown, no extra text outside the JSON.
-2. The "message" field is MANDATORY and must be a non-empty string describing what you did.
-3. The "architecture" field must always contain the FULL updated flowchart, not just the changes.
-4. The "type" field inside architecture must always be "flowchart".
+1. Respond ONLY with valid JSON. Do not put markdown or extra text outside the JSON itself. The "message" string may use Markdown formatting if helpful.
+2. The "message" field is MANDATORY and must be a non-empty string describing what you did or answering the user.
+3. IMPORTANT: If the user's message does not require any structural changes to the architecture (e.g. asking a general question, greeting, or seeking explanation without modification), set the "architecture" field to null.
+4. If updating, the "architecture" field must always contain the FULL updated flowchart, not just the changes.
+5. If updating, the "type" field inside architecture must always be "flowchart".
 
 [USER CONTEXT]
 The user will provide the current structure and conversation history. Keep the flowchart consistent with previous decisions unless the user asks to change them.
