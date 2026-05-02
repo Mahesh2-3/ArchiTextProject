@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ThemeButton from "./Components/ThemeButton";
+import MapPreviews from "./Components/MapPreviews";
 import { ArrowRight, Comments, ProjectDiagram, SyncAlt } from "./Helpers/icons";
 import { useAppStore } from "./store/useAppStore";
 import { useRouter } from "next/navigation";
@@ -130,16 +131,8 @@ const LandingPage = () => {
                 <div className="w-2 h-2 rounded-full bg-(--text-main)/20" />
                 <div className="ml-3 flex-1 h-4 rounded-sm bg-(--text-main)/10 max-w-[220px]" />
               </div>
-              <div className="overflow-hidden relative">
-                <Image
-                  src="/hero.png"
-                  alt="archiText — AI architecture generation interface"
-                  width={900}
-                  height={450}
-                  loading="eager"
-                  priority
-                  className="w-full h-auto block"
-                />
+              <div className="overflow-hidden relative bg-(--bg-main) min-h-[400px]">
+                <MapPreviews />
               </div>
             </div>
           </div>
