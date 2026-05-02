@@ -1,4 +1,4 @@
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, Fira_Code } from "next/font/google";
 import "./globals.css";
 import ThemeProviderClient from "./Providers/ThemeProvider";
 import ErrorBoundary from "./Components/ErrorBoundary";
@@ -7,11 +7,19 @@ import Script from "next/script";
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const firaCode = Fira_Code({
+  variable: "--font-fira-code",
+  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 export const metadata = {
@@ -27,7 +35,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} h-[100dvh] w-screen overflow-hidden antialiased`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${firaCode.variable} h-screen w-screen overflow-hidden antialiased`}
     >
       <body className="h-[100dvh] w-screen overflow-hidden flex font-sans">
         <Script id="theme-script" strategy="beforeInteractive">

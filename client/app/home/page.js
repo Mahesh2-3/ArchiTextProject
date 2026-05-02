@@ -108,7 +108,7 @@ function HomeContent() {
   };
 
   return (
-    <div className="w-full h-[100dvh] flex flex-col md:flex-row relative overflow-hidden bg-(--bg-main)">
+    <div className="w-full flex flex-col md:flex-row relative overflow-hidden bg-(--bg-main)" style={{height: '100dvh'}}>
       <ToastContainer />
 
       {!isSideBarOpen && (
@@ -144,7 +144,8 @@ function HomeContent() {
 
           {/* Mobile Sidebar Overlay */}
           <div
-            className={`absolute top-0 left-0 h-full w-[80%] max-w-[320px] z-50 transition-transform duration-300 ${isSideBarOpen ? "translate-x-0" : "-translate-x-full"}`}
+            className={`absolute top-0 left-0 w-[80%] max-w-[320px] z-50 transition-transform duration-300 ${isSideBarOpen ? "translate-x-0" : "-translate-x-full"}`}
+            style={{height: '100dvh'}}
           >
             <Sidebar
               state={isSideBarOpen}
@@ -155,7 +156,8 @@ function HomeContent() {
 
           {/* Mobile Conversation Overlay */}
           <div
-            className={`absolute top-0 right-0 h-full w-full max-w-full z-50 transition-transform duration-300 ${isConvoOpen ? "translate-x-0" : "translate-x-full"}`}
+            className={`absolute top-0 right-0 w-full max-w-full z-50 transition-transform duration-300 ${isConvoOpen ? "translate-x-0" : "translate-x-full"}`}
+            style={{height: '100dvh'}}
           >
             <Conversation onClose={toggleConvo} />
           </div>

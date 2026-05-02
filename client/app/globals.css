@@ -4,8 +4,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-space-grotesk: 'Space Grotesk', sans-serif;
-  --font-jetbrains-mono: 'JetBrains Mono', monospace;
+  --font-display: var(--font-space-grotesk), 'Space Grotesk', system-ui, sans-serif;
+  --font-body: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-mono: var(--font-fira-code), 'Fira Code', monospace;
 
   /* Fallback to Light/Navy theme */
   --bg-main: #061d53;
@@ -22,7 +23,35 @@
   html {
     font-size: 14px;
   }
+  /* Use dynamic viewport height on mobile to account for browser chrome */
+  body {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+  }
+  .h-screen {
+    height: 100dvh !important;
+  }
 }
+
+/* Global typography */
+body {
+  font-family: var(--font-body);
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+}
+
+button, input, textarea, select {
+  font-family: var(--font-body);
+}
+
 
 [data-theme="light"] {
   --bg-main: #061d53;

@@ -31,8 +31,12 @@ const LoginPage = () => {
       if (res.success) {
         // Set token in document.cookie for middleware to read
         if (res.token) {
-          const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
-          const sameSite = process.env.NODE_ENV === "production" ? "; SameSite=None" : "; SameSite=Lax";
+          const secure =
+            process.env.NODE_ENV === "production" ? "; Secure" : "";
+          const sameSite =
+            process.env.NODE_ENV === "production"
+              ? "; SameSite=None"
+              : "; SameSite=Lax";
           document.cookie = `token=${res.token}; path=/; max-age=86400${secure}${sameSite}`;
         }
 
@@ -44,7 +48,7 @@ const LoginPage = () => {
 
         setTimeout(() => {
           router.push("/home");
-        }, 2000);
+        }, 1000);
       } else {
         toast.error("Invalid credentials", toastOptions());
       }
@@ -101,7 +105,10 @@ const LoginPage = () => {
 
           <div>
             <div className="flex justify-end mb-2">
-              <Link href="/forgot-password" className="text-sm font-bold text-(--accent) hover:underline">
+              <Link
+                href="/forgot-password"
+                className="text-sm font-bold text-(--accent) hover:underline"
+              >
                 Forgot Password?
               </Link>
             </div>
