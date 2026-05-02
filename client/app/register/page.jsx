@@ -83,7 +83,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="relative flex min-h-[100dvh] w-full items-center justify-center p-4">
+    <div className="relative flex min-h-dvh w-full items-center justify-center p-4">
       <Background />
       <ToastContainer />
       <div className="w-full max-w-md space-y-8 z-10 bg-(--bg-side)/80 backdrop-blur-md rounded-2xl border border-(--border) p-8 shadow-2xl">
@@ -97,7 +97,10 @@ const RegisterPage = () => {
           </p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={step === 1 ? handleSendOtp : handleRegister}>
+        <form
+          className="mt-8 space-y-6"
+          onSubmit={step === 1 ? handleSendOtp : handleRegister}
+        >
           {step === 1 ? (
             <div className="space-y-4">
               <div>
@@ -143,7 +146,9 @@ const RegisterPage = () => {
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-(--text-muted) hover:text-(--text-main) transition-colors cursor-pointer"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
                   >
                     {showPassword ? <EyeSlash size={20} /> : <Eye size={20} />}
                   </button>

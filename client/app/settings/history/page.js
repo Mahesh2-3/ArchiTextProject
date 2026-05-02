@@ -12,7 +12,9 @@ const HistoryPage = () => {
   const router = useRouter();
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
-  const triggerSidebarRefresh = useAppStore((state) => state.triggerSidebarRefresh);
+  const triggerSidebarRefresh = useAppStore(
+    (state) => state.triggerSidebarRefresh,
+  );
 
   const fetchHistory = async () => {
     setLoading(true);
@@ -26,7 +28,17 @@ const HistoryPage = () => {
   };
 
   useEffect(() => {
-    fetchHistory();
+    async function load() {
+      setLoading(true);
+      const res = await getHistory();
+      if (res.success) {
+        setHistory(res.data);
+      } else {
+        toast.error(res.error || "Failed to load history", toastOptions());
+      }
+      setLoading(false);
+    }
+    load();
   }, []);
 
   const handleDeleteProject = async (projectId) => {
@@ -48,9 +60,8 @@ const HistoryPage = () => {
     }
   };
 
-
   return (
-    <div className="w-full min-h-[100dvh] bg-(--color-main) flex flex-col">
+    <div className="w-full min-h-dvh bg-(--color-main) flex flex-col">
       <ToastContainer />
       {/* Header */}
       <div className="w-full px-6 py-5 flex items-center gap-4 border-b border-gray-300 dark:border-gray-700 bg-(--color-secondary)/40">
@@ -108,7 +119,6 @@ const HistoryPage = () => {
                     <Trash size={18} />
                   </button>
                 </div>
-
               </div>
             ))}
           </div>

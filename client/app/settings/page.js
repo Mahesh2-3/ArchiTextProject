@@ -40,23 +40,6 @@ const settingsLinks = [
     ],
   },
   {
-    category: "Preferences",
-    items: [
-      {
-        label: "AI",
-        description: "Configure AI model and behavior",
-        href: "/settings/ai",
-        icon: Robot,
-      },
-      {
-        label: "Data Controls",
-        description: "Manage how your data is used",
-        href: "/settings/data-controls",
-        icon: Database,
-      },
-    ],
-  },
-  {
     category: "Legal",
     items: [
       {
@@ -150,7 +133,7 @@ const SettingsPage = () => {
                   />
                 </Link>
               ))}
-              {group.category === "Preferences" && (
+              {group.category === "Account" && (
                 <ThemeDropDown
                   item={{
                     label: "Theme",
@@ -170,7 +153,10 @@ const SettingsPage = () => {
             onClick={handleLogout}
             className="w-full flex items-center justify-center gap-3 py-4 rounded-sm border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-bold transition-colors cursor-pointer group"
           >
-            <Logout size={20} className="group-hover:-translate-x-1 transition-transform" />
+            <Logout
+              size={20}
+              className="group-hover:-translate-x-1 transition-transform"
+            />
             <span>Logout</span>
           </button>
         </div>

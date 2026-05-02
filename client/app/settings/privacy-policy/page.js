@@ -8,7 +8,7 @@ const PrivacyPolicyPage = () => {
   const router = useRouter();
 
   return (
-    <div className="w-full min-h-[100dvh] bg-(--color-main) flex flex-col">
+    <div className="w-full min-h-dvh bg-(--color-main) flex flex-col">
       {/* Header */}
       <div className="w-full px-6 py-5 flex items-center gap-4 border-b border-gray-300 dark:border-gray-700 bg-(--color-secondary)/40">
         <button
@@ -28,19 +28,22 @@ const PrivacyPolicyPage = () => {
           <h2 className="text-xl font-semibold">1. Information We Collect</h2>
           <p className="text-sm text-(--text-normal)/80 leading-relaxed">
             We collect information you provide directly to us when you create an
-            account, use our services, or communicate with us. This includes your
-            name, email address, password, and the content of your conversations
-            and projects created within the application.
+            account, use our services, or communicate with us. This includes
+            your name, email address, password, and the content of your
+            conversations and projects created within the application.
           </p>
         </section>
 
         <section className="flex flex-col gap-3">
-          <h2 className="text-xl font-semibold">2. How We Use Your Information</h2>
+          <h2 className="text-xl font-semibold">
+            2. How We Use Your Information
+          </h2>
           <p className="text-sm text-(--text-normal)/80 leading-relaxed">
             We use the information we collect to provide, maintain, and improve
-            our services, to develop new features, and to protect our users. Your
-            conversation data may be processed by AI models to generate responses
-            and mind maps, but we do not sell your personal data to third parties.
+            our services, to develop new features, and to protect our users.
+            Your conversation data may be processed by AI models to generate
+            responses and mind maps, but we do not sell your personal data to
+            third parties.
           </p>
         </section>
 
@@ -48,9 +51,9 @@ const PrivacyPolicyPage = () => {
           <h2 className="text-xl font-semibold">3. Data Security</h2>
           <p className="text-sm text-(--text-normal)/80 leading-relaxed">
             We implement appropriate technical and organizational measures to
-            protect the security of your personal information. However, please be
-            aware that no method of transmission over the internet or method of
-            electronic storage is 100% secure.
+            protect the security of your personal information. However, please
+            be aware that no method of transmission over the internet or method
+            of electronic storage is 100% secure.
           </p>
         </section>
 
@@ -58,8 +61,8 @@ const PrivacyPolicyPage = () => {
           <h2 className="text-xl font-semibold">4. Your Data Rights</h2>
           <p className="text-sm text-(--text-normal)/80 leading-relaxed">
             You have the right to access, update, or delete your personal
-            information at any time. You can manage your data through the account
-            settings or by contacting our support team.
+            information at any time. You can manage your data through the
+            account settings or by contacting our support team.
           </p>
         </section>
 
@@ -67,8 +70,8 @@ const PrivacyPolicyPage = () => {
           <h2 className="text-xl font-semibold">5. Changes to This Policy</h2>
           <p className="text-sm text-(--text-normal)/80 leading-relaxed">
             We may update this privacy policy from time to time. We will notify
-            you of any changes by posting the new privacy policy on this page and
-            updating the effective date.
+            you of any changes by posting the new privacy policy on this page
+            and updating the effective date.
           </p>
         </section>
 

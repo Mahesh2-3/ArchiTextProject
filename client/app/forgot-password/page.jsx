@@ -17,13 +17,16 @@ const ForgotPasswordPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/forgot-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/forgot-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
         },
-        body: JSON.stringify({ email }),
-      });
+      );
 
       const res = await response.json();
 
@@ -43,7 +46,7 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="relative flex min-h-[100dvh] w-full items-center justify-center p-4">
+    <div className="relative flex min-h-dvh w-full items-center justify-center p-4">
       <Background />
       <ToastContainer />
       <div className="w-full max-w-md space-y-8 z-10 bg-(--bg-side)/80 backdrop-blur-md rounded-2xl border border-(--border) p-8 shadow-2xl">

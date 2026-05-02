@@ -27,18 +27,24 @@ const ResetPasswordContent = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/reset-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/reset-password`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, otp, newPassword }),
         },
-        body: JSON.stringify({ email, otp, newPassword }),
-      });
+      );
 
       const res = await response.json();
 
       if (res.success) {
-        toast.success("Password reset successfully! Redirecting to login...", toastOptions());
+        toast.success(
+          "Password reset successfully! Redirecting to login...",
+          toastOptions(),
+        );
         setTimeout(() => {
           router.push("/login");
         }, 2000);
@@ -53,7 +59,7 @@ const ResetPasswordContent = () => {
   };
 
   return (
-    <div className="relative flex min-h-[100dvh] w-full items-center justify-center p-4">
+    <div className="relative flex min-h-dvh w-full items-center justify-center p-4">
       <Background />
       <ToastContainer />
       <div className="w-full max-w-md space-y-8 z-10 bg-(--bg-side)/80 backdrop-blur-md rounded-2xl border border-(--border) p-8 shadow-2xl">
@@ -142,7 +148,13 @@ const ResetPasswordContent = () => {
 
 const ResetPasswordPage = () => {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-[100dvh] text-(--text-main)">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-dvh text-(--text-main)">
+          Loading...
+        </div>
+      }
+    >
       <ResetPasswordContent />
     </Suspense>
   );
