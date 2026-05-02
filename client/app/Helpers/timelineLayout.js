@@ -6,7 +6,8 @@ export const getLayoutedElements = (nodes, edges) => {
         node.position = { x: 0, y: currentY };
         node.sourcePosition = Position.Bottom;
         node.targetPosition = Position.Top;
-        currentY += (typeof node.data._height === 'number' ? node.data._height : 150) + 80;
+        const nodeHeight = typeof node.data._height === 'number' ? node.data._height : 150;
+        currentY += nodeHeight + 80;
     });
     return { nodes, edges };
 };
