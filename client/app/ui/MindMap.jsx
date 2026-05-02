@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import {
   ReactFlow,
   applyNodeChanges,
@@ -31,6 +31,8 @@ function MindMapInner() {
   const [edges, setEdges] = useState([]);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  // Only fit view on the very first load, not on every update
+  const hasInitialFit = useRef(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -129,10 +131,12 @@ function MindMapInner() {
   };
 
   useEffect(() => {
-    if (downloadFormat) {
-      downloadFile(downloadFormat);
+    if (!downloadFormat) return;
+    async function run() {
+      await downloadFile(downloadFormat);
       setDownloadFormat(null);
     }
+    run();
   }, [downloadFormat]);
 
   // Track previous data to detect changes during render
@@ -146,19 +150,7 @@ function MindMapInner() {
       !architectureData || Object.keys(architectureData).length === 0;
     const sourceData = isDataEmpty
       ? {
-          type: "flowchart",
-          direction: "LR",
-          nodes: [
-            { id: "sd", label: "System Design", nodeType: "input" },
-            { id: "arch", label: "Architecture", nodeType: "input" },
-            { id: "ai", label: "Artificial Intelligence", nodeType: "input" },
-            { id: "at", label: "ArchiText", nodeType: "end" },
-          ],
-          edges: [
-            { from: "sd", to: "at" },
-            { from: "arch", to: "at" },
-            { from: "ai", to: "at" },
-          ],
+          
         }
       : architectureData;
 
@@ -176,10 +168,10 @@ function MindMapInner() {
     setEdges(newEdges);
   }
 
-  // Trigger fitView when nodes change
+  // Trigger fitView only once on initial load
   useEffect(() => {
-    if (nodes.length) {
-      // Small timeout ensures DOM elements are rendered
+    if (nodes.length && !hasInitialFit.current) {
+      hasInitialFit.current = true;
       setTimeout(() => {
         fitView({ duration: 800, padding: 0.2 });
       }, 50);
@@ -209,7 +201,6 @@ function MindMapInner() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        fitView
         maxZoom={Infinity}
         minZoom={0.1}
       >

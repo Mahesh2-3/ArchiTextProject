@@ -13,7 +13,9 @@ const CreateProject = ({ onClose, onSuccess }) => {
 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const triggerSidebarRefresh = useAppStore((state) => state.triggerSidebarRefresh);
+  const triggerSidebarRefresh = useAppStore(
+    (state) => state.triggerSidebarRefresh,
+  );
 
   const validateForm = () => {
     const newErrors = {};
@@ -131,7 +133,7 @@ const CreateProject = ({ onClose, onSuccess }) => {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              placeholder="Describe your thoughts in detail..."
+              placeholder="Describe about your project in detail to get quality outputs..."
               rows={4}
               disabled={isLoading}
               className={`w-full p-3 rounded-md border-2 outline-none focus:ring-4 dark:bg-black/20 text-(--text-normal) transition-all resize-none ${
