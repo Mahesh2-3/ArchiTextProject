@@ -28,10 +28,16 @@ function HomeContent() {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-      if (window.innerWidth < 768) {
-        setisSideBarOpen(false);
-        setIsConvoOpen(false);
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) {
+        if (!pid) {
+          setisSideBarOpen(true);
+          setIsConvoOpen(false);
+        } else {
+          setisSideBarOpen(false);
+          setIsConvoOpen(false);
+        }
       } else {
         setisSideBarOpen(true);
         setIsConvoOpen(true);
@@ -40,7 +46,7 @@ function HomeContent() {
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  }, [pid]);
 
   // Fetching architecture data from the params in the url (pid)
   useEffect(() => {
@@ -68,12 +74,24 @@ function HomeContent() {
 
   // Toggle the sidebar
   const toggleSideBar = () => {
-    setisSideBarOpen((prev) => !prev);
+    setisSideBarOpen((prev) => {
+      const nextState = !prev;
+      if (isMobile && nextState) {
+        setIsConvoOpen(false);
+      }
+      return nextState;
+    });
   };
 
   // Toggle conversation panel
   const toggleConvo = () => {
-    setIsConvoOpen((prev) => !prev);
+    setIsConvoOpen((prev) => {
+      const nextState = !prev;
+      if (isMobile && nextState) {
+        setisSideBarOpen(false);
+      }
+      return nextState;
+    });
   };
 
   // Toggle the create project modal
@@ -145,7 +163,7 @@ function HomeContent() {
           </div>
         </div>
       ) : (
-        <Group className="h-screen w-full min-w-0" orientation="horizontal">
+        <Group className="h-[100dvh] w-full min-w-0" orientation="horizontal">
           <Panel
             defaultSize={15}
             minSize={15}
@@ -181,7 +199,7 @@ export default function Home() {
   return (
     <Suspense
       fallback={
-        <div className="w-full h-screen flex items-center justify-center">
+        <div className="w-full h-[100dvh] flex items-center justify-center">
           Loading...
         </div>
       }

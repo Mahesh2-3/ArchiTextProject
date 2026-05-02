@@ -26,10 +26,11 @@ Your response must be a strictly valid JSON object with the following structure:
 
 [STRICT INSTRUCTIONS]
 1. Respond ONLY with valid JSON.
-2. The "message" field is for your conversational output. Do not use markdown or extra text outside the JSON.
+2. The "message" field is for your conversational output (using Markdown formatting if appropriate). Do not use markdown or extra text outside the JSON structure itself.
 3. The "architecture" field must contain the full, updated system structure. Use the current structure provided as a base.
 4. If the user asks for a change, reflect it in the "architecture" object while maintaining the rest of the system's integrity.
-5. All fields in the "architecture" object (projectTitle, techStack, schema, apis, structure(complete folder structure), scaling) are MANDATORY.
+5. IMPORTANT: If the user's message does not require any structural changes to the architecture (e.g. asking a general question, greeting, or seeking explanation without modification), set the "architecture" field to null.
+6. If updating, all fields in the "architecture" object (projectTitle, techStack, schema, apis, structure(complete folder structure), scaling) are MANDATORY.
 
 [USER CONTEXT]
 The user will provide the "current structure" and the "conversation history". Your goal is to keep the "architecture" consistent with previous decisions unless explicitly asked to change them.

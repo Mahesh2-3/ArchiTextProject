@@ -15,7 +15,7 @@ const LandingPage = () => {
   // The 'Sign In' buttons can just redirect them to /home naturally if they click them.
 
   return (
-    <div className="h-screen w-screen overflow-y-auto bg-(--bg-main) text-(--text-main) hide-scrollbar selection:bg-(--accent)/30 selection:text-inherit">
+    <div className="h-[100dvh] w-screen overflow-y-auto bg-(--bg-main) text-(--text-main) hide-scrollbar selection:bg-(--accent)/30 selection:text-inherit">
       {/* Noise texture overlay */}
       <div
         className="fixed inset-0 pointer-events-none z-100 opacity-[0.03]"
@@ -88,7 +88,7 @@ const LandingPage = () => {
           <div className="max-w-[720px]">
             <h1
               className="text-[clamp(2.5rem,5.5vw,4.5rem)] font-bold leading-[1.05] tracking-[-0.03em] text-(--accent) mb-6"
-              style={{ fontFamily: "var(--font-geist-sans)" }}
+              style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               Stop guessing.
               <br />

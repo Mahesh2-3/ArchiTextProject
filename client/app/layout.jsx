@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${inter.variable} ${firaCode.variable} h-screen w-screen overflow-hidden antialiased`}
     >
-      <body className="h-screen w-screen overflow-hidden flex">
+      <body className="h-[100dvh] w-screen overflow-hidden flex font-sans">
         <Script id="theme-script" strategy="beforeInteractive">
           {`(function () {
     try {

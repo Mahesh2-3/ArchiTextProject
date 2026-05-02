@@ -8,7 +8,7 @@ const AIPage = () => {
   const router = useRouter();
 
   return (
-    <div className="w-full min-h-screen bg-(--color-main) flex flex-col">
+    <div className="w-full min-h-[100dvh] bg-(--color-main) flex flex-col">
       {/* Header */}
       <div className="w-full px-6 py-5 flex items-center gap-4 border-b border-gray-300 dark:border-gray-700 bg-(--color-secondary)/40">
         <button

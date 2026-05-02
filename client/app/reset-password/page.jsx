@@ -53,7 +53,7 @@ const ResetPasswordContent = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center p-4">
+    <div className="relative flex min-h-[100dvh] w-full items-center justify-center p-4">
       <Background />
       <ToastContainer />
       <div className="w-full max-w-md space-y-8 z-10 bg-(--bg-side)/80 backdrop-blur-md rounded-2xl border border-(--border) p-8 shadow-2xl">
@@ -142,7 +142,7 @@ const ResetPasswordContent = () => {
 
 const ResetPasswordPage = () => {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center min-h-screen text-(--text-main)">Loading...</div>}>
+    <Suspense fallback={<div className="flex items-center justify-center min-h-[100dvh] text-(--text-main)">Loading...</div>}>
       <ResetPasswordContent />
     </Suspense>
   );
